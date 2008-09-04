@@ -81,10 +81,8 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "</td></tr>";
 
 		echo "</table></form>";
-
-		echo "<table class='tab_cadre' cellpadding='5'>";
-		echo "<tr class='tab_bg_1'><td align='center'>";
 		if ($_SESSION["glpiactive_entity"] == 0) {
+			echo "<table class='tab_cadre' cellpadding='5'>";
 			echo "<tr class='tab_bg_1'><td><a href='plugin_generateInventoryNumber.uninstall.php'>" . $LANGGENINVENTORY["setup"][2] . "</a>";
 			echo " <img src='" . $CFG_GLPI["root_doc"] . "/pics/aide.png' alt=\"\" onmouseout=\"setdisplay(getElementById('commentsup'),'none')\" onmouseover=\"setdisplay(getElementById('commentsup'),'block')\">";
 			echo "<span class='over_link' id='commentsup'>" . $LANGGENINVENTORY["setup"][2] . "</span>";
