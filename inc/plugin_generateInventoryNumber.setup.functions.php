@@ -59,7 +59,7 @@ function plugin_generateInventoryNumber_Install() {
 	
 	$sql = "INSERT INTO `glpi_plugin_generateinventorynumber_config` (
 			`ID` ,`FK_entities` ,`active` ,`template_computer` ,`template_monitor` ,`template_printer` ,`template_peripheral` ,`template_phone` ,`template_software` ,`template_networking`,`next_number`)
-			VALUES (NULL , '-1', '0', '#######', '#######', '#######', '#######', '#######', '#######', '#######','0');";
+			VALUES (NULL , '-1', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;','0');";
 	$DB->query($sql) or die($DB->error());
 }
 
