@@ -91,7 +91,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		{
 			echo "<td class='tab_bg_1' align='center'>" . $LANG["Menu"][$value] . "</td>";
 			echo "<td class='tab_bg_1'>";
-			echo "<input type='text' name='template_$type' value='".$this->fields["template_$type"]."'>";
+			echo "<input type='text' name='template_$type' value=\"".$this->fields["template_$type"]."\">";
 			echo "</td>";
 			echo "</td></tr>";
 		}

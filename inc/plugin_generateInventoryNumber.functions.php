@@ -71,7 +71,7 @@ function plugin_item_add_generateInventoryNumber($parm) {
 
 			
 				if (plugin_generateInventoryNumber_canGenerate($parm,$config)) {
-				$template = $config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["type"])];
+				$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["type"])]);
 
 				$commonitem = new CommonItem;
 				$commonitem->setType($parm["type"], true);
