@@ -52,8 +52,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "<form name='form' method='post' action=\"$target\">";
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='5'>";
-		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["setup"][0];
-		echo "</th></tr>";
+		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["setup"][0]."</th></tr>";
 		
 		echo "<input type='hidden' name='ID' value='1'>";
 		
@@ -65,6 +64,27 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "</td></tr>";
 
 		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][1]."</th></tr>";
+/*
+		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][2] . "</td>";
+		echo "<td class='tab_bg_1'>";
+		dropdownYesNo("generate_ocs",$this->fields["generate_ocs"]);
+		echo "</td>";
+		echo "</td></tr>";
+*/		
+		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][3] . "</td>";
+		echo "<td class='tab_bg_1'>";
+		dropdownYesNo("generate_internal",$this->fields["generate_internal"]);
+		echo "</td>";
+		echo "</td></tr>";
+
+		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][4] . "</td>";
+		echo "<td class='tab_bg_1'>";
+		dropdownYesNo("generate_data_injection",$this->fields["generate_data_injection"]);
+		echo "</td>";
+		echo "</td></tr>";
+
+
+		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10]."</th></tr>";
 		
 		$types = array("computer"=>0,"networking"=>1,"printer"=>2,"monitor"=>3,"software"=>4,"peripheral"=>16);
 		foreach($types as $type => $value)

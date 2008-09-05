@@ -31,11 +31,19 @@ $title = "Génération des numéros d'inventaire";
 
 $LANGGENINVENTORY["title"][1] = "".$title."";
 
-$LANGGENINVENTORY["config"][0] = "Actif";
-$LANGGENINVENTORY["config"][1] = "Modèle de génération : ";
+$LANGGENINVENTORY["config"][0] = "Génération activée (global)";
+$LANGGENINVENTORY["config"][1] = "Composants impactés";
+$LANGGENINVENTORY["config"][2] = "Actif sur remontées OCS";
+$LANGGENINVENTORY["config"][3] = "Actif sur création dans GLPI";
+$LANGGENINVENTORY["config"][4] = "Actif sur injection de données";
+
+$LANGGENINVENTORY["config"][10] = "Modèle de génération : ";
+
 $LANGGENINVENTORY["setup"][0] = "Configuration du plugin ".$title;
 $LANGGENINVENTORY["setup"][1] = "Installer le plugin $title";
 $LANGGENINVENTORY["setup"][2] = "Désinstaller le plugin $title";
 $LANGGENINVENTORY["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
 $LANGGENINVENTORY["setup"][4] = "Merci de vous placer sur l'entité racine (voir tous)";
+
+$LANGGENINVENTORY["massiveaction"][0] = "Générer un numéro d'inventaire";
 ?>

@@ -45,9 +45,13 @@ function plugin_init_generateInventoryNumber() {
 	$PLUGIN_HOOKS['init_session']['generateInventoryNumber'] = 'plugin_generateInventoryNumber_initSession';
 	$PLUGIN_HOOKS['change_profile']['generateInventoryNumber'] = 'plugin_generateInventoryNumber_changeprofile';
 
-	$PLUGIN_HOOKS['pre_item_update']['generateInventoryNumber'] = 'plugin_pre_item_update_generateInventoryNumber'; 
-  	$PLUGIN_HOOKS['item_add']['generateInventoryNumber'] = 'plugin_item_add_generateInventoryNumber';
-	
+	if (isGenerateInventoryNumberPluginInstalled())
+	{
+		$PLUGIN_HOOKS['use_massive_action']['generateInventoryNumber'] = 1;
+		$PLUGIN_HOOKS['pre_item_update']['generateInventoryNumber'] = 'plugin_pre_item_update_generateInventoryNumber'; 
+	  	$PLUGIN_HOOKS['item_add']['generateInventoryNumber'] = 'plugin_item_add_generateInventoryNumber';
+	}
+		
 	$INVENTORY_TYPES = array(COMPUTER_TYPE,MONITOR_TYPE,PRINTER_TYPE,NETWORKING_TYPE,PERIPHERAL_TYPE,PHONE_TYPE);
 	if (isset ($_SESSION["glpiID"])) {
 
