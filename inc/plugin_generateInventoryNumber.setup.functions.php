@@ -66,11 +66,39 @@ function plugin_generateInventoryNumber_Install() {
 			`generate_ocs`,`generate_data_injection`,`generate_internal`)
 			VALUES (NULL , '-1', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;','1','1','1','0');";
 	$DB->query($sql) or die($DB->error());
+	
+	$sql="
+	CREATE TABLE `glpi_plugin_generateinventorynumber_profiles` (
+	  `ID` int(11) NOT NULL auto_increment,
+	  `name` varchar(255) default NULL,
+	  `is_default` int(6) NOT NULL default '0',
+	  `generate` char(1) default NULL,
+	  PRIMARY KEY  (`ID`)
+	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
+	$DB->query($sql) or die($DB->error());
 }
 
 function plugin_generateInventoryNumber_Uninstall() {
 
 	global $DB;
 	$DB->query("DROP TABLE glpi_plugin_generateinventorynumber_config;") or die($DB->error());
+	$DB->query("DROP TABLE glpi_plugin_generateinventorynumber_profiles;") or die($DB->error());	
 }
+
+function plugin_generateInventoryNumber_createfirstaccess($ID) {
+
+	global $DB;
+
+	$inventoryProfile = new GenerateInventoryNumberProfile;
+	if (!$inventoryProfile->getFromDB($ID)) {
+
+		$Profile = new Profile();
+		$Profile->getFromDB($ID);
+		$name = $Profile->fields["name"];
+
+		$query = "INSERT INTO `glpi_plugin_generateinventorynumber_profiles` ( `ID`, `name` , `is_default`, `generate`) VALUES ('$ID', '$name','0','w');";
+		$DB->query($query);
+	}
+}
+
 ?>

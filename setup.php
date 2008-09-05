@@ -36,6 +36,7 @@
 
 include_once ("inc/plugin_generateInventoryNumber.auth.functions.php");
 include_once ("inc/plugin_generateInventoryNumber.config.class.php");
+include_once ("inc/plugin_generateInventoryNumber.profile.class.php");
 include_once ("inc/plugin_generateInventoryNumber.setup.functions.php");
 include_once ("inc/plugin_generateInventoryNumber.functions.php");
 

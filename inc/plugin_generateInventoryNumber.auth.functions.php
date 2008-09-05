@@ -51,4 +51,48 @@ function isGenerateInventoryNumberPluginInstalled()
 	return (isset($_SESSION["glpi_plugin_generateInventoryNumber_installed"]) && $_SESSION["glpi_plugin_generateInventoryNumber_installed"]==1);
 }
 
+function plugin_generateInventoryNumber_haveRight($module, $right) {
+	$matches = array (
+		"" => array (
+			"",
+			"r",
+			"w"
+		), // ne doit pas arriver normalement
+	"r" => array (
+			"r",
+			"w"
+		),
+		"w" => array (
+			"w"
+		),
+		"1" => array (
+			"1"
+		),
+		"0" => array (
+			"0",
+			"1"
+		), // ne doit pas arriver non plus
+
+	
+	);
+	if (isset ($_SESSION["glpi_plugin_data_injection_profile"][$module]) && in_array($_SESSION["glpi_plugin_data_injection_profile"][$module], $matches[$right]))
+		return true;
+	else
+		return false;
+}
+
+function plugin_generateInventoryNumber_checkRight($module, $right) {
+	global $CFG_GLPI;
+
+	if (!plugin_plugin_generateInventoryNumber_haveRight($module, $right)) {
+		// Gestion timeout session
+		if (!isset ($_SESSION["glpiID"])) {
+			glpi_header($CFG_GLPI["root_doc"] . "/index.php");
+			exit ();
+		}
+
+		displayRightError();
+	}
+}
+
 ?>

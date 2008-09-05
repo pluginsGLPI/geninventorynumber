@@ -172,8 +172,9 @@ function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entitie
 
 // Define rights for the plugin types
 function plugin_generateInventoryNumber_haveTypeRight($type, $right) {
-	return true;
+	return plugin_generateInventoryNumber_haveRight($type,$right);
 }
+
 function plugin_generateInventoryNumber_incrementNumber($FK_entities = -1) {
 	global $DB;
 
