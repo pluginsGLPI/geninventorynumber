@@ -37,6 +37,7 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 	function GenerateInventoryNumberProfile()
 	{
 		$this->table="glpi_plugin_generateinventorynumber_profiles";
+		$this->type=-1;
 	}
 
 	//if profile deleted
@@ -46,10 +47,54 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 		$query = "DELETE FROM glpi_plugin_generateinventorynumber_profiles WHERE ID='$ID' ";
 		$DB->query($query);
 	}
+	
+	function showprofileForm($target,$ID){
+		global $LANG,$CFG_GLPI,$LANGGENINVENTORY;
 
-	function showForm($target,$ID){
+		if (!haveRight("profile","r")) return false;
+
+		$onfocus="";
+		if ($ID){
+			$this->getFromDB($ID);
+		} else {
+			$this->getEmpty();
+			$onfocus="onfocus=\"this.value=''\"";
+		}
+
+		if (empty($this->fields["interface"])) $this->fields["interface"]="generateinventorynumber";
+		if (empty($this->fields["name"])) $this->fields["name"]=$LANG["common"][0];
+
+
+		echo "<form name='form' method='post' action=\"$target\">";
+		echo "<div align='center'>";
+		echo "<table class='tab_cadre'><tr>";
+		echo "<th>".$LANG["common"][16].":</th>";
+		echo "<th><input type='text' name='name' value=\"".$this->fields["name"]."\" $onfocus></th>";
+		echo "<th>".$LANG["profiles"][2].":</th>";
+		echo "<th><select name='interface' id='profile_interface'>";
+		echo "<option value='generateinventorynumber' ".($this->fields["interface"]!="generateinventorynumber"?"selected":"").">".$LANGGENINVENTORY["title"][1]."</option>";
+
+		echo "</select></th>";
+		echo "</tr></table>";
+		echo "</div>";
+		
+		$params=array('interface'=>'__VALUE__',
+				'ID'=>$ID,
+			);
+		ajaxUpdateItemOnSelectEvent("profile_interface","profile_form",$CFG_GLPI["root_doc"]."/plugins/generateInventoryNumber/ajax/profiles.php",$params,false);
+		ajaxUpdateItem("profile_form",$CFG_GLPI["root_doc"]."/plugins/generateInventoryNumber/ajax/profiles.php",$params,false,'profile_interface');
+		echo "<br>";
+
+		echo "<div align='center' id='profile_form'>";
+		echo "</div>";
+
+		echo "</form>";
+
+	}
+
+	function showgenerateinventorynumberForm($ID){
 		global $LANG,$LANGGENINVENTORY;
-
+		
 		if (!haveRight("profile","r")) return false;
 		$canedit=haveRight("profile","w");
 
@@ -59,16 +104,15 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 			$this->getEmpty();
 		}
 
-		echo "<form name='form' method='post' action=\"$target\">";
-		echo "<table class='tab_cadre'>";
+		echo "<table class='tab_cadre'><tr>";
 
-		echo "<tr><th colspan='2' align='center'><strong>".$LANGGENINVENTORY["setup"][5]."</strong></th></tr>\n";
+		echo "<tr><th colspan='2' align='center'><strong>".$LANGGENINVENTORY["setup"][5]."</strong></td></tr>";
 
 		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANGGENINVENTORY["massiveaction"][0].":</td><td>";
-		dropdownNoneReadWrite("generate",$this->fields["generate"],1,0,1);
+		echo "<td>".$LANGGENINVENTORY["profiles"][1].":</td><td>";
+		dropdownNoneReadWrite("generate",$this->fields["generate"],1,1,1);
 		echo "</td>";
-		echo "</tr>\n";
+		echo "</tr>";
 
 		if ($canedit){
 			echo "<tr class='tab_bg_1'>";
@@ -82,10 +126,9 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 				echo "<td colspan='2' align='center'>";
 				echo "<input type='submit' name='add' value=\"".$LANG["buttons"][8]."\" class='submit'>";
 			}
-			echo "</td></tr>\n";
+			echo "</td></tr>";
 		}
 		echo "</table>";
-	echo "</form>";
 
 	}
 }

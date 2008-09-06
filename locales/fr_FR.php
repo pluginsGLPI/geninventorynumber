@@ -45,5 +45,9 @@ $LANGGENINVENTORY["setup"][3] = "Attention, la désinstallation du plugin est ir
 $LANGGENINVENTORY["setup"][4] = "Merci de vous placer sur l'entité racine (voir tous)";
 $LANGGENINVENTORY["setup"][5] = "Gestion des droits";
 
+$LANGGENINVENTORY["profiles"][0] = "Gestion des droits";
+$LANGGENINVENTORY["profiles"][1] = "Générer des numéros d'inventaire";
+$LANGGENINVENTORY["profiles"][2] = "Listes des profils déjà configurés";
+
 $LANGGENINVENTORY["massiveaction"][0] = "Générer un numéro d'inventaire";
 ?>

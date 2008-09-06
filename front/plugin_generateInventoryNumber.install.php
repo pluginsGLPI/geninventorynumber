@@ -40,7 +40,7 @@ if (haveRight("config","w") && haveRight("profile","w")){
 
 	cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
 	plugin_generateInventoryNumber_Install();
-	plugin_generateInventoryNumber_createfirstaccess($_SESSION["glpiID"]);
+	plugin_generateInventoryNumber_createfirstaccess($_SESSION['glpiactiveprofile']['ID']);
 	plugin_generateInventoryNumber_initSession();	
 	glpi_header($_SERVER['HTTP_REFERER']);
 

@@ -41,8 +41,35 @@ function plugin_generateInventoryNumber_initSession() {
 	global $DB;
 	
 	if(TableExists("glpi_plugin_generateinventorynumber_config")){
-		
-		$_SESSION["glpi_plugin_generateInventoryNumber_installed"]=1;
+		$profile=new GenerateInventoryNumberProfile();
+	
+		$query = "SELECT DISTINCT glpi_profiles.* FROM glpi_users_profiles INNER JOIN glpi_profiles ON (glpi_users_profiles.FK_profiles = glpi_profiles.ID) WHERE glpi_users_profiles.FK_users='".$_SESSION["glpiID"]."'";
+		$result = $DB->query($query);
+		$_SESSION['glpi_plugin_generateInventoryNumber_profile'] = array ();
+		if ($DB->numrows($result)) {
+			while ($data = $DB->fetch_assoc($result)) {
+				$profile->fields = array ();
+				if(isset($_SESSION["glpiactiveprofile"]["ID"])){
+					$profile->getFromDB($_SESSION["glpiactiveprofile"]["ID"]);
+					$_SESSION['glpi_plugin_generateInventoryNumber_profile'] = $profile->fields;
+				}else{
+					$profile->getFromDB($data['ID']);
+					$_SESSION['glpi_plugin_generateInventoryNumber_profile'] = $profile->fields;
+				}
+				$_SESSION["glpi_plugin_generateInventoryNumber_installed"]=1;
+			}
+		}
+	}
+}
+
+function plugin_generateInventoryNumber_changeprofile()
+{
+	if(isset($_SESSION["glpi_plugin_generateInventoryNumber_installed"]) && $_SESSION["glpi_plugin_generateInventoryNumber_installed"]==1){
+		$prof=new GenerateInventoryNumberProfile();
+		if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID']))
+			$_SESSION["glpi_plugin_generateInventoryNumber_profile"]=$prof->fields;
+		else
+			unset($_SESSION["glpi_plugin_generateInventoryNumber_profile"]);
 	}
 }
 
@@ -75,7 +102,7 @@ function plugin_generateInventoryNumber_haveRight($module, $right) {
 
 	
 	);
-	if (isset ($_SESSION["glpi_plugin_data_injection_profile"][$module]) && in_array($_SESSION["glpi_plugin_data_injection_profile"][$module], $matches[$right]))
+	if (isset ($_SESSION["glpi_plugin_generateInventoryNumber_profile"][$module]) && in_array($_SESSION["glpi_plugin_generateInventoryNumber_profile"][$module], $matches[$right]))
 		return true;
 	else
 		return false;

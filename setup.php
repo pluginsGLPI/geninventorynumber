@@ -73,6 +73,19 @@ function plugin_version_generateInventoryNumber() {
 	);
 }
 
+// Hook done on delete item case
+
+function plugin_pre_item_delete_generateInventoryNumber($input){
+	if (isset($input["_item_type_"]))
+		switch ($input["_item_type_"]){
+			case PROFILE_TYPE :
+				// Manipulate data if needed 
+				$GenerateInventoryNumberProfile=new GenerateInventoryNumberProfile;
+				$GenerateInventoryNumberProfile->cleanProfiles($input["ID"]);
+				break;
+		}
+	return $input;
+}
 
 
 ?>

@@ -36,13 +36,11 @@
 $NEEDED_ITEMS=array("profile");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
+
 checkRight("profile","r");
 $prof=new GenerateInventoryNumberProfile();
 
-if (isGenerateInventoryNumberPluginInstalled())
-	commonHeader($LANG["Menu"][35],$_SERVER['PHP_SELF'],"plugins","generateInventoryNumber");
-else
-	commonHeader($LANG["Menu"][35],$_SERVER['PHP_SELF'],"plugins","generateInventoryNumber");
+commonHeader($LANG["Menu"][35],$_SERVER['PHP_SELF'],"plugins","generateInventoryNumber");
 
 if(!isset($_POST["ID"])) $ID=0;
 else $ID=$_POST["ID"];
@@ -76,11 +74,11 @@ else  if (isset($_POST["update"])){
 	$prof->update($_POST);
 }
 
-echo "<div align='center'><form method='post' name='massiveaction_form' id='massiveaction_form'  action=\"./plugin_data_injection.profile.php\">";
+echo "<div align='center'><form method='post' name='massiveaction_form' id='massiveaction_form'  action=\"./plugin_generateInventoryNumber.profile.php\">";
 
 echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='5'>";
-echo $DATAINJECTIONLANG["profiles"][4]." : </th></tr>";
-echo "<tr><th></th><th></th><th>".$LANG["Menu"][35]."</th><th>".$DATAINJECTIONLANG["profiles"][1]."</th><th>".$DATAINJECTIONLANG["profiles"][3]."</th></tr>";
+echo $LANGGENINVENTORY["profiles"][1]." : </th></tr>";
+echo "<tr><th></th><th></th><th>".$LANG["Menu"][35]."</th><th>".$LANGGENINVENTORY["profiles"][2]."</th></tr>";
 
 $query0="SELECT * FROM glpi_plugin_generateinventorynumber_profiles ORDER BY name";
 $result0=$DB->query($query0);
@@ -107,9 +105,9 @@ echo " - <a onclick= \"if ( unMarkAllRows('massiveaction_form') ) return false;\
 echo "<input type='submit' name='delete_profile' value=\"".$LANG["buttons"][6]."\" class='submit' ></div></td></tr>";			
 echo "</table></form></div>";
 
-echo "<div align='center'><form method='post' action=\"".$_SERVER['PHP_SELF']."\">";
+echo "<div align='center'><form method='post' action=\"".$CFG_GLPI["root_doc"]."/plugins/generateInventoryNumber/front/plugin_generateInventoryNumber.profile.php\">";
 echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='2'>";
-echo $DATAINJECTIONLANG["setup"][1]."<br />" . $DATAINJECTIONLANG["setup"][9] . "</th></tr>\n";
+echo $LANGGENINVENTORY["setup"][1]."<br />" . $LANGGENINVENTORY["profiles"][0] . "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>" . $LANG["profiles"][22] . "&nbsp;: ";
 $query="SELECT ID, name FROM glpi_profiles ORDER BY name";
@@ -125,11 +123,11 @@ echo "</table></form></div>";
 
 if ($ID>0){	
 	if ($prof->getFromDB($ID)){
-		$prof->showForm($_SERVER['PHP_SELF'],$ID);
+		$prof->showprofileForm($_SERVER['PHP_SELF'],$ID);
 	}
 	else {
-		plugin_generateInventoryNumber_createfirstaccess($ID);
-		$prof->showForm($_SERVER['PHP_SELF'],$ID);
+		plugin_generateInventoryNumber_createaccess($ID);
+		$prof->showprofileForm($_SERVER['PHP_SELF'],$ID);
 	}
 }
 
