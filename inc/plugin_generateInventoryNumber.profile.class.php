@@ -48,7 +48,7 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 		$DB->query($query);
 	}
 	
-	function showprofileForm($target,$ID){
+	function showProfileForm($target,$ID){
 		global $LANG,$CFG_GLPI,$LANGGENINVENTORY;
 
 		if (!haveRight("profile","r")) return false;
@@ -92,7 +92,7 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 
 	}
 
-	function showgenerateinventorynumberForm($ID){
+	function showGenerateinventorynumberForm($ID){
 		global $LANG,$LANGGENINVENTORY;
 		
 		if (!haveRight("profile","r")) return false;
@@ -110,7 +110,13 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 
 		echo "<tr class='tab_bg_2'>";
 		echo "<td>".$LANGGENINVENTORY["profiles"][1].":</td><td>";
-		dropdownNoneReadWrite("generate",$this->fields["generate"],1,1,1);
+		dropdownNoneReadWrite("generate",$this->fields["generate"],1,0,1);
+		echo "</td>";
+		echo "</tr>";
+
+		echo "<tr class='tab_bg_2'>";
+		echo "<td>".$LANGGENINVENTORY["massiveaction"][1].":</td><td>";
+		dropdownNoneReadWrite("generate_overwrite",$this->fields["generate_overwrite"],1,0,1);
 		echo "</td>";
 		echo "</tr>";
 

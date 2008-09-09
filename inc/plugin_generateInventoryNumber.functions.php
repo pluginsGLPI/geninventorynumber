@@ -186,10 +186,14 @@ function plugin_generateInventoryNumber_MassiveActions($type) {
 	global $LANGGENINVENTORY, $INVENTORY_TYPES;
 
 	if (in_array($type, $INVENTORY_TYPES))
-		return array (
-			"plugin_generateInventoryNumber_generate" => $LANGGENINVENTORY["massiveaction"][0],
-			
-		);
+	{
+		if (plugin_generateInventoryNumber_haveRight("generate","w"))
+			$values["plugin_generateInventoryNumbe_generate"]= $LANGGENINVENTORY["massiveaction"][0];
+
+		if (plugin_generateInventoryNumber_haveRight("generate_overwrite","w"))
+			$values["plugin_generateInventoryNumber_generate_overwrite"]= $LANGGENINVENTORY["massiveaction"][1];
+		return $values;	
+	}
 	else
 		return array ();
 }
@@ -200,6 +204,7 @@ function plugin_generateInventoryNumber_MassiveActionsDisplay($type, $action) {
 	if (in_array($type, $INVENTORY_TYPES)) {
 		switch ($action) {
 			case "plugin_generateInventoryNumber_generate" :
+			case "plugin_generateInventoryNumber_generate_overwrite" :
 				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" . $LANG["buttons"][2] . "\" >";
 				break;
 			default :
@@ -215,12 +220,18 @@ function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
 
 	switch ($data['action']) {
 		case "plugin_generateInventoryNumber_generate" :
+		case "plugin_generateInventoryNumber_generate_overwrite" :
 			foreach ($data["item"] as $key => $val) {
 				if ($val == 1) {
-					//Only generates inventory number for object without it !
+					
 					$commonitem = new CommonItem;
 					$commonitem->getFromDB($data['device_type'], $key);
-					if (isset ($commonitem->obj->fields["otherserial"]) && $commonitem->obj->fields["otherserial"] == "") {
+					if (
+						//Only generates inventory number for object without it !
+						( ($data["action"] == "plugin_generateInventoryNumber_generate") && isset ($commonitem->obj->fields["otherserial"]) && $commonitem->obj->fields["otherserial"] == "")
+						//Or is overwrite action is selected
+						|| ($data["action"] == "plugin_generateInventoryNumber_generate_overwrite")
+						) {
 						$parm["ID"] = $key;
 						$parm["type"] = $data['device_type'];
 						plugin_item_add_generateInventoryNumber($parm);

@@ -50,4 +50,5 @@ $LANGGENINVENTORY["profiles"][1] = "Générer des numéros d'inventaire";
 $LANGGENINVENTORY["profiles"][2] = "Listes des profils déjà configurés";
 
 $LANGGENINVENTORY["massiveaction"][0] = "Générer un numéro d'inventaire";
+$LANGGENINVENTORY["massiveaction"][1] = "Regénérer un numéro d'iventaire (écraser)";
 ?>

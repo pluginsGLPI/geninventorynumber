@@ -74,6 +74,7 @@ function plugin_generateInventoryNumber_Install() {
 	  `interface` varchar(50) collate utf8_unicode_ci NOT NULL default 'generateinventorynumber',
 	  `is_default` int(6) NOT NULL default '0',
 	  `generate` char(1) default NULL,
+	  `generate_overwrite` char(1) default NULL,
 	  PRIMARY KEY  (`ID`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
 	$DB->query($sql) or die($DB->error());
@@ -97,20 +98,20 @@ function plugin_generateInventoryNumber_createfirstaccess($ID) {
 		$Profile->getFromDB($ID);
 		$name = $Profile->fields["name"];
 
-		$query = "INSERT INTO `glpi_plugin_generateinventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`) VALUES ('$ID', '$name','generateinventorynumber','0','w');";
+		$query = "INSERT INTO `glpi_plugin_generateinventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`, `generate_overwrite`) VALUES ('$ID', '$name','generateinventorynumber','0','w','w');";
 		$DB->query($query);
 	}
 }
 
 function plugin_generateInventoryNumber_createaccess($ID){
 
-	GLOBAL $DB;
+	global $DB;
 	
 	$Profile=new Profile();
 	$Profile->GetfromDB($ID);
 	$name=$Profile->fields["name"];
 	
-	$query ="INSERT INTO `glpi_plugin_generateinventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`) VALUES ('$ID', '$name','generateInventoryNumber','0',NULL);";
+	$query ="INSERT INTO `glpi_plugin_generateinventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`, `generate_overwrite`) VALUES ('$ID', '$name','generateInventoryNumber','0',NULL,NULL);";
 	$DB->query($query);
 
 }
