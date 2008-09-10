@@ -93,8 +93,11 @@ function plugin_pre_item_update_generateInventoryNumber($parm) {
 	global $INVENTORY_TYPES;
 
 	if (isset ($parm["_item_type_"]) && in_array($parm["_item_type_"], $INVENTORY_TYPES)) {
-		$config = plugin_generateInventoryNumber_getConfig(-1);
-		if ($config->fields["active"]) {
+
+		$config = plugin_generateInventoryNumber_getConfig(-1);		
+		$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["_item_type_"])]);
+		
+		if ($config->fields["active"] && $template != '') {
 			if (isset ($parm["otherserial"]))
 				unset ($parm["otherserial"]);
 		}
