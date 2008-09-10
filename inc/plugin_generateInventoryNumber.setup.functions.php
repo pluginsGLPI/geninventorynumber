@@ -50,7 +50,6 @@ function plugin_generateInventoryNumber_Install() {
 	  `template_printer` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
 	  `template_peripheral` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
 	  `template_phone` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-	  `template_software` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
 	  `template_networking` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
 	  `generate_ocs` int(1)  NOT NULL default 1,
 	  `generate_data_injection` int(1)  NOT NULL default 1,
@@ -62,9 +61,9 @@ function plugin_generateInventoryNumber_Install() {
 	
 	$sql = "INSERT INTO `glpi_plugin_generateinventorynumber_config` (
 			`ID` ,`FK_entities` ,`active` ,`template_computer` ,`template_monitor` ,`template_printer` ,
-			`template_peripheral` ,`template_phone` ,`template_software` ,`template_networking`,`next_number`,
+			`template_peripheral` ,`template_phone` ,`template_networking`,`next_number`,
 			`generate_ocs`,`generate_data_injection`,`generate_internal`)
-			VALUES (NULL , '-1', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;','1','1','1','0');";
+			VALUES (NULL , '-1', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;','1','1','1','0');";
 	$DB->query($sql) or die($DB->error());
 	
 	$sql="

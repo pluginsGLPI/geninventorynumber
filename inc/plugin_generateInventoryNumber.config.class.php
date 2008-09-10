@@ -86,7 +86,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10]."</th></tr>";
 		
-		$types = array("computer"=>0,"networking"=>1,"printer"=>2,"monitor"=>3,"software"=>4,"peripheral"=>16);
+		$types = array("computer"=>0,"networking"=>1,"printer"=>2,"monitor"=>3,"peripheral"=>16,"phone"=>34);
 		foreach($types as $type => $value)
 		{
 			echo "<td class='tab_bg_1' align='center'>" . $LANG["Menu"][$value] . "</td>";

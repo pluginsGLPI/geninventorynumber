@@ -115,10 +115,8 @@ function plugin_generateInventoryNumber_getTemplateFieldByType($type) {
 			return "template_peripheral";
 		case NETWORKING_TYPE :
 			return "template_networking";
-		case SOFTWARE_TYPE :
-			return "template_software";
 		case PHONE_TYPE :
-			return "template_software";
+			return "template_phone";
 	}
 }
 

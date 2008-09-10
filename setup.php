@@ -69,7 +69,7 @@ function plugin_version_generateInventoryNumber() {
 	return array (
 		'name' => $LANGGENINVENTORY["title"][1],
 		'minGlpiVersion' => '0.71',
-		'version' => '0.1'
+		'version' => '1.0'
 	);
 }
 

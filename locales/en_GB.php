@@ -33,9 +33,23 @@ $LANGGENINVENTORY["title"][1] = "".$title."";
 
 $LANGGENINVENTORY["config"][0] = "Active";
 $LANGGENINVENTORY["config"][1] = "Inventory number templates : ";
+$LANGGENINVENTORY["config"][2] = "Active for OCS";
+$LANGGENINVENTORY["config"][3] = "Active for GLPI";
+$LANGGENINVENTORY["config"][4] = "Active for data injection";
+$LANGGENINVENTORY["config"][10] = "Generation templates : ";
+
 $LANGGENINVENTORY["setup"][0] = "Configure plugin ".$title;
 $LANGGENINVENTORY["setup"][1] = "Install plugin $title";
 $LANGGENINVENTORY["setup"][2] = "Uninstall plugin $title";
 $LANGGENINVENTORY["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
 $LANGGENINVENTORY["setup"][4] = "Please place yourself in the root entity";
+$LANGGENINVENTORY["setup"][5] = "Rights management";
+
+$LANGGENINVENTORY["profiles"][0] = "Rights management";
+$LANGGENINVENTORY["profiles"][1] = "Generation inventory numbers";
+$LANGGENINVENTORY["profiles"][2] = "Profiles list";
+
+$LANGGENINVENTORY["massiveaction"][0] = "Generate inventory number";
+$LANGGENINVENTORY["massiveaction"][1] = "Regenerate inventory number (overwrite)";
+
 ?>
