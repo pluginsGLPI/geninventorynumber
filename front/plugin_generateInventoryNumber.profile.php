@@ -78,7 +78,7 @@ echo "<div align='center'><form method='post' name='massiveaction_form' id='mass
 
 echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='5'>";
 echo $LANGGENINVENTORY["profiles"][1]." : </th></tr>";
-echo "<tr><th></th><th></th><th>".$LANG["Menu"][35]."</th><th>".$LANGGENINVENTORY["profiles"][2]."</th></tr>";
+echo "<tr><th></th><th></th><th>".$LANG["Menu"][35]."</th><th>".$LANGGENINVENTORY["profiles"][2]."</th><th>".$LANGGENINVENTORY["massiveaction"][1]."</th></tr>";
 
 $query0="SELECT * FROM glpi_plugin_generateinventorynumber_profiles ORDER BY name";
 $result0=$DB->query($query0);
@@ -94,6 +94,13 @@ while ($data0=$DB->fetch_assoc($result0)){
 	if ($data0['generate']=='r')
 		echo "<td>".$LANG["profiles"][10]."</td>";
 	elseif ($data0['generate']=='w')
+		echo "<td>".$LANG["profiles"][11]."</td>";
+	else
+		echo "<td>".$LANG["profiles"][12]."</td>";
+		
+	if ($data0['generate_overwrite']=='r')
+		echo "<td>".$LANG["profiles"][10]."</td>";
+	elseif ($data0['generate_overwrite']=='w')
 		echo "<td>".$LANG["profiles"][11]."</td>";
 	else
 		echo "<td>".$LANG["profiles"][12]."</td>";
