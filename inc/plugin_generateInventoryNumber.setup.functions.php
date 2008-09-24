@@ -56,7 +56,7 @@ function plugin_generateInventoryNumber_Install() {
 	  `generate_internal` int(1)  NOT NULL default 1,
 	  `next_number` int(11)  NOT NULL default 0,
 	  PRIMARY KEY  (`ID`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
+	) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 	$DB->query($sql) or die($DB->error());
 	
 	$sql = "INSERT INTO `glpi_plugin_generateinventorynumber_config` (
@@ -75,7 +75,7 @@ function plugin_generateInventoryNumber_Install() {
 	  `generate` char(1) default NULL,
 	  `generate_overwrite` char(1) default NULL,
 	  PRIMARY KEY  (`ID`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
+	) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 	$DB->query($sql) or die($DB->error());
 }
 
