@@ -34,8 +34,9 @@ $LANGGENINVENTORY["title"][1] = "".$title."";
 $LANGGENINVENTORY["config"][0] = "Génération activée (global)";
 $LANGGENINVENTORY["config"][1] = "Composants impactés";
 $LANGGENINVENTORY["config"][2] = "Actif sur remontées OCS";
-$LANGGENINVENTORY["config"][3] = "Actif sur création dans GLPI";
-$LANGGENINVENTORY["config"][4] = "Actif sur injection de données";
+$LANGGENINVENTORY["config"][3] = "Création dans GLPI (OCS ou manuel)";
+$LANGGENINVENTORY["config"][4] = "Injection de données (fichiers CSV)";
+$LANGGENINVENTORY["config"][5] = "Utiliser index global";
 $LANGGENINVENTORY["config"][10] = "Modèle de génération : ";
 
 $LANGGENINVENTORY["setup"][0] = "Configuration du plugin";

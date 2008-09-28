@@ -38,39 +38,42 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-function plugin_generateInventoryNumber_getConfig($FK_entities = -1) {
+function plugin_generateInventoryNumber_getConfig($FK_entities = 0) {
 	$config = new plugin_GenerateInventoryNumberConfig;
 	$config->getFromDB(1);
 	return $config;
 }
 
-function plugin_generateInventoryNumber_canGenerate($parm,$config)
-{
-		//If object injected from OCS and 
-		if (isset ($parm["_from_ocs"]) && $parm["_from_ocs"] == 1 && $config->fields["generate_ocs"] == 1)
-			return true;
-		
-		//If object is injected from data_injection
-		if (isset ($parm["_from_data_injection"]) && $parm["_from_data_injection"] && $config->fields["generate_data_injection"] == 1)
-			return true;
-			
-		//If object is entered manually in GLPI	
-		if 	(!isset ($parm["_from_data_injection"]) && !isset ($parm["_from_ocs"]) && $config->fields["generate_internal"] == 1)
-			return true;
-		
-		return false;	
+function plugin_generateInventoryNumber_canGenerate($parm, $config) {
+	global $ALLOWED_TYPES;
+	//If object injected from OCS and 
+	if (isset ($parm["_from_ocs"]) && $parm["_from_ocs"] == 1 && $config->fields["generate_ocs"] == 1)
+		return true;
+
+	//If object is injected from data_injection
+	if (isset ($parm["_from_data_injection"]) && $parm["_from_data_injection"] && $config->fields["generate_data_injection"] == 1)
+		return true;
+
+	//If object is entered manually in GLPI	
+	if (!isset ($parm["_from_data_injection"]) && !isset ($parm["_from_ocs"]) && $config->fields["generate_internal"] == 1)
+		return true;
+
+	$type_str = array_keys($ALLOWED_TYPES, $parm["type"]);
+	if ($config->fields[$type_str . "_gen_enabled"])
+		return true;
+
+	return false;
 }
 
 function plugin_item_add_generateInventoryNumber($parm) {
 	global $INVENTORY_TYPES, $DB;
-	if (isset ($parm["type"]) && in_array($parm["type"], $INVENTORY_TYPES)) {
-		$config = plugin_generateInventoryNumber_getConfig(-1);
+	if (isset ($parm["type"]) && isset($INVENTORY_TYPES[$parm["type"]])) {
+		$config = plugin_generateInventoryNumber_getConfig(0);
 
 		//Globally check if auto generation is on
 		if ($config->fields["active"]) {
 
-			
-				if (plugin_generateInventoryNumber_canGenerate($parm,$config)) {
+			if (plugin_generateInventoryNumber_canGenerate($parm, $config)) {
 				$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["type"])]);
 
 				$commonitem = new CommonItem;
@@ -78,10 +81,10 @@ function plugin_item_add_generateInventoryNumber($parm) {
 				$fields = $commonitem->obj->fields;
 
 				//Cannot use update() because it'll launch pre_item_update and clean the inventory number...
-				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . plugin_generateInventoryNumber_autoName($template, $parm["type"], -1) . "' WHERE ID=" . $parm["ID"];
+				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . plugin_generateInventoryNumber_autoName($template, $parm["type"], 0) . "' WHERE ID=" . $parm["ID"];
 				$DB->query($sql);
 
-				plugin_generateInventoryNumber_incrementNumber(-1);
+				plugin_generateInventoryNumber_incrementNumber(0, $parm["type"]);
 			}
 		}
 	}
@@ -92,11 +95,11 @@ function plugin_item_add_generateInventoryNumber($parm) {
 function plugin_pre_item_update_generateInventoryNumber($parm) {
 	global $INVENTORY_TYPES;
 
-	if (isset ($parm["_item_type_"]) && in_array($parm["_item_type_"], $INVENTORY_TYPES)) {
+	if (isset ($parm["_item_type_"]) && isset($INVENTORY_TYPES[$parm["_item_type_"]])) {
 
-		$config = plugin_generateInventoryNumber_getConfig(-1);		
+		$config = plugin_generateInventoryNumber_getConfig(0);
 		$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["_item_type_"])]);
-		
+
 		if ($config->fields["active"] && $template != '') {
 			if (isset ($parm["otherserial"]))
 				unset ($parm["otherserial"]);
@@ -123,7 +126,7 @@ function plugin_generateInventoryNumber_getTemplateFieldByType($type) {
 	}
 }
 
-function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entities = -1) {
+function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entities = 0) {
 	global $DB;
 
 	$len = strlen($objectName);
@@ -154,7 +157,11 @@ function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entitie
 			$len = strlen($mask);
 			$like = str_replace('#', '_', $autoNum);
 
-			$sql = "SELECT next_number FROM glpi_plugin_generateinventorynumber_config WHERE FK_entities=$FK_entities";
+			if (plugin_generateInventoryNumber_isGlobalIndexByType($type))
+				$sql = "SELECT next_number FROM glpi_plugin_generateinventorynumber_config WHERE FK_entities=$FK_entities";
+			else
+				$sql = "SELECT next_number FROM glpi_plugin_generateinventorynumber_indexes WHERE FK_entities=$FK_entities AND field='otherserial' AND type=$type";
+
 			$result = $DB->query($sql);
 
 			$objectName = str_replace(array (
@@ -173,36 +180,37 @@ function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entitie
 
 // Define rights for the plugin types
 function plugin_generateInventoryNumber_haveTypeRight($type, $right) {
-	return plugin_generateInventoryNumber_haveRight($type,$right);
+	return plugin_generateInventoryNumber_haveRight($type, $right);
 }
 
-function plugin_generateInventoryNumber_incrementNumber($FK_entities = -1) {
+function plugin_generateInventoryNumber_incrementNumber($FK_entities = 0, $type) {
 	global $DB;
 
-	$sql = "UPDATE glpi_plugin_generateinventorynumber_config SET next_number=next_number+1 WHERE FK_entities=$FK_entities";
+	if (plugin_generateInventoryNumber_isGlobalIndexByType($type))
+		$sql = "UPDATE glpi_plugin_generateinventorynumber_config SET next_number=next_number+1 WHERE FK_entities=$FK_entities";
+	else
+		$sql = "UPDATE glpi_plugin_generateinventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=$FK_entities AND type=$type AND field='otherserial'";
 	$DB->query($sql);
 }
 
 function plugin_generateInventoryNumber_MassiveActions($type) {
 	global $LANGGENINVENTORY, $INVENTORY_TYPES;
 
-	if (in_array($type, $INVENTORY_TYPES))
-	{
-		if (plugin_generateInventoryNumber_haveRight("generate","w"))
-			$values["plugin_generateInventoryNumbe_generate"]= $LANGGENINVENTORY["massiveaction"][0];
+	if (isset($INVENTORY_TYPES[$type])) {
+		if (plugin_generateInventoryNumber_haveRight("generate", "w"))
+			$values["plugin_generateInventoryNumbe_generate"] = $LANGGENINVENTORY["massiveaction"][0];
 
-		if (plugin_generateInventoryNumber_haveRight("generate_overwrite","w"))
-			$values["plugin_generateInventoryNumber_generate_overwrite"]= $LANGGENINVENTORY["massiveaction"][1];
-		return $values;	
-	}
-	else
+		if (plugin_generateInventoryNumber_haveRight("generate_overwrite", "w"))
+			$values["plugin_generateInventoryNumber_generate_overwrite"] = $LANGGENINVENTORY["massiveaction"][1];
+		return $values;
+	} else
 		return array ();
 }
 
 function plugin_generateInventoryNumber_MassiveActionsDisplay($type, $action) {
 	global $LANG, $INVENTORY_TYPES;
 
-	if (in_array($type, $INVENTORY_TYPES)) {
+	if (isset($INVENTORY_TYPES[$type])) {
 		switch ($action) {
 			case "plugin_generateInventoryNumber_generate" :
 			case "plugin_generateInventoryNumber_generate_overwrite" :
@@ -224,15 +232,12 @@ function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
 		case "plugin_generateInventoryNumber_generate_overwrite" :
 			foreach ($data["item"] as $key => $val) {
 				if ($val == 1) {
-					
+
 					$commonitem = new CommonItem;
 					$commonitem->getFromDB($data['device_type'], $key);
-					if (
-						//Only generates inventory number for object without it !
-						( ($data["action"] == "plugin_generateInventoryNumber_generate") && isset ($commonitem->obj->fields["otherserial"]) && $commonitem->obj->fields["otherserial"] == "")
-						//Or is overwrite action is selected
-						|| ($data["action"] == "plugin_generateInventoryNumber_generate_overwrite")
-						) {
+					if (//Only generates inventory number for object without it !
+					 (($data["action"] == "plugin_generateInventoryNumber_generate") && isset ($commonitem->obj->fields["otherserial"]) && $commonitem->obj->fields["otherserial"] == "") //Or is overwrite action is selected
+					|| ($data["action"] == "plugin_generateInventoryNumber_generate_overwrite")) {
 						$parm["ID"] = $key;
 						$parm["type"] = $data['device_type'];
 						plugin_item_add_generateInventoryNumber($parm);
@@ -243,6 +248,17 @@ function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
 		default :
 			break;
 	}
+}
 
+function plugin_generateInventoryNumber_isGlobalIndexByType($type) {
+	global $INVENTORY_TYPES;
+
+	if (isset($INVENTORY_TYPES[$type]))
+	{
+		$config = plugin_generateInventoryNumber_getConfig(0);
+		return $config->fields[$INVENTORY_TYPES[$type] . "_global_index"];
+	}
+
+	return null;
 }
 ?>

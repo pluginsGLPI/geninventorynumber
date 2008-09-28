@@ -39,6 +39,7 @@ include_once ("inc/plugin_generateInventoryNumber.config.class.php");
 include_once ("inc/plugin_generateInventoryNumber.profile.class.php");
 include_once ("inc/plugin_generateInventoryNumber.setup.functions.php");
 include_once ("inc/plugin_generateInventoryNumber.functions.php");
+include_once ("config/plugin_generateInventoryNumber.define.php");
 
 function plugin_init_generateInventoryNumber() {
 	global $PLUGIN_HOOKS, $CFG_GLPI, $LANGGENINVENTORY,$INVENTORY_TYPES;
@@ -53,7 +54,6 @@ function plugin_init_generateInventoryNumber() {
 	  	$PLUGIN_HOOKS['item_add']['generateInventoryNumber'] = 'plugin_item_add_generateInventoryNumber';
 	}
 		
-	$INVENTORY_TYPES = array(COMPUTER_TYPE,MONITOR_TYPE,PRINTER_TYPE,NETWORKING_TYPE,PERIPHERAL_TYPE,PHONE_TYPE);
 	if (isset ($_SESSION["glpiID"])) {
 
 		// Config page
@@ -69,7 +69,7 @@ function plugin_version_generateInventoryNumber() {
 	return array (
 		'name' => $LANGGENINVENTORY["title"][1],
 		'minGlpiVersion' => '0.71',
-		'version' => '1.0'
+		'version' => '1.1'
 	);
 }
 
