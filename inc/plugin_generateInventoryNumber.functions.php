@@ -45,24 +45,8 @@ function plugin_generateInventoryNumber_getConfig($FK_entities = 0) {
 }
 
 function plugin_generateInventoryNumber_canGenerate($parm, $config) {
-	global $ALLOWED_TYPES;
-	//If object injected from OCS and 
-	if (isset ($parm["_from_ocs"]) && $parm["_from_ocs"] == 1 && $config->fields["generate_ocs"] == 1)
-		return true;
-
-	//If object is injected from data_injection
-	if (isset ($parm["_from_data_injection"]) && $parm["_from_data_injection"] && $config->fields["generate_data_injection"] == 1)
-		return true;
-
-	//If object is entered manually in GLPI	
-	if (!isset ($parm["_from_data_injection"]) && !isset ($parm["_from_ocs"]) && $config->fields["generate_internal"] == 1)
-		return true;
-
-	$type_str = array_keys($ALLOWED_TYPES, $parm["type"]);
-	if ($config->fields[$type_str . "_gen_enabled"])
-		return true;
-
-	return false;
+	global $INVENTORY_TYPES;
+	return ($config->fields[$INVENTORY_TYPES[$parm["type"]] . "_gen_enabled"]?true:false);
 }
 
 function plugin_item_add_generateInventoryNumber($parm,$massive_action=false) {
@@ -84,7 +68,7 @@ function plugin_item_add_generateInventoryNumber($parm,$massive_action=false) {
 				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . plugin_generateInventoryNumber_autoName($template, $parm["type"], 0) . "' WHERE ID=" . $parm["ID"];
 				$DB->query($sql);
 
-				if (!$massive_action)
+				if (!$massive_action && strstr($_SESSION["MESSAGE_AFTER_REDIRECT"],$LANGGENINVENTORY["massiveaction"][3]) === false)
 					$_SESSION["MESSAGE_AFTER_REDIRECT"].=$LANGGENINVENTORY["massiveaction"][3];
 
 				plugin_generateInventoryNumber_incrementNumber(0, $parm["type"]);

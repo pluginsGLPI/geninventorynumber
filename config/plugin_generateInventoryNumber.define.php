@@ -33,7 +33,7 @@
 // Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
-global $ALLOWED_TYPES, $INVENTORY_TYPES, $LANG;
+global $ALLOWED_TYPES, $INVENTORY_TYPES, $LANG,$TEMPORARY_IDS;
 $ALLOWED_TYPES = array (
 	"computer" => $LANG["Menu"][0],
 	"networking" => $LANG["Menu"][1],

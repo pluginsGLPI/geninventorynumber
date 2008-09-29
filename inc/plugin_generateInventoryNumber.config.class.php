@@ -71,6 +71,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "</tr>";
 
+/*
 		echo "<tr><th colspan='4'>" . $LANGGENINVENTORY["config"][1] . "</th></tr>";
 
 		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][3] . "</td>";
@@ -82,6 +83,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "<td class='tab_bg_1'>";
 		dropdownYesNo("generate_data_injection", $this->fields["generate_data_injection"]);
 		echo "</td></tr>";
+*/
 
 		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10] . "</th><th>" . $LANG["common"][60] . "</th><th>" . $LANGGENINVENTORY["config"][5] . "</th></tr>";
 
