@@ -65,7 +65,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "<td class='tab_bg_1'>".$LANGGENINVENTORY["config"][6]."</td>";
 		echo "<td class='tab_bg_1'>";
-		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='6'>&nbsp;";
+		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
 		echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
 		echo "</td>";
 

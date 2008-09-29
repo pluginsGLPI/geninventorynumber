@@ -31,7 +31,10 @@
 // Purpose of file: Changelog
 // ----------------------------------------------------------------------
 
+Version 1.1
+  * Possibility to manage index separatly by type
+  * Do not show massive actions if generation is disabled
 Version 1.0
-Initial version
+  * Initial version
 
  
