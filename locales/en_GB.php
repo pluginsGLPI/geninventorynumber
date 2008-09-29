@@ -36,6 +36,9 @@ $LANGGENINVENTORY["config"][1] = "Inventory number templates : ";
 $LANGGENINVENTORY["config"][2] = "Active for OCS";
 $LANGGENINVENTORY["config"][3] = "Active for GLPI";
 $LANGGENINVENTORY["config"][4] = "Active for data injection";
+$LANGGENINVENTORY["config"][5] = "Use global index";
+$LANGGENINVENTORY["config"][6] = "Global index position";
+
 $LANGGENINVENTORY["config"][10] = "Generation templates : ";
 
 $LANGGENINVENTORY["setup"][0] = "Configure plugin ".$title;
@@ -51,5 +54,6 @@ $LANGGENINVENTORY["profiles"][2] = "Profiles list";
 
 $LANGGENINVENTORY["massiveaction"][0] = "Generate inventory number";
 $LANGGENINVENTORY["massiveaction"][1] = "Regenerate inventory number (overwrite)";
-
+$LANGGENINVENTORY["massiveaction"][2] = "You can't modify inventory number";
+$LANGGENINVENTORY["massiveaction"][3] = "An inventory number have been generated";
 ?>

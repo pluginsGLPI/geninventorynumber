@@ -67,7 +67,14 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 		glpi_header($_SERVER["PHP_SELF"]);
 	}
 		
-			
+	if (isset($_POST["update_index"]))
+	{
+		$tmp["ID"]=$_POST["ID"];
+		$tmp["next_number"]=$_POST["next_number"];
+		$config->update($tmp);
+		glpi_header($_SERVER["PHP_SELF"]);
+	}
+				
 	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"plugins","generateInventoryNumber");
 	$config->showForm($_SERVER["PHP_SELF"]);
 }

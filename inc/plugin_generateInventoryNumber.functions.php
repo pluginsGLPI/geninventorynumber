@@ -65,13 +65,13 @@ function plugin_generateInventoryNumber_canGenerate($parm, $config) {
 	return false;
 }
 
-function plugin_item_add_generateInventoryNumber($parm) {
-	global $INVENTORY_TYPES, $DB;
-	if (isset ($parm["type"]) && isset($INVENTORY_TYPES[$parm["type"]])) {
+function plugin_item_add_generateInventoryNumber($parm,$massive_action=false) {
+	global $INVENTORY_TYPES, $DB,$LANGGENINVENTORY;
+	if (isset ($parm["type"]) && isset ($INVENTORY_TYPES[$parm["type"]])) {
 		$config = plugin_generateInventoryNumber_getConfig(0);
 
 		//Globally check if auto generation is on
-		if ($config->fields["active"]) {
+		if (plugin_generateInventoryNumber_isActive($parm["type"])) {
 
 			if (plugin_generateInventoryNumber_canGenerate($parm, $config)) {
 				$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["type"])]);
@@ -84,6 +84,9 @@ function plugin_item_add_generateInventoryNumber($parm) {
 				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . plugin_generateInventoryNumber_autoName($template, $parm["type"], 0) . "' WHERE ID=" . $parm["ID"];
 				$DB->query($sql);
 
+				if (!$massive_action)
+					$_SESSION["MESSAGE_AFTER_REDIRECT"].=$LANGGENINVENTORY["massiveaction"][3];
+
 				plugin_generateInventoryNumber_incrementNumber(0, $parm["type"]);
 			}
 		}
@@ -93,16 +96,20 @@ function plugin_item_add_generateInventoryNumber($parm) {
 }
 
 function plugin_pre_item_update_generateInventoryNumber($parm) {
-	global $INVENTORY_TYPES;
+	global $INVENTORY_TYPES,$LANGGENINVENTORY;
 
-	if (isset ($parm["_item_type_"]) && isset($INVENTORY_TYPES[$parm["_item_type_"]])) {
+	if (isset ($parm["_item_type_"]) && isset ($INVENTORY_TYPES[$parm["_item_type_"]])) {
 
 		$config = plugin_generateInventoryNumber_getConfig(0);
 		$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["_item_type_"])]);
 
-		if ($config->fields["active"] && $template != '') {
+		if (plugin_generateInventoryNumber_isActive($parm["_item_type_"]) && $template != '') {
 			if (isset ($parm["otherserial"]))
+			{
 				unset ($parm["otherserial"]);
+				$_SESSION["MESSAGE_AFTER_REDIRECT"]=$LANGGENINVENTORY["massiveaction"][2];
+			}
+				
 		}
 	}
 
@@ -196,7 +203,7 @@ function plugin_generateInventoryNumber_incrementNumber($FK_entities = 0, $type)
 function plugin_generateInventoryNumber_MassiveActions($type) {
 	global $LANGGENINVENTORY, $INVENTORY_TYPES;
 
-	if (isset($INVENTORY_TYPES[$type])) {
+	if (isset ($INVENTORY_TYPES[$type]) && plugin_generateInventoryNumber_isActive($type)) {
 		if (plugin_generateInventoryNumber_haveRight("generate", "w"))
 			$values["plugin_generateInventoryNumbe_generate"] = $LANGGENINVENTORY["massiveaction"][0];
 
@@ -210,7 +217,7 @@ function plugin_generateInventoryNumber_MassiveActions($type) {
 function plugin_generateInventoryNumber_MassiveActionsDisplay($type, $action) {
 	global $LANG, $INVENTORY_TYPES;
 
-	if (isset($INVENTORY_TYPES[$type])) {
+	if (isset ($INVENTORY_TYPES[$type])) {
 		switch ($action) {
 			case "plugin_generateInventoryNumber_generate" :
 			case "plugin_generateInventoryNumber_generate_overwrite" :
@@ -240,7 +247,7 @@ function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
 					|| ($data["action"] == "plugin_generateInventoryNumber_generate_overwrite")) {
 						$parm["ID"] = $key;
 						$parm["type"] = $data['device_type'];
-						plugin_item_add_generateInventoryNumber($parm);
+						plugin_item_add_generateInventoryNumber($parm,true);
 					}
 				}
 			}
@@ -250,11 +257,19 @@ function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
 	}
 }
 
+function plugin_generateInventoryNumber_isActive($type) {
+	global $INVENTORY_TYPES;
+	$config = plugin_generateInventoryNumber_getConfig(0);
+	if ($config->fields["active"] && $config->fields["generate_internal"] && $config->fields[$INVENTORY_TYPES[$type] . "_gen_enabled"])
+		return true;
+	else
+		return false;
+}
+
 function plugin_generateInventoryNumber_isGlobalIndexByType($type) {
 	global $INVENTORY_TYPES;
 
-	if (isset($INVENTORY_TYPES[$type]))
-	{
+	if (isset ($INVENTORY_TYPES[$type])) {
 		$config = plugin_generateInventoryNumber_getConfig(0);
 		return $config->fields[$INVENTORY_TYPES[$type] . "_global_index"];
 	}

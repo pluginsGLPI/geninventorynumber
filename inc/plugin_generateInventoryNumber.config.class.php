@@ -51,7 +51,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "<form name='form' method='post' action=\"$target\">";
 		echo "<div align='center'>";
-		echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+		echo "<table class='tab_cadre' cellpadding='5'>";
 		echo "<tr><th colspan='4'>" . $LANGGENINVENTORY["setup"][0] . "</th></tr>";
 
 		echo "<input type='hidden' name='ID' value='1'>";
@@ -59,19 +59,20 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "<tr>";
 		echo "<td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][0] . "</td>";
-		echo "<td class='tab_bg_1' colspan='3'>";
+		echo "<td class='tab_bg_1'>";
 		dropdownYesNo("active", $this->fields["active"]);
 		echo "</td>";
+
+		echo "<td class='tab_bg_1'>".$LANGGENINVENTORY["config"][6]."</td>";
+		echo "<td class='tab_bg_1'>";
+		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='6'>&nbsp;";
+		echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
+		echo "</td>";
+
 		echo "</tr>";
 
 		echo "<tr><th colspan='4'>" . $LANGGENINVENTORY["config"][1] . "</th></tr>";
-		/*
-				echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][2] . "</td>";
-				echo "<td class='tab_bg_1'>";
-				dropdownYesNo("generate_ocs",$this->fields["generate_ocs"]);
-				echo "</td>";
-				echo "</td></tr>";
-		*/
+
 		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][3] . "</td>";
 		echo "<td class='tab_bg_1'>";
 		dropdownYesNo("generate_internal", $this->fields["generate_internal"]);
@@ -104,7 +105,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 
 		echo "</table></form><br>";
 		if ($_SESSION["glpiactive_entity"] == 0) {
-			echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+			echo "<table class='tab_cadre' cellpadding='5'>";
 			echo "<tr class='tab_bg_1'>";
 			echo "<td align='center'><a href='plugin_generateInventoryNumber.uninstall.php'>" . $LANGGENINVENTORY["setup"][2] . "</a>";
 			echo " <img src='" . $CFG_GLPI["root_doc"] . "/pics/aide.png' alt=\"\" onmouseout=\"setdisplay(getElementById('commentsup'),'none')\" onmouseover=\"setdisplay(getElementById('commentsup'),'block')\">";

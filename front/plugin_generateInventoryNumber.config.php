@@ -63,7 +63,7 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"plugins","generateInventoryNumber");
 	
 		echo "<div align='center'>";
-		echo "<table class='tab_cadre_fixe' cellpadding='6'>";
+		echo "<table class='tab_cadre' cellpadding='6'>";
 		echo "<tr class='tab_bg_2'><th>" . $LANGGENINVENTORY["setup"][1]."</th></tr>";
 		if (haveRight("profile","w")){
 			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.profile.php\">".$LANGGENINVENTORY["setup"][5]."</a></td/></tr>";
