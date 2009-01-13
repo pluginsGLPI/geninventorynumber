@@ -63,13 +63,12 @@ function plugin_init_generateInventoryNumber() {
 }
 
 function plugin_version_generateInventoryNumber() {
-
 	global $LANGGENINVENTORY;
 
 	return array (
 		'name' => $LANGGENINVENTORY["title"][1],
 		'minGlpiVersion' => '0.71',
-		'version' => '1.1'
+		'version' => '1.1.0'
 	);
 }
 ?>
