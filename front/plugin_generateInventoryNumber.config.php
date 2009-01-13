@@ -40,7 +40,7 @@ checkRight("config","w");
 		
 if(!isGenerateInventoryNumberPluginInstalled()) {
 	
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins","generateInventoryNumber");
+	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
 	
 	if ($_SESSION["glpiactive_entity"]==0){
 	
@@ -60,7 +60,7 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 	}
 }else{
 
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"plugins","generateInventoryNumber");
+	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
 	
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='6'>";

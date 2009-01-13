@@ -40,7 +40,7 @@ checkRight("config","w");
 		
 if(!isGenerateInventoryNumberPluginInstalled()) {
 	
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins","generateInventoryNumber");
+	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
 	
 	if ($_SESSION["glpiactive_entity"]==0){
 	
@@ -75,7 +75,7 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 		glpi_header($_SERVER["PHP_SELF"]);
 	}
 				
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"plugins","generateInventoryNumber");
+	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
 	$config->showForm($_SERVER["PHP_SELF"]);
 }
 
