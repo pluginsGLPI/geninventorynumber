@@ -33,13 +33,10 @@
 // Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
-
-include_once ("inc/plugin_generateInventoryNumber.auth.functions.php");
-include_once ("inc/plugin_generateInventoryNumber.config.class.php");
-include_once ("inc/plugin_generateInventoryNumber.profile.class.php");
-include_once ("inc/plugin_generateInventoryNumber.setup.functions.php");
-include_once ("inc/plugin_generateInventoryNumber.functions.php");
 include_once ("config/plugin_generateInventoryNumber.define.php");
+include_once("hook.php");
+foreach (glob(GLPI_ROOT . '/plugins/generateInventoryNumber/inc/*.php') as $file)
+	include_once ($file);
 
 function plugin_init_generateInventoryNumber() {
 	global $PLUGIN_HOOKS, $CFG_GLPI, $LANGGENINVENTORY,$INVENTORY_TYPES;
@@ -52,6 +49,9 @@ function plugin_init_generateInventoryNumber() {
 		$PLUGIN_HOOKS['use_massive_action']['generateInventoryNumber'] = 1;
 		$PLUGIN_HOOKS['pre_item_update']['generateInventoryNumber'] = 'plugin_pre_item_update_generateInventoryNumber'; 
 	  	$PLUGIN_HOOKS['item_add']['generateInventoryNumber'] = 'plugin_item_add_generateInventoryNumber';
+
+		$PLUGIN_HOOKS['headings']['generateInventoryNumber'] = 'plugin_get_headings_generateInventoryNumber';
+		$PLUGIN_HOOKS['headings_action']['generateInventoryNumber'] = 'plugin_headings_actions_generateInventoryNumber';
 	}
 		
 	if (isset ($_SESSION["glpiID"])) {
@@ -72,20 +72,4 @@ function plugin_version_generateInventoryNumber() {
 		'version' => '1.1'
 	);
 }
-
-// Hook done on delete item case
-
-function plugin_pre_item_delete_generateInventoryNumber($input){
-	if (isset($input["_item_type_"]))
-		switch ($input["_item_type_"]){
-			case PROFILE_TYPE :
-				// Manipulate data if needed 
-				$GenerateInventoryNumberProfile=new GenerateInventoryNumberProfile;
-				$GenerateInventoryNumberProfile->cleanProfiles($input["ID"]);
-				break;
-		}
-	return $input;
-}
-
-
 ?>

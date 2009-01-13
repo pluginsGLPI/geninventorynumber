@@ -40,7 +40,7 @@ checkRight("config","w");
 		
 if(!isGenerateInventoryNumberPluginInstalled()) {
 	
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
+	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins","generateInventoryNumber");
 	
 	if ($_SESSION["glpiactive_entity"]==0){
 	
@@ -65,10 +65,6 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='6'>";
 		echo "<tr class='tab_bg_2'><th>" . $LANGGENINVENTORY["setup"][1]."</th></tr>";
-		if (haveRight("profile","w")){
-			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.profile.php\">".$LANGGENINVENTORY["setup"][5]."</a></td/></tr>";
-		}
-//		echo "<tr class='tab_bg_1'><td align='center'><a href='http://glpi-project.org/wiki/doku.php?id=".substr($_SESSION["glpilanguage"],0,2).":plugins:generateInventoryNumber_use' target='_blank'>".$DATAINJECTIONLANG["setup"][11]."</a></td></tr>";
 		if (haveRight("config","w")){
 			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.config.form.php\">".$LANGGENINVENTORY["setup"][0]."</a></td/></tr>";
 			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.uninstall.php\">".$LANGGENINVENTORY["setup"][2]."</a></td/></tr>";

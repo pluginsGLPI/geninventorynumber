@@ -121,5 +121,4 @@ function plugin_generateInventoryNumber_checkRight($module, $right) {
 		displayRightError();
 	}
 }
-
 ?>
