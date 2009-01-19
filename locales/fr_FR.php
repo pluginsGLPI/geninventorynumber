@@ -37,7 +37,7 @@ $LANGGENINVENTORY["config"][2] = "Actif sur remontées OCS";
 $LANGGENINVENTORY["config"][3] = "Création dans GLPI (OCS ou manuel)";
 $LANGGENINVENTORY["config"][4] = "Injection de données (fichiers CSV)";
 $LANGGENINVENTORY["config"][5] = "Utiliser index global";
-$LANGGENINVENTORY["config"][6] = "Position de l'index global";
+$LANGGENINVENTORY["config"][6] = "Position de l'index";
 $LANGGENINVENTORY["config"][10] = "Modèle de génération : ";
 
 $LANGGENINVENTORY["setup"][0] = "Configuration du plugin";
@@ -52,7 +52,7 @@ $LANGGENINVENTORY["profiles"][1] = "Générer des numéros d'inventaire";
 $LANGGENINVENTORY["profiles"][2] = "Listes des profils déjà configurés";
 
 $LANGGENINVENTORY["massiveaction"][0] = "Générer un numéro d'inventaire";
-$LANGGENINVENTORY["massiveaction"][1] = "Regénérer un numéro d'iventaire (écraser)";
+$LANGGENINVENTORY["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";
 $LANGGENINVENTORY["massiveaction"][2] = "Vous ne pouvez pas modifier le numéro d'inventaire";
 $LANGGENINVENTORY["massiveaction"][3] = "Un numéro d'inventaire a été généré";
 ?>

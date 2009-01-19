@@ -79,26 +79,6 @@ function plugin_item_add_generateInventoryNumber($parm,$massive_action=false) {
 	return $parm;
 }
 
-function plugin_pre_item_update_generateInventoryNumber($parm) {
-	global $INVENTORY_TYPES,$LANGGENINVENTORY;
-
-	if (isset ($parm["_item_type_"]) && isset ($INVENTORY_TYPES[$parm["_item_type_"]])) {
-
-		$config = plugin_generateInventoryNumber_getConfig(0);
-		$template = addslashes_deep($config->fields[plugin_generateInventoryNumber_getTemplateFieldByType($parm["_item_type_"])]);
-
-		if (plugin_generateInventoryNumber_isActive($parm["_item_type_"]) && $template != '') {
-			if (isset ($parm["otherserial"]))
-			{
-				unset ($parm["otherserial"]);
-				$_SESSION["MESSAGE_AFTER_REDIRECT"]=$LANGGENINVENTORY["massiveaction"][2];
-			}
-				
-		}
-	}
-
-	return $parm;
-}
 
 function plugin_generateInventoryNumber_getTemplateFieldByType($type) {
 	switch ($type) {
@@ -169,11 +149,6 @@ function plugin_generateInventoryNumber_autoName($objectName, $type, $FK_entitie
 	return $objectName;
 }
 
-// Define rights for the plugin types
-function plugin_generateInventoryNumber_haveTypeRight($type, $right) {
-	return plugin_generateInventoryNumber_haveRight($type, $right);
-}
-
 function plugin_generateInventoryNumber_incrementNumber($FK_entities = 0, $type) {
 	global $DB;
 
@@ -182,63 +157,6 @@ function plugin_generateInventoryNumber_incrementNumber($FK_entities = 0, $type)
 	else
 		$sql = "UPDATE glpi_plugin_generateinventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=$FK_entities AND type=$type AND field='otherserial'";
 	$DB->query($sql);
-}
-
-function plugin_generateInventoryNumber_MassiveActions($type) {
-	global $LANGGENINVENTORY, $INVENTORY_TYPES;
-
-	if (isset ($INVENTORY_TYPES[$type]) && plugin_generateInventoryNumber_isActive($type)) {
-		if (plugin_generateInventoryNumber_haveRight("generate", "w"))
-			$values["plugin_generateInventoryNumbe_generate"] = $LANGGENINVENTORY["massiveaction"][0];
-
-		if (plugin_generateInventoryNumber_haveRight("generate_overwrite", "w"))
-			$values["plugin_generateInventoryNumber_generate_overwrite"] = $LANGGENINVENTORY["massiveaction"][1];
-		return $values;
-	} else
-		return array ();
-}
-
-function plugin_generateInventoryNumber_MassiveActionsDisplay($type, $action) {
-	global $LANG, $INVENTORY_TYPES;
-
-	if (isset ($INVENTORY_TYPES[$type])) {
-		switch ($action) {
-			case "plugin_generateInventoryNumber_generate" :
-			case "plugin_generateInventoryNumber_generate_overwrite" :
-				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" . $LANG["buttons"][2] . "\" >";
-				break;
-			default :
-				break;
-		}
-	}
-
-	return "";
-}
-
-function plugin_generateInventoryNumber_MassiveActionsProcess($data) {
-	global $DB, $INVENTORY_TYPES;
-
-	switch ($data['action']) {
-		case "plugin_generateInventoryNumber_generate" :
-		case "plugin_generateInventoryNumber_generate_overwrite" :
-			foreach ($data["item"] as $key => $val) {
-				if ($val == 1) {
-
-					$commonitem = new CommonItem;
-					$commonitem->getFromDB($data['device_type'], $key);
-					if (//Only generates inventory number for object without it !
-					 (($data["action"] == "plugin_generateInventoryNumber_generate") && isset ($commonitem->obj->fields["otherserial"]) && $commonitem->obj->fields["otherserial"] == "") //Or is overwrite action is selected
-					|| ($data["action"] == "plugin_generateInventoryNumber_generate_overwrite")) {
-						$parm["ID"] = $key;
-						$parm["type"] = $data['device_type'];
-						plugin_item_add_generateInventoryNumber($parm,true);
-					}
-				}
-			}
-			break;
-		default :
-			break;
-	}
 }
 
 function plugin_generateInventoryNumber_isActive($type) {
@@ -259,5 +177,23 @@ function plugin_generateInventoryNumber_isGlobalIndexByType($type) {
 	}
 
 	return null;
+}
+
+function plugin_generateInventoryNumber_getIndexByTypeName($type)
+{
+	global $DB,$INVENTORY_TYPES;
+
+	$type_value = array_search($type,$INVENTORY_TYPES);
+	
+	$query = "SELECT next_number FROM glpi_plugin_generateinventorynumber_indexes WHERE type=$type_value";
+	$result = $DB->query($query);
+	return $DB->result($result,0,"next_number");	
+}
+
+function glpi_plugin_generateinventorynumber_updateIndexByType($type,$index)
+{
+	global $DB;
+	$query = "UPDATE glpi_plugin_generateinventorynumber_indexes SET next_number=$index WHERE type=$type";
+	$DB->query($query);
 }
 ?>

@@ -52,7 +52,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "<form name='form' method='post' action=\"$target\">";
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='5'>";
-		echo "<tr><th colspan='4'>" . $LANGGENINVENTORY["setup"][0] . "</th></tr>";
+		echo "<tr><th colspan='5'>" . $LANGGENINVENTORY["setup"][0] . "</th></tr>";
 
 		echo "<input type='hidden' name='ID' value='1'>";
 		echo "<input type='hidden' name='FK_entities' value='0'>";
@@ -63,29 +63,16 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		dropdownYesNo("active", $this->fields["active"]);
 		echo "</td>";
 
-		echo "<td class='tab_bg_1'>".$LANGGENINVENTORY["config"][6]."</td>";
+		echo "<td class='tab_bg_1'></td>";
+		echo "<td class='tab_bg_1'>".$LANGGENINVENTORY["config"][6]." ".$LANG["common"][59]."</td>";
 		echo "<td class='tab_bg_1'>";
 		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
-		echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
+		//echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
 		echo "</td>";
-
 		echo "</tr>";
 
-/*
-		echo "<tr><th colspan='4'>" . $LANGGENINVENTORY["config"][1] . "</th></tr>";
-
-		echo "<tr><td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][3] . "</td>";
-		echo "<td class='tab_bg_1'>";
-		dropdownYesNo("generate_internal", $this->fields["generate_internal"]);
-		echo "</td>";
-
-		echo "<td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][4] . "</td>";
-		echo "<td class='tab_bg_1'>";
-		dropdownYesNo("generate_data_injection", $this->fields["generate_data_injection"]);
-		echo "</td></tr>";
-*/
-
-		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10] . "</th><th>" . $LANG["common"][60] . "</th><th>" . $LANGGENINVENTORY["config"][5] . "</th></tr>";
+		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10] . "</th><th>" . $LANG["common"][60] . "</th>";
+		echo "<th>" . $LANGGENINVENTORY["config"][5] . "</th><th colspan='2'>".$LANGGENINVENTORY["config"][6]."</th></tr>";
 
 		foreach ($ALLOWED_TYPES as $type => $value) {
 			echo "<td class='tab_bg_1' align='center'>" . $value . "</td>";
@@ -98,10 +85,18 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 			echo "<td class='tab_bg_1' align='center'>";
 			dropdownYesNo($type . "_global_index", $this->fields[$type . "_global_index"]);
 			echo "</td>";
+			echo "<td class='tab_bg_1'>";
+			if ($this->fields[$type . "_gen_enabled"] && !$this->fields[$type."_global_index"])
+				$disabled = "";
+			else
+				$disabled = "disabled";
+				
+			echo "<input type='text' name='next_number_$type' value='".plugin_generateInventoryNumber_getIndexByTypeName($type)."' size='12' ".$disabled.">";
+			echo "</td>";
 			echo "</tr>";
 		}
 
-		echo "<tr class='tab_bg_1'><td align='center' colspan='4'>";
+		echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
 		echo "<input type='submit' name='update' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
 		echo "</td></tr>";
 

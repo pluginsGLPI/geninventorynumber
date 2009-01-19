@@ -107,18 +107,4 @@ function plugin_generateInventoryNumber_haveRight($module, $right) {
 	else
 		return false;
 }
-
-function plugin_generateInventoryNumber_checkRight($module, $right) {
-	global $CFG_GLPI;
-
-	if (!plugin_plugin_generateInventoryNumber_haveRight($module, $right)) {
-		// Gestion timeout session
-		if (!isset ($_SESSION["glpiID"])) {
-			glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-			exit ();
-		}
-
-		displayRightError();
-	}
-}
 ?>

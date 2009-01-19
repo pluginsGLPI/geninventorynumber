@@ -1,4 +1,5 @@
 <?php
+
 /*
    ----------------------------------------------------------------------
    GLPI - Gestionnaire Libre de Parc Informatique
@@ -31,54 +32,60 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("setup");
-if(!defined('GLPI_ROOT')){
-	define('GLPI_ROOT', '../../..'); 
+$NEEDED_ITEMS = array (
+	"setup"
+);
+if (!defined('GLPI_ROOT')) {
+	define('GLPI_ROOT', '../../..');
 }
-include (GLPI_ROOT."/inc/includes.php");
-checkRight("config","w");
-		
-if(!isGenerateInventoryNumberPluginInstalled()) {
-	
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
-	
-	if ($_SESSION["glpiactive_entity"]==0){
-	
-		if(!TableExists("glpi_plugin_generateinventorynumber")){
-	
+include (GLPI_ROOT . "/inc/includes.php");
+checkRight("config", "w");
+
+if (!isGenerateInventoryNumberPluginInstalled()) {
+
+	commonHeader($LANGGENINVENTORY["title"][1], $_SERVER['PHP_SELF'], "config", "plugins");
+
+	if ($_SESSION["glpiactive_entity"] == 0) {
+
+		if (!TableExists("glpi_plugin_generateinventorynumber")) {
+
 			echo "<div align='center'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
-			echo "<tr><th>".$LANGGENINVENTORY["setup"][0];
+			echo "<tr><th>" . $LANGGENINVENTORY["setup"][0];
 			echo "</th></tr>";
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='plugin_generateInventoryNumber.install.php'>".$LANGGENINVENTORY["setup"][1]."</a></td></tr>";
+			echo "<a href='plugin_generateInventoryNumber.install.php'>" . $LANGGENINVENTORY["setup"][1] . "</a></td></tr>";
 			echo "</table></div>";
-		} 
-	}else{ 
-		echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>"; 
-		echo "<b>".$LANGGENINVENTORY["setup"][10]."</b></div>"; 
+		}
+	} else {
+		echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\"><br><br>";
+		echo "<b>" . $LANGGENINVENTORY["setup"][10] . "</b></div>";
 	}
-}else{
+} else {
 	$config = new plugin_GenerateInventoryNumberConfig;
+	plugin_generateInventoryNumber_updateIndexes(array_merge($_GET,$_POST));
 	
-	if (isset($_POST["update"]))
-	{
-		$config->update($_POST);
-		glpi_header($_SERVER["PHP_SELF"]);
-	}
-		
-	if (isset($_POST["update_index"]))
-	{
-		$tmp["ID"]=$_POST["ID"];
-		$tmp["next_number"]=$_POST["next_number"];
-		$config->update($tmp);
-		glpi_header($_SERVER["PHP_SELF"]);
-	}
-				
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
+	commonHeader($LANGGENINVENTORY["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
 	$config->showForm($_SERVER["PHP_SELF"]);
 }
 
 commonFooter();
 
+function plugin_generateInventoryNumber_updateIndexes($params) {
+	global $DB, $INVENTORY_TYPES;
+
+	if (isset ($params["update"])) {
+		$config = new plugin_GenerateInventoryNumberConfig;
+		$config->update($params);
+
+		//Update each type's index
+		foreach ($INVENTORY_TYPES as $type => $type_name)
+		{
+			if (isset($params["next_number_$type_name"]))
+				glpi_plugin_generateinventorynumber_updateIndexByType($type, $params["next_number_$type_name"]);
+		}
+	}
+
+	//glpi_header($_SERVER["PHP_SELF"]);
+}
 ?>

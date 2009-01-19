@@ -30,8 +30,9 @@
 // Original Author of file: Walid Nouh
 // Purpose of file: Changelog
 // ----------------------------------------------------------------------
-
-Version 1.1
+Version 1.1.1
+  #165 Give ability to define index separatly for each type
+Version 1.1.0
   * Possibility to manage index separatly by type
   * Do not show massive actions if generation is disabled
 Version 1.0

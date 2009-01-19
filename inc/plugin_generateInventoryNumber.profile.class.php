@@ -85,8 +85,6 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 			echo "</td></tr>";
 		}
 		echo "</table></form>";
-
 	}
 }
-	
 ?>
