@@ -126,10 +126,11 @@ function plugin_generateInventoryNumber_MassiveActions($type) {
 
 	if (isset ($INVENTORY_TYPES[$type]) && plugin_generateInventoryNumber_isActive($type)) {
 		if (plugin_generateInventoryNumber_haveRight("generate", "w"))
-			$values["plugin_generateInventoryNumbe_generate"] = $LANGGENINVENTORY["massiveaction"][0];
+			$values["plugin_generateInventoryNumber_generate"] = $LANGGENINVENTORY["massiveaction"][0];
 
 		if (plugin_generateInventoryNumber_haveRight("generate_overwrite", "w"))
 			$values["plugin_generateInventoryNumber_generate_overwrite"] = $LANGGENINVENTORY["massiveaction"][1];
+		
 		return $values;
 	} else
 		return array ();
