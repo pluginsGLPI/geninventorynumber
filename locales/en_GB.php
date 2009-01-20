@@ -38,7 +38,6 @@ $LANGGENINVENTORY["config"][3] = "Active for GLPI";
 $LANGGENINVENTORY["config"][4] = "Active for data injection";
 $LANGGENINVENTORY["config"][5] = "Use global index";
 $LANGGENINVENTORY["config"][6] = "Global index position";
-
 $LANGGENINVENTORY["config"][10] = "Generation templates : ";
 
 $LANGGENINVENTORY["setup"][0] = "Configure plugin ".$title;

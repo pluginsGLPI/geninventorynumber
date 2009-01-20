@@ -31,5 +31,6 @@
 // Original Author of file: Walid NOUH et BALPE Dévi
 // Purpose of file:
 // ----------------------------------------------------------------------
-
+1.1.1
+ - #165 Give ability to define index separatly for each type
 1.1.0 Initial version
