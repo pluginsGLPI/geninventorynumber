@@ -34,49 +34,47 @@
 // ----------------------------------------------------------------------
 
 if (!defined('GLPI_ROOT')){
-	die("Sorry. You can't access directly to this file");
-	}
+   die("Sorry. You can't access directly to this file");
+}
 
 function plugin_generateinventorynumber_changeprofile()
 {
-	$plugin = new Plugin();
-
-   if($plugin->isActivated("generateinventorynumber")){
-		$prof=new GenerateInventoryNumberProfile();
-		if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID']))
-			$_SESSION["glpi_plugin_generateinventorynumber_profile"]=$prof->fields;
-		else
-			unset($_SESSION["glpi_plugin_generateinventorynumber_profile"]);
-	}
+   $prof=new GenerateInventoryNumberProfile();
+   if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID'])) {
+      $_SESSION["glpi_plugin_generateinventorynumber_profile"]=$prof->fields;
+   }
+   else {
+      unset($_SESSION["glpi_plugin_generateinventorynumber_profile"]);
+   }
 }
 
 function plugin_generateinventorynumber_haveRight($module, $right) {
-	$matches = array (
-		"" => array (
-			"",
-			"r",
-			"w"
-		), // ne doit pas arriver normalement
-	"r" => array (
-			"r",
-			"w"
-		),
-		"w" => array (
-			"w"
-		),
-		"1" => array (
-			"1"
-		),
-		"0" => array (
-			"0",
-			"1"
-		), // ne doit pas arriver non plus
+   $matches = array (
+      "" => array (
+         "",
+         "r",
+         "w"
+      ), // ne doit pas arriver normalement
+   "r" => array (
+         "r",
+         "w"
+      ),
+      "w" => array (
+         "w"
+      ),
+      "1" => array (
+         "1"
+      ),
+      "0" => array (
+         "0",
+         "1"
+      ), // ne doit pas arriver non plus
 
-	
-	);
-	if (isset ($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module]) && in_array($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module], $matches[$right]))
-		return true;
-	else
-		return false;
+
+   );
+   if (isset ($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module]) && in_array($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module], $matches[$right]))
+   return true;
+   else
+   return false;
 }
 ?>

@@ -133,18 +133,18 @@ function plugin_generateinventorynumber_MassiveActions($type) {
    global $LANG, $INVENTORY_TYPES;
 
    $values = array();
-   if (isset ($INVENTORY_TYPES[$type]) && plugin_generateinventorynumber_isActive($type)) {
-      if (plugin_generateinventorynumber_haveRight("generate", "w")) {
+   if (isset ($INVENTORY_TYPES[$type])) {
+     if (plugin_generateinventorynumber_haveRight("generate", "w")) {
          $values["plugin_generateinventorynumber_generate"] = $LANG["plugin_generateinventorynumber"]["massiveaction"][0];
       }
-
-      if (isset ($INVENTORY_TYPES[$type]) && plugin_generateinventorynumber_haveRight("generate_overwrite", "w")) {
+      if (plugin_generateinventorynumber_haveRight("generate_overwrite", "w")) {
          $values["plugin_generateinventorynumber_generate_overwrite"] = $LANG["plugin_generateinventorynumber"]["massiveaction"][1];
       }
 
       return $values;
-   } else
-   return array ();
+   } else {
+      return array ();
+   }
 }
 
 function plugin_generateinventorynumber_MassiveActionsDisplay($type, $action) {
@@ -163,7 +163,7 @@ function plugin_generateinventorynumber_MassiveActionsDisplay($type, $action) {
       return "";
    }
 
-function plugin_generateinventorynumber_MassiveActionsProcess($data) {
+   function plugin_generateinventorynumber_MassiveActionsProcess($data) {
       global $DB, $INVENTORY_TYPES;
 
       switch ($data['action']) {
@@ -189,7 +189,7 @@ function plugin_generateinventorynumber_MassiveActionsProcess($data) {
          }
       }
 
-function plugin_generateinventorynumber_checkRight($module, $right) {
+      function plugin_generateinventorynumber_checkRight($module, $right) {
          global $CFG_GLPI;
 
          if (!plugin_plugin_generateinventorynumber_haveRight($module, $right)) {
@@ -203,7 +203,7 @@ function plugin_generateinventorynumber_checkRight($module, $right) {
          }
       }
 
-function plugin_generateinventorynumber_Install() {
+      function plugin_generateinventorynumber_Install() {
 
          global $DB, $INVENTORY_TYPES;
 
@@ -287,7 +287,7 @@ function plugin_generateinventorynumber_Install() {
          return true;
       }
 
-function plugin_generateinventorynumber_Uninstall() {
+      function plugin_generateinventorynumber_Uninstall() {
 
          global $DB;
          $tables = array("glpi_plugin_generateinventorynumber_config","glpi_plugin_generateinventorynumber_profiles","glpi_plugin_generateinventorynumber_indexes");
@@ -296,4 +296,4 @@ function plugin_generateinventorynumber_Uninstall() {
             $DB->query("DROP TABLE `$table`;") or die($DB->error());
          }
       }
-?>
+      ?>
