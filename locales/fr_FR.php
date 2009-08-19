@@ -26,33 +26,26 @@
 Purpose of file:
 ----------------------------------------------------------------------
  */
+$LANG["plugin_generateinventorynumber"]["title"][1] = "Génération des numéros d'inventaire";
 
-$title = "Génération des numéros d'inventaire";
+$LANG["plugin_generateinventorynumber"]["config"][0] = "Génération activée (global)";
+$LANG["plugin_generateinventorynumber"]["config"][1] = "Composants impactés";
+$LANG["plugin_generateinventorynumber"]["config"][2] = "Actif sur remontées OCS";
+$LANG["plugin_generateinventorynumber"]["config"][3] = "Création dans GLPI (OCS ou manuel)";
+$LANG["plugin_generateinventorynumber"]["config"][4] = "Injection de données (fichiers CSV)";
+$LANG["plugin_generateinventorynumber"]["config"][5] = "Utiliser index global";
+$LANG["plugin_generateinventorynumber"]["config"][6] = "Position de l'index";
+$LANG["plugin_generateinventorynumber"]["config"][10] = "Modèle de génération : ";
 
-$LANGGENINVENTORY["title"][1] = "".$title."";
+$LANG["plugin_generateinventorynumber"]["setup"][0] = "Configuration du plugin";
+$LANG["plugin_generateinventorynumber"]["setup"][5] = "Gestion des droits";
 
-$LANGGENINVENTORY["config"][0] = "Génération activée (global)";
-$LANGGENINVENTORY["config"][1] = "Composants impactés";
-$LANGGENINVENTORY["config"][2] = "Actif sur remontées OCS";
-$LANGGENINVENTORY["config"][3] = "Création dans GLPI (OCS ou manuel)";
-$LANGGENINVENTORY["config"][4] = "Injection de données (fichiers CSV)";
-$LANGGENINVENTORY["config"][5] = "Utiliser index global";
-$LANGGENINVENTORY["config"][6] = "Position de l'index";
-$LANGGENINVENTORY["config"][10] = "Modèle de génération : ";
+$LANG["plugin_generateinventorynumber"]["profiles"][0] = "Gestion des droits";
+$LANG["plugin_generateinventorynumber"]["profiles"][1] = "Générer des numéros d'inventaire";
+$LANG["plugin_generateinventorynumber"]["profiles"][2] = "Listes des profils déjà configurés";
 
-$LANGGENINVENTORY["setup"][0] = "Configuration du plugin";
-$LANGGENINVENTORY["setup"][1] = "Installer le plugin";
-$LANGGENINVENTORY["setup"][2] = "Désinstaller le plugin";
-$LANGGENINVENTORY["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
-$LANGGENINVENTORY["setup"][4] = "Merci de vous placer sur l'entité racine (voir tous)";
-$LANGGENINVENTORY["setup"][5] = "Gestion des droits";
-
-$LANGGENINVENTORY["profiles"][0] = "Gestion des droits";
-$LANGGENINVENTORY["profiles"][1] = "Générer des numéros d'inventaire";
-$LANGGENINVENTORY["profiles"][2] = "Listes des profils déjà configurés";
-
-$LANGGENINVENTORY["massiveaction"][0] = "Générer un numéro d'inventaire";
-$LANGGENINVENTORY["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";
-$LANGGENINVENTORY["massiveaction"][2] = "Vous ne pouvez pas modifier le numéro d'inventaire";
-$LANGGENINVENTORY["massiveaction"][3] = "Un numéro d'inventaire a été généré";
+$LANG["plugin_generateinventorynumber"]["massiveaction"][0] = "Générer un numéro d'inventaire";
+$LANG["plugin_generateinventorynumber"]["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";
+$LANG["plugin_generateinventorynumber"]["massiveaction"][2] = "Vous ne pouvez pas modifier le numéro d'inventaire";
+$LANG["plugin_generateinventorynumber"]["massiveaction"][3] = "Un numéro d'inventaire a été généré";
 ?>

@@ -40,7 +40,7 @@ checkRight("config","w");
 		
 if(!isGenerateInventoryNumberPluginInstalled()) {
 	
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
+	commonHeader($LANG["plugin_generateinventorynumber"]["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
 	
 	if ($_SESSION["glpiactive_entity"]==0){
 	
@@ -48,26 +48,26 @@ if(!isGenerateInventoryNumberPluginInstalled()) {
 	
 			echo "<div align='center'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
-			echo "<tr><th>".$LANGGENINVENTORY["setup"][0];
+			echo "<tr><th>".$LANG["plugin_generateinventorynumber"]["setup"][0];
 			echo "</th></tr>";
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='plugin_generateInventoryNumber.install.php'>".$LANGGENINVENTORY["setup"][1]."</a></td></tr>";
+			echo "<a href='plugin_generateinventorynumber.install.php'>".$LANG["plugin_generateinventorynumber"]["setup"][1]."</a></td></tr>";
 			echo "</table></div>";
 		} 
 	}else{ 
 		echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>"; 
-		echo "<b>".$LANGGENINVENTORY["setup"][10]."</b></div>"; 
+		echo "<b>".$LANG["plugin_generateinventorynumber"]["setup"][10]."</b></div>"; 
 	}
 }else{
 
-	commonHeader($LANGGENINVENTORY["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
+	commonHeader($LANG["plugin_generateinventorynumber"]["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
 	
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='6'>";
-		echo "<tr class='tab_bg_2'><th>" . $LANGGENINVENTORY["setup"][1]."</th></tr>";
+		echo "<tr class='tab_bg_2'><th>" . $LANG["plugin_generateinventorynumber"]["setup"][1]."</th></tr>";
 		if (haveRight("config","w")){
-			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.config.form.php\">".$LANGGENINVENTORY["setup"][0]."</a></td/></tr>";
-			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateInventoryNumber.uninstall.php\">".$LANGGENINVENTORY["setup"][2]."</a></td/></tr>";
+			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateinventorynumber.config.form.php\">".$LANG["plugin_generateinventorynumber"]["setup"][0]."</a></td/></tr>";
+			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateinventorynumber.uninstall.php\">".$LANG["plugin_generateinventorynumber"]["setup"][2]."</a></td/></tr>";
 		}
 		echo "</table></div>";
 }

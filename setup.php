@@ -33,42 +33,53 @@
 // Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
-include_once ("config/plugin_generateInventoryNumber.define.php");
-include_once("hook.php");
-foreach (glob(GLPI_ROOT . '/plugins/generateInventoryNumber/inc/*.php') as $file)
+include_once ("config/plugin_generateinventorynumber.define.php");
+foreach (glob(GLPI_ROOT . '/plugins/generateinventorynumber/inc/*.php') as $file)
 	include_once ($file);
 
-function plugin_init_generateInventoryNumber() {
-	global $PLUGIN_HOOKS, $CFG_GLPI, $LANGGENINVENTORY,$INVENTORY_TYPES;
+function plugin_init_generateinventorynumber() {
+	global $PLUGIN_HOOKS, $CFG_GLPI;
 
-	$PLUGIN_HOOKS['init_session']['generateInventoryNumber'] = 'plugin_generateInventoryNumber_initSession';
-	$PLUGIN_HOOKS['change_profile']['generateInventoryNumber'] = 'plugin_generateInventoryNumber_changeprofile';
+	$PLUGIN_HOOKS['change_profile']['generateinventorynumber'] = 'plugin_generateinventorynumber_changeprofile';
 
-	if (isGenerateInventoryNumberPluginInstalled())
+   $plugin = new Plugin;
+	if ($plugin->isActivated("generateinventorynumber"))
 	{
-		$PLUGIN_HOOKS['use_massive_action']['generateInventoryNumber'] = 1;
-		$PLUGIN_HOOKS['pre_item_update']['generateInventoryNumber'] = 'plugin_pre_item_update_generateInventoryNumber'; 
-	  	$PLUGIN_HOOKS['item_add']['generateInventoryNumber'] = 'plugin_item_add_generateInventoryNumber';
+		$PLUGIN_HOOKS['use_massive_action']['generateinventorynumber'] = 1;
+		$PLUGIN_HOOKS['pre_item_update']['generateinventorynumber'] = 'plugin_pre_item_update_generateinventorynumber';
+	  	$PLUGIN_HOOKS['item_add']['generateinventorynumber'] = 'plugin_item_add_generateinventorynumber';
 
-		$PLUGIN_HOOKS['headings']['generateInventoryNumber'] = 'plugin_get_headings_generateInventoryNumber';
-		$PLUGIN_HOOKS['headings_action']['generateInventoryNumber'] = 'plugin_headings_actions_generateInventoryNumber';
+		$PLUGIN_HOOKS['headings']['generateinventorynumber'] = 'plugin_get_headings_generateinventorynumber';
+		$PLUGIN_HOOKS['headings_action']['generateinventorynumber'] = 'plugin_headings_actions_generateinventorynumber';
+
+      if (haveRight("config", "w")) {
+            $PLUGIN_HOOKS['config_page']['generateinventorynumber'] = 'front/plugin_generateinventorynumber.config.form.php';
+      }
 	}
 		
-	if (isset ($_SESSION["glpiID"])) {
+}
 
-		// Config page
-		if (haveRight("config", "w"))
-			$PLUGIN_HOOKS['config_page']['generateInventoryNumber'] = 'front/plugin_generateInventoryNumber.config.php';
+function plugin_version_generateinventorynumber() {
+	global $LANG;
+
+	return array (
+		'name' => $LANG["plugin_generateinventorynumber"]["title"][1],
+		'minGlpiVersion' => '0.72',
+		'version' => '1.2.0',
+		'author' => 'Walid Nouh',
+	);
+}
+
+function plugin_generateinventorynumber_check_prerequisites() {
+	if (GLPI_VERSION >= 0.72) {
+		return true;
+	} else {
+		echo "GLPI version not compatible need 0.72";
 	}
 }
 
-function plugin_version_generateInventoryNumber() {
-	global $LANGGENINVENTORY;
-
-	return array (
-		'name' => $LANGGENINVENTORY["title"][1],
-		'minGlpiVersion' => '0.71',
-		'version' => '1.1.1'
-	);
+function plugin_generateinventorynumber_check_config() {
+	return true;
 }
+
 ?>

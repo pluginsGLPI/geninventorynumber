@@ -1,4 +1,5 @@
 <?php
+
 /*
    ----------------------------------------------------------------------
    GLPI - Gestionnaire Libre de Parc Informatique
@@ -27,27 +28,25 @@
    ------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file: Béchu Philippe
+// Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../..');
-
-include (GLPI_ROOT."/inc/includes.php");
-if (haveRight("config","w") && haveRight("profile","w")){
-	if(TableExists("glpi_plugin_generateinventorynumber_config")){
-		cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
-		plugin_generateInventoryNumber_Uninstall();
-		$_SESSION["glpi_plugin_generateInventoryNumber_installed"]=0;
-	}
-	glpi_header($_SERVER['HTTP_REFERER']);
-
-}else{
-	commonHeader($LANG["login"][5],$_SERVER["PHP_SELF"],"plugins","generateInventoryNumber");
-	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-	echo "<b>".$LANG["login"][5]."</b></div>";
-	commonFooter();
+$NEEDED_ITEMS = array (
+   "setup","plugin"
+);
+if (!defined('GLPI_ROOT')) {
+   define('GLPI_ROOT', '../../..');
 }
+include (GLPI_ROOT . "/inc/includes.php");
+checkRight("config", "w");
+
+$config = new plugin_GenerateInventoryNumberConfig;
+plugin_generateinventorynumber_updateIndexes(array_merge($_GET,$_POST));
+
+commonHeader($LANG["plugin_generateinventorynumber"]["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
+$config->showForm($_SERVER["PHP_SELF"]);
+
+commonFooter();
 
 ?>

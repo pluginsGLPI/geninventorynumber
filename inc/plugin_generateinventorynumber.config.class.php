@@ -45,34 +45,34 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 	}
 
 	function showForm($target) {
-		global $LANG, $LANGGENINVENTORY, $CFG_GLPI, $DB,$ALLOWED_TYPES;
+		global $LANG, $CFG_GLPI, $DB,$ALLOWED_TYPES;
 
 		$this->getFromDB(1);
 
 		echo "<form name='form' method='post' action=\"$target\">";
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='5'>";
-		echo "<tr><th colspan='5'>" . $LANGGENINVENTORY["setup"][0] . "</th></tr>";
+		echo "<tr><th colspan='5'>" . $LANG["plugin_generateinventorynumber"]["setup"][0] . "</th></tr>";
 
 		echo "<input type='hidden' name='ID' value='1'>";
 		echo "<input type='hidden' name='FK_entities' value='0'>";
 
 		echo "<tr>";
-		echo "<td class='tab_bg_1' align='center'>" . $LANGGENINVENTORY["config"][0] . "</td>";
+		echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_generateinventorynumber"]["config"][0] . "</td>";
 		echo "<td class='tab_bg_1'>";
 		dropdownYesNo("active", $this->fields["active"]);
 		echo "</td>";
 
 		echo "<td class='tab_bg_1'></td>";
-		echo "<td class='tab_bg_1'>".$LANGGENINVENTORY["config"][6]." ".$LANG["common"][59]."</td>";
+		echo "<td class='tab_bg_1'>".$LANG["plugin_generateinventorynumber"]["config"][6]." ".$LANG["common"][59]."</td>";
 		echo "<td class='tab_bg_1'>";
 		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
 		//echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
 		echo "</td>";
 		echo "</tr>";
 
-		echo "<tr><th colspan='2'>" . $LANGGENINVENTORY["config"][10] . "</th><th>" . $LANG["common"][60] . "</th>";
-		echo "<th>" . $LANGGENINVENTORY["config"][5] . "</th><th colspan='2'>".$LANGGENINVENTORY["config"][6]."</th></tr>";
+		echo "<tr><th colspan='2'>" . $LANG["plugin_generateinventorynumber"]["config"][10] . "</th><th>" . $LANG["common"][60] . "</th>";
+		echo "<th>" . $LANG["plugin_generateinventorynumber"]["config"][5] . "</th><th colspan='2'>".$LANG["plugin_generateinventorynumber"]["config"][6]."</th></tr>";
 
 		foreach ($ALLOWED_TYPES as $type => $value) {
 			echo "<td class='tab_bg_1' align='center'>" . $value . "</td>";
@@ -91,7 +91,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 			else
 				$disabled = "disabled";
 				
-			echo "<input type='text' name='next_number_$type' value='".plugin_generateInventoryNumber_getIndexByTypeName($type)."' size='12' ".$disabled.">";
+			echo "<input type='text' name='next_number_$type' value='".plugin_generateinventorynumber_getIndexByTypeName($type)."' size='12' ".$disabled.">";
 			echo "</td>";
 			echo "</tr>";
 		}
@@ -101,16 +101,7 @@ class plugin_GenerateInventoryNumberConfig extends CommonDBTM {
 		echo "</td></tr>";
 
 		echo "</table></form><br>";
-		if ($_SESSION["glpiactive_entity"] == 0) {
-			echo "<table class='tab_cadre' cellpadding='5'>";
-			echo "<tr class='tab_bg_1'>";
-			echo "<td align='center'><a href='plugin_generateInventoryNumber.uninstall.php'>" . $LANGGENINVENTORY["setup"][2] . "</a>";
-			echo " <img src='" . $CFG_GLPI["root_doc"] . "/pics/aide.png' alt=\"\" onmouseout=\"setdisplay(getElementById('commentsup'),'none')\" onmouseover=\"setdisplay(getElementById('commentsup'),'block')\">";
-			echo "<span class='over_link' id='commentsup'>" . $LANGGENINVENTORY["setup"][2] . "</span>";
-			echo "</td></tr>";
-		}
-
-		echo "</table></div>";
+		echo "</div>";
 
 	}
 

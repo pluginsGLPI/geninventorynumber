@@ -49,7 +49,7 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 	}
 	
 	function showForm($target,$ID){
-		global $LANG,$LANGGENINVENTORY;
+		global $LANG;
 		
 		if (!haveRight("profile","r")) return false;
 		$canedit=haveRight("profile","w");
@@ -63,16 +63,16 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 		echo "<form id='generateinventorynumber_profile' method='post' action='$target'>";
 		echo "<table class='tab_cadre_fixe'><tr>";
 
-		echo "<tr><th colspan='2' align='center'><strong>".$LANGGENINVENTORY["profiles"][0]." ".$this->fields["name"]."</strong></th></tr>";
+		echo "<tr><th colspan='2' align='center'><strong>".$LANG["plugin_generateinventorynumber"]["profiles"][0]." ".$this->fields["name"]."</strong></th></tr>";
 
 		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANGGENINVENTORY["profiles"][1].":</td><td>";
+		echo "<td>".$LANG["plugin_generateinventorynumber"]["profiles"][1].":</td><td>";
 		dropdownNoneReadWrite("generate",$this->fields["generate"],1,0,1);
 		echo "</td>";
 		echo "</tr>";
 
 		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANGGENINVENTORY["massiveaction"][1].":</td><td>";
+		echo "<td>".$LANG["plugin_generateinventorynumber"]["massiveaction"][1].":</td><td>";
 		dropdownNoneReadWrite("generate_overwrite",$this->fields["generate_overwrite"],1,0,1);
 		echo "</td>";
 		echo "</tr>";
