@@ -26,28 +26,28 @@
 Purpose of file:
 ----------------------------------------------------------------------
  */
-$LANG["plugin_generateinventorynumber"]["title"][1] = "Inventory number generation";
+$LANG["plugin_geninventorynumber"]["title"][1] = "Inventory number generation";
 
-$LANG["plugin_generateinventorynumber"]["config"][0] = "Active";
-$LANG["plugin_generateinventorynumber"]["config"][1] = "Inventory number templates : ";
-$LANG["plugin_generateinventorynumber"]["config"][2] = "Active for OCS";
-$LANG["plugin_generateinventorynumber"]["config"][3] = "Active for GLPI";
-$LANG["plugin_generateinventorynumber"]["config"][4] = "Active for data injection";
-$LANG["plugin_generateinventorynumber"]["config"][5] = "Use global index";
-$LANG["plugin_generateinventorynumber"]["config"][6] = "Global index position";
-$LANG["plugin_generateinventorynumber"]["config"][10] = "Generation templates : ";
+$LANG["plugin_geninventorynumber"]["config"][0] = "Active";
+$LANG["plugin_geninventorynumber"]["config"][1] = "Inventory number templates : ";
+$LANG["plugin_geninventorynumber"]["config"][2] = "Active for OCS";
+$LANG["plugin_geninventorynumber"]["config"][3] = "Active for GLPI";
+$LANG["plugin_geninventorynumber"]["config"][4] = "Active for data injection";
+$LANG["plugin_geninventorynumber"]["config"][5] = "Use global index";
+$LANG["plugin_geninventorynumber"]["config"][6] = "Global index position";
+$LANG["plugin_geninventorynumber"]["config"][10] = "Generation templates : ";
 
-$LANG["plugin_generateinventorynumber"]["setup"][0] = "Configure plugin ".$title;
-$LANG["plugin_generateinventorynumber"]["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
-$LANG["plugin_generateinventorynumber"]["setup"][4] = "Please place yourself in the root entity";
-$LANG["plugin_generateinventorynumber"]["setup"][5] = "Rights management";
+$LANG["plugin_geninventorynumber"]["setup"][0] = "Configure plugin ".$title;
+$LANG["plugin_geninventorynumber"]["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
+$LANG["plugin_geninventorynumber"]["setup"][4] = "Please place yourself in the root entity";
+$LANG["plugin_geninventorynumber"]["setup"][5] = "Rights management";
 
-$LANG["plugin_generateinventorynumber"]["profiles"][0] = "Rights management";
-$LANG["plugin_generateinventorynumber"]["profiles"][1] = "Generation inventory numbers";
-$LANG["plugin_generateinventorynumber"]["profiles"][2] = "Profiles list";
+$LANG["plugin_geninventorynumber"]["profiles"][0] = "Rights management";
+$LANG["plugin_geninventorynumber"]["profiles"][1] = "Generation inventory numbers";
+$LANG["plugin_geninventorynumber"]["profiles"][2] = "Profiles list";
 
-$LANG["plugin_generateinventorynumber"]["massiveaction"][0] = "Generate inventory number";
-$LANG["plugin_generateinventorynumber"]["massiveaction"][1] = "Regenerate inventory number (overwrite)";
-$LANG["plugin_generateinventorynumber"]["massiveaction"][2] = "You can't modify inventory number";
-$LANG["plugin_generateinventorynumber"]["massiveaction"][3] = "An inventory number have been generated";
+$LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Generate inventory number";
+$LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regenerate inventory number (overwrite)";
+$LANG["plugin_geninventorynumber"]["massiveaction"][2] = "You can't modify inventory number";
+$LANG["plugin_geninventorynumber"]["massiveaction"][3] = "An inventory number have been generated";
 ?>

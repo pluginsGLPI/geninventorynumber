@@ -38,36 +38,36 @@ if(!defined('GLPI_ROOT')){
 include (GLPI_ROOT."/inc/includes.php");
 checkRight("config","w");
 		
-if(!isGenerateInventoryNumberPluginInstalled()) {
+if(!isgeninventorynumberPluginInstalled()) {
 	
-	commonHeader($LANG["plugin_generateinventorynumber"]["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
+	commonHeader($LANG["plugin_geninventorynumber"]["title"][1],$_SERVER['PHP_SELF'],"config","plugins");
 	
 	if ($_SESSION["glpiactive_entity"]==0){
 	
-		if(!TableExists("glpi_plugin_generateinventorynumber")){
+		if(!TableExists("glpi_plugin_geninventorynumber")){
 	
 			echo "<div align='center'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
-			echo "<tr><th>".$LANG["plugin_generateinventorynumber"]["setup"][0];
+			echo "<tr><th>".$LANG["plugin_geninventorynumber"]["setup"][0];
 			echo "</th></tr>";
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='plugin_generateinventorynumber.install.php'>".$LANG["plugin_generateinventorynumber"]["setup"][1]."</a></td></tr>";
+			echo "<a href='plugin_geninventorynumber.install.php'>".$LANG["plugin_geninventorynumber"]["setup"][1]."</a></td></tr>";
 			echo "</table></div>";
 		} 
 	}else{ 
 		echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>"; 
-		echo "<b>".$LANG["plugin_generateinventorynumber"]["setup"][10]."</b></div>"; 
+		echo "<b>".$LANG["plugin_geninventorynumber"]["setup"][10]."</b></div>"; 
 	}
 }else{
 
-	commonHeader($LANG["plugin_generateinventorynumber"]["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
+	commonHeader($LANG["plugin_geninventorynumber"]["title"][1],$_SERVER["PHP_SELF"],"config","plugins");
 	
 		echo "<div align='center'>";
 		echo "<table class='tab_cadre' cellpadding='6'>";
-		echo "<tr class='tab_bg_2'><th>" . $LANG["plugin_generateinventorynumber"]["setup"][1]."</th></tr>";
+		echo "<tr class='tab_bg_2'><th>" . $LANG["plugin_geninventorynumber"]["setup"][1]."</th></tr>";
 		if (haveRight("config","w")){
-			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateinventorynumber.config.form.php\">".$LANG["plugin_generateinventorynumber"]["setup"][0]."</a></td/></tr>";
-			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_generateinventorynumber.uninstall.php\">".$LANG["plugin_generateinventorynumber"]["setup"][2]."</a></td/></tr>";
+			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_geninventorynumber.config.form.php\">".$LANG["plugin_geninventorynumber"]["setup"][0]."</a></td/></tr>";
+			echo "<tr class='tab_bg_1'><td align='center'><a href=\"../front/plugin_geninventorynumber.uninstall.php\">".$LANG["plugin_geninventorynumber"]["setup"][2]."</a></td/></tr>";
 		}
 		echo "</table></div>";
 }

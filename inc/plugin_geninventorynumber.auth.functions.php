@@ -37,18 +37,18 @@ if (!defined('GLPI_ROOT')){
    die("Sorry. You can't access directly to this file");
 }
 
-function plugin_generateinventorynumber_changeprofile()
+function plugin_geninventorynumber_changeprofile()
 {
-   $prof=new GenerateInventoryNumberProfile();
+   $prof=new geninventorynumberProfile();
    if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID'])) {
-      $_SESSION["glpi_plugin_generateinventorynumber_profile"]=$prof->fields;
+      $_SESSION["glpi_plugin_geninventorynumber_profile"]=$prof->fields;
    }
    else {
-      unset($_SESSION["glpi_plugin_generateinventorynumber_profile"]);
+      unset($_SESSION["glpi_plugin_geninventorynumber_profile"]);
    }
 }
 
-function plugin_generateinventorynumber_haveRight($module, $right) {
+function plugin_geninventorynumber_haveRight($module, $right) {
    $matches = array (
       "" => array (
          "",
@@ -72,7 +72,7 @@ function plugin_generateinventorynumber_haveRight($module, $right) {
 
 
    );
-   if (isset ($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module]) && in_array($_SESSION["glpi_plugin_generateinventorynumber_profile"][$module], $matches[$right]))
+   if (isset ($_SESSION["glpi_plugin_geninventorynumber_profile"][$module]) && in_array($_SESSION["glpi_plugin_geninventorynumber_profile"][$module], $matches[$right]))
    return true;
    else
    return false;

@@ -32,11 +32,11 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-class GenerateInventoryNumberProfile extends CommonDBTM {
+class geninventorynumberProfile extends CommonDBTM {
 	
-	function GenerateInventoryNumberProfile()
+	function geninventorynumberProfile()
 	{
-		$this->table="glpi_plugin_generateinventorynumber_profiles";
+		$this->table="glpi_plugin_geninventorynumber_profiles";
 		$this->type=-1;
 	}
 
@@ -44,7 +44,7 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 	function cleanProfiles($ID) {
 	
 		global $DB;
-		$query = "DELETE FROM glpi_plugin_generateinventorynumber_profiles WHERE ID='$ID' ";
+		$query = "DELETE FROM glpi_plugin_geninventorynumber_profiles WHERE ID='$ID' ";
 		$DB->query($query);
 	}
 	
@@ -60,19 +60,19 @@ class GenerateInventoryNumberProfile extends CommonDBTM {
 			$this->getEmpty();
 		}
 		
-		echo "<form id='generateinventorynumber_profile' method='post' action='$target'>";
+		echo "<form id='geninventorynumber_profile' method='post' action='$target'>";
 		echo "<table class='tab_cadre_fixe'><tr>";
 
-		echo "<tr><th colspan='2' align='center'><strong>".$LANG["plugin_generateinventorynumber"]["profiles"][0]." ".$this->fields["name"]."</strong></th></tr>";
+		echo "<tr><th colspan='2' align='center'><strong>".$LANG["plugin_geninventorynumber"]["profiles"][0]." ".$this->fields["name"]."</strong></th></tr>";
 
 		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANG["plugin_generateinventorynumber"]["profiles"][1].":</td><td>";
+		echo "<td>".$LANG["plugin_geninventorynumber"]["profiles"][1].":</td><td>";
 		dropdownNoneReadWrite("generate",$this->fields["generate"],1,0,1);
 		echo "</td>";
 		echo "</tr>";
 
 		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANG["plugin_generateinventorynumber"]["massiveaction"][1].":</td><td>";
+		echo "<td>".$LANG["plugin_geninventorynumber"]["massiveaction"][1].":</td><td>";
 		dropdownNoneReadWrite("generate_overwrite",$this->fields["generate_overwrite"],1,0,1);
 		echo "</td>";
 		echo "</tr>";
