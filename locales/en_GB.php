@@ -37,7 +37,7 @@ $LANG["plugin_geninventorynumber"]["config"][5] = "Use global index";
 $LANG["plugin_geninventorynumber"]["config"][6] = "Global index position";
 $LANG["plugin_geninventorynumber"]["config"][10] = "Generation templates : ";
 
-$LANG["plugin_geninventorynumber"]["setup"][0] = "Configure plugin ".$title;
+$LANG["plugin_geninventorynumber"]["setup"][0] = "Configure plugin ";
 $LANG["plugin_geninventorynumber"]["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
 $LANG["plugin_geninventorynumber"]["setup"][4] = "Please place yourself in the root entity";
 $LANG["plugin_geninventorynumber"]["setup"][5] = "Rights management";
