@@ -51,38 +51,64 @@ class PluginGenInventoryNumberConfig extends CommonDBTM {
       return $ong;
    }
 
-	function showForm($target) {
+	function showForm($target,$ID) {
 		global $LANG, $CFG_GLPI, $DB,$ALLOWED_TYPES;
 
-		$this->getFromDB(1);
-      $this->showTabs(1,'',$_SESSION['glpi_tab']);
+		$this->getFromDB($ID);
+      $this->showTabs($ID,'',$_SESSION['glpi_tab']);
           
 		echo "<form name='form' method='post' action=\"$target\">";
       echo "<div class='center' id='tabsbody'>";
-      echo "<table class='tab_cadre_fixe' >";
-		$this->showFormHeader(1,'',4);
-      //echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["setup"][0] . "</th></tr>";
+      echo "<table class='tab_cadre_fixe'>";
+		$this->showFormHeader($ID,'',2);
 
 		echo "<input type='hidden' name='ID' value='1'>";
 		echo "<input type='hidden' name='FK_entities' value='0'>";
 
-		echo "<tr>";
-		echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
-		echo "<td class='tab_bg_1'>";
-		dropdownYesNo("active", $this->fields["active"]);
-		echo "</td>";
-
-		echo "<td class='tab_bg_1'></td>";
-		echo "<td class='tab_bg_1'>".$LANG["plugin_geninventorynumber"]["config"][6]." ".$LANG["common"][59]."</td>";
-		echo "<td class='tab_bg_1'>";
-		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
-		echo "</td>";
-		echo "</tr>";
-
-      echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
+      echo "<tr>";
+      echo "<td class='tab_bg_1'>";
+      echo "<table>";
+      echo "<tr>";
+         echo "<td class='tab_bg_1' align='center'>" . $LANG['common'][16] . "</td>";
+         echo "<td class='tab_bg_1'>";
+         autocompletionTextField('name',$this->table,'name',$this->fields['name'],40);
+         echo "</td></tr>";
+   
+         echo "<tr>";
+         echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
+         echo "<td class='tab_bg_1'>";
+         plugin_geninventorynumber_dropdownFields('field',$this->fields['field']);
+         echo "</td></tr>";
+   
+   		echo "<tr>";
+   		echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
+   		echo "<td class='tab_bg_1'>";
+   		dropdownYesNo("active", $this->fields["active"]);
+   		echo "</td></tr>";
+   
+         echo "<tr>";
+   		echo "<td class='tab_bg_1' align='center'>".$LANG["plugin_geninventorynumber"]["config"][6]." ".$LANG["common"][59]."</td>";
+   		echo "<td class='tab_bg_1'>";
+   		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
+ 		echo "</td>";
+      echo "</tr>";
+      echo "</table>";
+      echo "</td>";
+      echo "<td class='tab_bg_1'>";
+      echo "<table>";
+         echo "<tr>";
+         echo "<td align='center'>";
+         echo "<td class='tab_bg_1'>".$LANG['common'][25]."</td><td>";
+         echo "<textarea cols='60' rows='4' name='comments' >".$this->fields["comments"]."</textarea>";
+         echo "</td>"; 
+      echo "</tr></table>";
+      echo "</tr>";
+      
+      echo "<tr class='tab_bg_1'><td align='center' colspan='4'>";
       echo "<input type='submit' name='update' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
       echo "</td></tr>";
 
+      
       echo "</table>";
       echo "</div>";
       echo "</form>";

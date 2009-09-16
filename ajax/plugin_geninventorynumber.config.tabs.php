@@ -44,14 +44,16 @@ if(!isset($_POST["ID"])) {
 }
 
 $config = new PluginGenInventoryNumberConfig;
-$config->getFromDB(1);
+$config->getFromDB($_POST["ID"]);
 
 		switch($_POST['glpi_tab']){
 			case -1:
-            plugin_geninventorynumber_showCoreConfig($_POST['target']);
+            plugin_geninventorynumber_showCoreConfig($_POST['target'],$_POST["ID"]);
+            if (!displayPluginAction(PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE,$_POST["ID"],$_POST['glpi_tab'])){
+            }               
 				break;
          case 1:
-            plugin_geninventorynumber_showCoreConfig($_POST['target']);
+            plugin_geninventorynumber_showCoreConfig($_POST['target'],$_POST["ID"]);
          break;
          default:
             if (!displayPluginAction(PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE,$_POST["ID"],$_POST['glpi_tab'])){

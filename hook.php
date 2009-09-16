@@ -207,12 +207,13 @@ function plugin_geninventorynumber_checkRight($module, $right) {
 }
 
 function plugin_geninventorynumber_Install() {
-
 	global $DB, $INVENTORY_TYPES;
 
-	if (!TableExists("glpi_plugin_geninventorynumber") && !TableExists("glpi_plugin_generateinventorynumber_config")) {
+	if (!TableExists("glpi_plugin_geninventorynumber_config") && !TableExists("glpi_plugin_generateinventorynumber_config")) {
 		$sql = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_config` (
 		              `ID` int(11) NOT NULL auto_increment,
+                    `name` varchar(255) DEFAULT NULL,
+                    `field` varchar(255) DEFAULT NULL,
 		              `FK_entities` int(11)  NOT NULL default -1,
 		              `active` int(1)  NOT NULL default 0,
 		              `template_computer` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
@@ -237,18 +238,19 @@ function plugin_geninventorynumber_Install() {
 		              `phone_global_index` int(1)  NOT NULL default 1,
 		              `networking_global_index` int(1)  NOT NULL default 1,
 		              `next_number` int(11)  NOT NULL default 0,
+                    `comments` text NULL,
 		              PRIMARY KEY  (`ID`)
 		            ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 		$DB->query($sql) or die($DB->error());
 
 		$sql = "INSERT INTO `glpi_plugin_geninventorynumber_config` (
-		               `ID` ,`FK_entities` ,`active` ,`template_computer` ,`template_monitor` ,`template_printer` ,
+		               `ID` ,`name`,`field`,`FK_entities` ,`active` ,`template_computer` ,`template_monitor` ,`template_printer` ,
 		               `template_peripheral` ,`template_phone` ,`template_networking`,
 		               `generate_ocs`,`generate_data_injection`,`generate_internal`,
 		               `computer_gen_enabled`,`monitor_gen_enabled`,`printer_gen_enabled`,`peripheral_gen_enabled`,`phone_gen_enabled`,`networking_gen_enabled`,
 		               `computer_global_index`,`monitor_global_index`,`printer_global_index`,`peripheral_global_index`,`phone_global_index`,`networking_global_index`,
 		               `next_number`)
-		               VALUES (NULL , '-1', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;',
+		               VALUES (NULL , 'otherserial','otherserial','0', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;',
 		               '1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','0');";
 		$DB->query($sql) or die($DB->error());
 
@@ -286,6 +288,7 @@ function plugin_geninventorynumber_Install() {
 			plugin_geninventorynumber_updatev11();
 		}
       plugin_geninventorynumber_updatev120();
+      plugin_geninventorynumber_updatev130();
 	}
 
 	return true;

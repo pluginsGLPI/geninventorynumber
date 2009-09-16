@@ -38,16 +38,21 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-function plugin_geninventorynumber_showCoreConfig($target) {
+function plugin_geninventorynumber_dropdownFields($name,$value) {
+   global $LANG;
+   $fields['otherserial'] = $LANG['common'][20];
+   dropdownArrayValues($name,$fields,$value);	
+}
+function plugin_geninventorynumber_showCoreConfig($target,$ID) {
 	global $LANG, $CFG_GLPI, $DB, $ALLOWED_TYPES;
 
 	$config = new PluginGenInventoryNumberConfig;
-	$config->getFromDB(1);
+	$config->getFromDB($ID);
 
 	echo "<form name='form_core_config' method='post' action=\"$target\">";
 	echo "<div align='center'>";
 	echo "<table class='tab_cadre_fixe' cellpadding='5'>";
-	echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["setup"][0] . "</th></tr>";
+	echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
 
 	echo "<input type='hidden' name='ID' value='1'>";
 	echo "<input type='hidden' name='FK_entities' value='0'>";

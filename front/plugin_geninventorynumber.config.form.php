@@ -45,7 +45,7 @@ $config = new PluginGenInventoryNumberConfig;
 plugin_geninventorynumber_updateIndexes(array_merge($_GET,$_POST));
 
 commonHeader($LANG["plugin_geninventorynumber"]["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
-$config->showForm($_SERVER["PHP_SELF"]);
+$config->showForm($_SERVER["PHP_SELF"],$_GET["ID"]);
 
 commonFooter();
 

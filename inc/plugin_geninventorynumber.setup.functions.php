@@ -104,4 +104,32 @@ function plugin_geninventorynumber_updatev120() {
       $DB->query($query);
    }
 }
+
+function plugin_geninventorynumber_updatev130() {
+   global $DB;
+
+   $query = "UPDATE `glpi_plugin_geninventorynumber_config` SET `FK_entities`='0' WHERE `FK_entities`='-1'";
+   $DB->query($query);
+   
+   if (!FieldExists("glpi_plugin_geninventorynumber_config","name")) {
+      $query = "ALTER TABLE `glpi_plugin_geninventorynumber_config` ADD `name` VARCHAR( 255 ) NOT NULL AFTER `ID`";
+      $DB->query($query);
+      $query = "UPDATE `glpi_plugin_geninventorynumber_config` SET `name`='otherserial'";
+      $DB->query($query);
+   }
+
+   if (!FieldExists("glpi_plugin_geninventorynumber_config","field")) {
+      $query = "ALTER TABLE `glpi_plugin_geninventorynumber_config` ADD `field` VARCHAR( 255 ) NOT NULL AFTER `name`";
+      $DB->query($query);
+      $query = "UPDATE `glpi_plugin_geninventorynumber_config` SET `field`='otherserial'";
+      $DB->query($query);
+   }
+
+   if (!FieldExists("glpi_plugin_geninventorynumber_config","comments")) {
+      $query = "ALTER TABLE `glpi_plugin_geninventorynumber_config` ADD `comments` TEXT";
+      $DB->query($query);
+   }
+}
+
+
 ?>
