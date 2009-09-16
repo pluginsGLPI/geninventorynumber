@@ -38,13 +38,22 @@ foreach (glob(GLPI_ROOT . '/plugins/geninventorynumber/inc/*.php') as $file)
 	include_once ($file);
 
 function plugin_init_geninventorynumber() {
-	global $PLUGIN_HOOKS, $CFG_GLPI;
+	global $PLUGIN_HOOKS, $CFG_GLPI,$LANG;
 
 	$PLUGIN_HOOKS['change_profile']['geninventorynumber'] = 'plugin_geninventorynumber_changeprofile';
 
    $plugin = new Plugin;
 	if ($plugin->isActivated('geninventorynumber'))
 	{
+      registerPluginType('geninventorynumber', 'PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE', 1561, array (
+         'classname' => 'PluginGenInventoryNumberConfig',
+         'tablename' => 'glpi_plugin_geninventorynumber_config',
+         'formpage' => 'front/plugin_geninventorynumber.config.form.php',
+         'searchpage' => '',
+         'typename' => 'config',
+      ));
+
+
 		$PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 		$PLUGIN_HOOKS['pre_item_update']['geninventorynumber'] = 'plugin_pre_item_update_geninventorynumber';
 	  	$PLUGIN_HOOKS['item_add']['geninventorynumber'] = 'plugin_item_add_geninventorynumber';

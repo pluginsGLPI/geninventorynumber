@@ -38,21 +38,30 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-class plugin_geninventorynumberConfig extends CommonDBTM {
+class PluginGenInventoryNumberConfig extends CommonDBTM {
 
-	function plugin_geninventorynumberConfig() {
+	function PluginGenInventoryNumberConfig() {
 		$this->table = "glpi_plugin_geninventorynumber_config";
+      $this->type = PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE;
 	}
+
+   function defineTabs($ID, $withtemplate) {
+      global $LANG;
+      $ong[1] = $LANG["plugin_geninventorynumber"]["config"][7];
+      return $ong;
+   }
 
 	function showForm($target) {
 		global $LANG, $CFG_GLPI, $DB,$ALLOWED_TYPES;
 
 		$this->getFromDB(1);
-
+      $this->showTabs(1,'',$_SESSION['glpi_tab']);
+          
 		echo "<form name='form' method='post' action=\"$target\">";
-		echo "<div align='center'>";
-		echo "<table class='tab_cadre' cellpadding='5'>";
-		echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["setup"][0] . "</th></tr>";
+      echo "<div class='center' id='tabsbody'>";
+      echo "<table class='tab_cadre_fixe' >";
+		$this->showFormHeader(1,'',4);
+      //echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["setup"][0] . "</th></tr>";
 
 		echo "<input type='hidden' name='ID' value='1'>";
 		echo "<input type='hidden' name='FK_entities' value='0'>";
@@ -67,42 +76,18 @@ class plugin_geninventorynumberConfig extends CommonDBTM {
 		echo "<td class='tab_bg_1'>".$LANG["plugin_geninventorynumber"]["config"][6]." ".$LANG["common"][59]."</td>";
 		echo "<td class='tab_bg_1'>";
 		echo "<input type='text' name='next_number' value='".$this->fields["next_number"]."' size='12'>&nbsp;";
-		//echo "<input type='submit' name='update_index' value=\"" . $LANG["buttons"][14] . "\" class='submit'>";
 		echo "</td>";
 		echo "</tr>";
 
-		echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][10] . "</th><th>" . $LANG["common"][60] . "</th>";
-		echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . "</th><th colspan='2'>".$LANG["plugin_geninventorynumber"]["config"][6]."</th></tr>";
+      echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
+      echo "<input type='submit' name='update' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
+      echo "</td></tr>";
 
-		foreach ($ALLOWED_TYPES as $type => $value) {
-			echo "<td class='tab_bg_1' align='center'>" . $value . "</td>";
-			echo "<td class='tab_bg_1'>";
-			echo "<input type='text' name='template_$type' value=\"" . $this->fields["template_$type"] . "\" " . (!$this->fields[$type . "_gen_enabled"] ? "disabled" : "") . ">";
-			echo "</td>";
-			echo "<td class='tab_bg_1' align='center'>";
-			dropdownYesNo($type . "_gen_enabled", $this->fields[$type . "_gen_enabled"]);
-			echo "</td>";
-			echo "<td class='tab_bg_1' align='center'>";
-			dropdownYesNo($type . "_global_index", $this->fields[$type . "_global_index"]);
-			echo "</td>";
-			echo "<td class='tab_bg_1'>";
-			if ($this->fields[$type . "_gen_enabled"] && !$this->fields[$type."_global_index"])
-				$disabled = "";
-			else
-				$disabled = "disabled";
-				
-			echo "<input type='text' name='next_number_$type' value='".plugin_geninventorynumber_getIndexByTypeName($type)."' size='12' ".$disabled.">";
-			echo "</td>";
-			echo "</tr>";
-		}
-
-		echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-		echo "<input type='submit' name='update' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
-		echo "</td></tr>";
-
-		echo "</table></form><br>";
-		echo "</div>";
-
+      echo "</table>";
+      echo "</div>";
+      echo "</form>";
+      echo "<div id='tabcontent'></div>";
+      echo "<script type='text/javascript'>loadDefaultTab();</script>";
 	}
 
 }

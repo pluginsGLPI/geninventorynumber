@@ -35,6 +35,7 @@ $LANG["plugin_geninventorynumber"]["config"][3] = "Création dans GLPI (OCS ou m
 $LANG["plugin_geninventorynumber"]["config"][4] = "Injection de données (fichiers CSV)";
 $LANG["plugin_geninventorynumber"]["config"][5] = "Utiliser index global";
 $LANG["plugin_geninventorynumber"]["config"][6] = "Position de l'index";
+$LANG["plugin_geninventorynumber"]["config"][7] = "Coeur";
 $LANG["plugin_geninventorynumber"]["config"][10] = "Modèle de génération : ";
 
 $LANG["plugin_geninventorynumber"]["setup"][0] = "Configuration du plugin";

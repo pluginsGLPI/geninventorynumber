@@ -41,7 +41,7 @@ if (!defined('GLPI_ROOT')) {
 include (GLPI_ROOT . "/inc/includes.php");
 checkRight("config", "w");
 
-$config = new plugin_geninventorynumberConfig;
+$config = new PluginGenInventoryNumberConfig;
 plugin_geninventorynumber_updateIndexes(array_merge($_GET,$_POST));
 
 commonHeader($LANG["plugin_geninventorynumber"]["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
