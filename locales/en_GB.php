@@ -35,6 +35,9 @@ $LANG["plugin_geninventorynumber"]["config"][3] = "Active for GLPI";
 $LANG["plugin_geninventorynumber"]["config"][4] = "Active for data injection";
 $LANG["plugin_geninventorynumber"]["config"][5] = "Use global index";
 $LANG["plugin_geninventorynumber"]["config"][6] = "Global index position";
+$LANG["plugin_geninventorynumber"]["config"][7] = "Core";
+$LANG["plugin_geninventorynumber"]["config"][8] = "Field to generate";
+$LANG["plugin_geninventorynumber"]["config"][9] = "GLPI's inventory items configuration";
 $LANG["plugin_geninventorynumber"]["config"][10] = "Generation templates : ";
 
 $LANG["plugin_geninventorynumber"]["setup"][0] = "Configure plugin ";

@@ -136,15 +136,21 @@ function plugin_geninventorynumber_MassiveActions($type) {
 
 	$values = array ();
 	if (in_array($type,$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
+      $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
+      if ($fields[$type]['enabled']) {
+         if (plugin_geninventorynumber_haveRight("generate", "w")) {
+            $values["plugin_geninventorynumber_generate"] = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
+         }
+         if (plugin_geninventorynumber_haveRight("generate_overwrite", "w")) {
+            $values["plugin_geninventorynumber_generate_overwrite"] = $LANG["plugin_geninventorynumber"]["massiveaction"][1];
+         }
+         return $values;
+      }
+      else {
+         return array ();
+      	
+      }
 
-		if (plugin_geninventorynumber_haveRight("generate", "w")) {
-			$values["plugin_geninventorynumber_generate"] = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
-		}
-		if (plugin_geninventorynumber_haveRight("generate_overwrite", "w")) {
-			$values["plugin_geninventorynumber_generate_overwrite"] = $LANG["plugin_geninventorynumber"]["massiveaction"][1];
-		}
-
-		return $values;
 	} else {
 		return array ();
 	}
