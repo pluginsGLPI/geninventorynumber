@@ -52,7 +52,7 @@ class PluginGenInventoryNumberConfig extends CommonDBTM {
    }
 
 	function showForm($target,$ID) {
-		global $LANG, $CFG_GLPI, $DB,$ALLOWED_TYPES;
+		global $LANG, $CFG_GLPI, $DB;
 
 		$this->getFromDB($ID);
       $this->showTabs($ID,'',$_SESSION['glpi_tab']);

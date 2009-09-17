@@ -35,7 +35,6 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 // Hook done on delete item case
-include_once ("config/plugin_geninventorynumber.define.php");
 foreach (glob(GLPI_ROOT . '/plugins/geninventorynumber/inc/*.php') as $file)
 	include_once ($file);
 
@@ -66,6 +65,7 @@ function plugin_get_headings_geninventorynumber($type, $withtemplate = '') {
 		else {
 			return array (
 				1 => $LANG["plugin_geninventorynumber"]["title"][1],
+
 				
 			);
 		}
@@ -83,6 +83,7 @@ function plugin_headings_actions_geninventorynumber($type) {
 		))) {
 		return array (
 			1 => "plugin_headings_geninventorynumber",
+
 			
 		);
 	} else {
@@ -111,11 +112,10 @@ function plugin_pre_item_update_geninventorynumber($parm) {
 	global $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG;
 
 	if (isset ($parm["_item_type_"]) && isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$parm["_item_type_"]])) {
-
-		$config = plugin_geninventorynumber_getConfig(0);
-		$template = addslashes_deep($config->fields[plugin_geninventorynumber_getTemplateFieldByType($parm["_item_type_"])]);
-
-		if (plugin_geninventorynumber_isActive($parm["_item_type_"]) && $template != '') {
+      
+      $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
+		$template = addslashes_deep($fields[$parm["_item_type_"]]['template']);
+ 		if ($fields[$parm["_item_type_"]]['enabled'] && $fields[$parm["_item_type_"]]['template'] != '') {
 			if (isset ($parm["otherserial"])) {
 				unset ($parm["otherserial"]);
 				$_SESSION["MESSAGE_AFTER_REDIRECT"] = $LANG["plugin_geninventorynumber"]["massiveaction"][2];
@@ -136,7 +136,8 @@ function plugin_geninventorynumber_MassiveActions($type) {
 	global $LANG, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
 	$values = array ();
-	if (isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$type])) {
+	if (in_array($type,$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
+
 		if (plugin_geninventorynumber_haveRight("generate", "w")) {
 			$values["plugin_geninventorynumber_generate"] = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
 		}
@@ -153,7 +154,7 @@ function plugin_geninventorynumber_MassiveActions($type) {
 function plugin_geninventorynumber_MassiveActionsDisplay($type, $action) {
 	global $LANG, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
-	if (isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$type])) {
+	if (in_array ($type,$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
 		switch ($action) {
 			case "plugin_geninventorynumber_generate" :
 			case "plugin_geninventorynumber_generate_overwrite" :
@@ -167,7 +168,7 @@ function plugin_geninventorynumber_MassiveActionsDisplay($type, $action) {
 }
 
 function plugin_geninventorynumber_MassiveActionsProcess($data) {
-	global $DB, $GENINVENTORYNUMBER_INVENTORY_TYPES;
+	global $DB;
 
 	switch ($data['action']) {
 		case "plugin_geninventorynumber_generate" :
@@ -211,75 +212,69 @@ function plugin_geninventorynumber_Install() {
 
 	if (!TableExists("glpi_plugin_geninventorynumber_config") && !TableExists("glpi_plugin_generateinventorynumber_config")) {
 		$sql = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_config` (
-		              `ID` int(11) NOT NULL auto_increment,
-                    `name` varchar(255) DEFAULT NULL,
-                    `field` varchar(255) DEFAULT NULL,
-		              `FK_entities` int(11)  NOT NULL default -1,
-		              `active` int(1)  NOT NULL default 0,
-		              `template_computer` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `template_monitor` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `template_printer` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `template_peripheral` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `template_phone` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `template_networking` varchar(255)  collate utf8_unicode_ci NOT NULL default '',
-		              `generate_ocs` int(1)  NOT NULL default 1,
-		              `generate_data_injection` int(1)  NOT NULL default 1,
-		              `generate_internal` int(1)  NOT NULL default 1,
-		              `computer_gen_enabled` int(1)  NOT NULL default 1,
-		              `monitor_gen_enabled` int(1)  NOT NULL default 1,
-		              `printer_gen_enabled` int(1)  NOT NULL default 1,
-		              `peripheral_gen_enabled` int(1)  NOT NULL default 1,
-		              `phone_gen_enabled` int(1)  NOT NULL default 1,
-		              `networking_gen_enabled` int(1)  NOT NULL default 1,
-		              `computer_global_index` int(1)  NOT NULL default 1,
-		              `monitor_global_index` int(1)  NOT NULL default 1,
-		              `printer_global_index` int(1)  NOT NULL default 1,
-		              `peripheral_global_index` int(1)  NOT NULL default 1,
-		              `phone_global_index` int(1)  NOT NULL default 1,
-		              `networking_global_index` int(1)  NOT NULL default 1,
-		              `next_number` int(11)  NOT NULL default 0,
-                    `comments` text NULL,
-		              PRIMARY KEY  (`ID`)
-		            ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+				              `ID` int(11) NOT NULL auto_increment,
+		                    `name` varchar(255) DEFAULT NULL,
+		                    `field` varchar(255) DEFAULT NULL,
+				              `FK_entities` int(11)  NOT NULL default -1,
+				              `active` int(1)  NOT NULL default 0,
+				              `next_number` int(11)  NOT NULL default 0,
+		                    `comments` text NULL,
+				              PRIMARY KEY  (`ID`)
+				            ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 		$DB->query($sql) or die($DB->error());
 
 		$sql = "INSERT INTO `glpi_plugin_geninventorynumber_config` (
-		               `ID` ,`name`,`field`,`FK_entities` ,`active` ,`template_computer` ,`template_monitor` ,`template_printer` ,
-		               `template_peripheral` ,`template_phone` ,`template_networking`,
-		               `generate_ocs`,`generate_data_injection`,`generate_internal`,
-		               `computer_gen_enabled`,`monitor_gen_enabled`,`printer_gen_enabled`,`peripheral_gen_enabled`,`phone_gen_enabled`,`networking_gen_enabled`,
-		               `computer_global_index`,`monitor_global_index`,`printer_global_index`,`peripheral_global_index`,`phone_global_index`,`networking_global_index`,
-		               `next_number`)
-		               VALUES (NULL , 'otherserial','otherserial','0', '0', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;', '&lt;#######&gt;',
-		               '1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','0');";
+				               `ID` ,`name`,`field`,`FK_entities` ,`active`, `next_number`)
+				               VALUES (NULL , 'otherserial','otherserial','0', '0', '0');";
 		$DB->query($sql) or die($DB->error());
 
-		$sql = "
-		            CREATE TABLE  IF NOT EXISTS `glpi_plugin_geninventorynumber_profiles` (
-		              `ID` int(11) NOT NULL auto_increment,
-		              `name` varchar(255) default NULL,
-		              `interface` varchar(50) collate utf8_unicode_ci NOT NULL default 'geninventorynumber',
-		              `is_default` int(6) NOT NULL default '0',
-		              `generate` char(1) default NULL,
-		              `generate_overwrite` char(1) default NULL,
-		              PRIMARY KEY  (`ID`)
-		            ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+		$sql = "CREATE TABLE  IF NOT EXISTS `glpi_plugin_geninventorynumber_profiles` (
+				              `ID` int(11) NOT NULL auto_increment,
+				              `name` varchar(255) default NULL,
+				              `interface` varchar(50) collate utf8_unicode_ci NOT NULL default 'geninventorynumber',
+				              `is_default` int(6) NOT NULL default '0',
+				              `generate` char(1) default NULL,
+				              `generate_overwrite` char(1) default NULL,
+				              PRIMARY KEY  (`ID`)
+				            ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 		$DB->query($sql) or die($DB->error());
 
 		$sql = "CREATE TABLE  IF NOT EXISTS `glpi_plugin_geninventorynumber_indexes` (
-		            `ID` INT( 11 ) NOT NULL AUTO_INCREMENT ,
-		            `FK_entities` INT( 11 ) NOT NULL DEFAULT '0',
-		            `type` INT( 11 ) NOT NULL DEFAULT '-1',
-		            `field` VARCHAR( 255 ) NOT NULL DEFAULT 'otherserial',
-		            `next_number` INT( 11 ) NOT NULL DEFAULT '0',
-		            PRIMARY KEY ( `ID` )
-		            ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
+				            `ID` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+				            `FK_entities` INT( 11 ) NOT NULL DEFAULT '0',
+				            `type` INT( 11 ) NOT NULL DEFAULT '-1',
+				            `field` VARCHAR( 255 ) NOT NULL DEFAULT 'otherserial',
+				            `next_number` INT( 11 ) NOT NULL DEFAULT '0',
+				            PRIMARY KEY ( `ID` )
+				            ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
 		$DB->query($sql) or die($DB->error());
 
-		foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type => $name) {
+		foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type) {
 			$sql = "INSERT INTO `glpi_plugin_geninventorynumber_indexes` (
 			            `ID` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', $type, 'otherserial', '0');";
 			$DB->query($sql) or die($DB->error());
+		}
+
+		$query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_fields` (
+		        `ID` int(11) NOT NULL auto_increment,
+		        `config_id` int(11) NOT NULL default '0',
+		        `device_type` int(11) NOT NULL default '0',
+		        `template` varchar(255) NOT NULL,
+		        `enabled` smallint(1) NOT NULL default '0',
+		        `use_index` smallint(1) NOT NULL default '0',
+		        `index` bigint(20) NOT NULL default '0',
+		        PRIMARY KEY  (`ID`)
+		      ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+		$DB->query($query);
+
+		$field = new PluginGenInventoryNumberFieldDetail;
+		foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type) {
+			$input["config_id"] = 1;
+			$input["device_type"] = $type;
+			$input["template"] = "&lt;#######&gt;";
+			$input["enabled"] = 0;
+			$input["index"] = 0;
+			$field->add($input);
 		}
 
 		plugin_geninventorynumber_createfirstaccess($_SESSION['glpiactiveprofile']['ID']);
@@ -287,8 +282,8 @@ function plugin_geninventorynumber_Install() {
 		if (!TableExists("glpi_generateinventorynumber_indexes")) {
 			plugin_geninventorynumber_updatev11();
 		}
-      plugin_geninventorynumber_updatev120();
-      plugin_geninventorynumber_updatev130();
+		plugin_geninventorynumber_updatev120();
+		plugin_geninventorynumber_updatev130();
 	}
 
 	return true;
@@ -300,11 +295,52 @@ function plugin_geninventorynumber_Uninstall() {
 	$tables = array (
 		"glpi_plugin_geninventorynumber_config",
 		"glpi_plugin_geninventorynumber_profiles",
-		"glpi_plugin_geninventorynumber_indexes"
+		"glpi_plugin_geninventorynumber_indexes",
+		"glpi_plugin_geninventorynumber_fields"
 	);
 
 	foreach ($tables as $table) {
 		$DB->query("DROP TABLE IF EXISTS `$table`;") or die($DB->error());
 	}
+}
+
+function plugin_geninventorynumber_isTypeRegistered($type, $field = 'otherserial') {
+	global $DB;
+	$query = "SELECT config.ID FROM `glpi_plugin_geninventorynumber_fields` as fields,
+	               `glpi_plugin_geninventorynumber_config` as config
+	                  WHERE config.field='$field' AND config.ID=fields.config_id
+	                     ORDER BY fields.device_type";
+	$result = $DB->query($query);
+	if ($DB->numrows($result)) {
+		return $DB->result($result, 0, 'ID');
+	} else {
+		return false;
+	}
+}
+
+function plugin_geninventorynumber_registerType($type, $field = 'otherserial') {
+	$config_id = plugin_geninventorynumber_isTypeRegistered($type, $field);
+	if (!$config_id) {
+		$field = new PluginGenInventoryNumberFieldDetail;
+
+		$input["config_id"] = $config_id;
+		$input["device_type"] = $type;
+		$input["template"] = "&lt;#######&gt;";
+		$input["enabled"] = 0;
+		$input["index"] = 0;
+		$field->add($input);
+      
+         $sql = "INSERT INTO `glpi_plugin_geninventorynumber_indexes` (
+                     `ID` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', $type, 'otherserial', '0');";
+         $DB->query($sql) or die($DB->error());
+ 	}
+}
+
+function plugin_geninventorynumber_unRegisterType($type, $field = 'otherserial') {
+	$query = "DELETE FROM `glpi_plugin_geninventorynumber_fields` WHERE device_type='$type'";
+	$result = $DB->query($query);
+
+   $query = "DELETE FROM `glpi_plugin_geninventorynumber_indexes` WHERE type='$type' AND field='$field'";
+   $result = $DB->query($query);
 }
 ?>

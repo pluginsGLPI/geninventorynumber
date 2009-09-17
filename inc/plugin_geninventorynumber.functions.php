@@ -44,34 +44,38 @@ function plugin_geninventorynumber_getConfig($FK_entities = 0) {
 	return $config;
 }
 
-function plugin_geninventorynumber_canGenerate($parm, $config) {
-	global $GENINVENTORYNUMBER_INVENTORY_TYPES;
-	return ($config->fields[$GENINVENTORYNUMBER_INVENTORY_TYPES[$parm["type"]] . "_gen_enabled"] ? true : false);
-}
+function plugin_item_add_geninventorynumber($parm, $massive_action = false, $field = 'otherserial') {
+	global $DB, $LANG;
 
-function plugin_item_add_geninventorynumber($parm, $massive_action = false) {
-	global $GENINVENTORYNUMBER_INVENTORY_TYPES, $DB, $LANG;
-	if (isset ($parm["type"]) && isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$parm["type"]])) {
-		$config = plugin_geninventorynumber_getConfig(0);
+	$fields = plugin_geninventorynumber_getFieldInfos($field);
+
+	if (isset ($parm["type"]) && isset ($fields[$parm["type"]])) {
+		$config = plugin_geninventorynumber_getConfig();
 
 		//Globally check if auto generation is on
-		if (plugin_geninventorynumber_isActive($parm["type"])) {
+		if ($config->fields['active']) {
 
-			if (plugin_geninventorynumber_canGenerate($parm, $config)) {
-				$template = addslashes_deep($config->fields[plugin_geninventorynumber_getTemplateFieldByType($parm["type"])]);
+			if ($fields[$parm["type"]]['enabled']) {
+				$template = addslashes_deep($fields[$parm["type"]]['template']);
 
 				$commonitem = new CommonItem;
 				$commonitem->getFromDB($parm["type"], $parm["ID"]);
-				$fields = $commonitem->obj->fields;
+
+				$generated_field = plugin_geninventorynumber_autoName($template, $parm["type"], 0, $commonitem->obj->fields, $fields);
 
 				//Cannot use update() because it'll launch pre_item_update and clean the inventory number...
-				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . plugin_geninventorynumber_autoName($template, $parm["type"], 0,$commonitem->obj->fields) . "' WHERE ID=" . $parm["ID"];
+				$sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . $generated_field . "' WHERE ID=" . $parm["ID"];
 				$DB->query($sql);
 
 				if (!$massive_action && strstr($_SESSION["MESSAGE_AFTER_REDIRECT"], $LANG["plugin_geninventorynumber"]["massiveaction"][3]) === false)
 					$_SESSION["MESSAGE_AFTER_REDIRECT"] .= $LANG["plugin_geninventorynumber"]["massiveaction"][3];
 
-				plugin_geninventorynumber_incrementNumber(0, $parm["type"]);
+				if ($fields[$parm["type"]]['use_index'])
+					$sql = "UPDATE glpi_plugin_geninventorynumber_config SET next_number=next_number+1 WHERE FK_entities=0";
+				else
+					$sql = "UPDATE glpi_plugin_geninventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=0 AND type='".$parm["type"]."' AND field='otherserial'";
+				$DB->query($sql);
+
 			}
 		}
 	}
@@ -79,33 +83,16 @@ function plugin_item_add_geninventorynumber($parm, $massive_action = false) {
 	return $parm;
 }
 
-function plugin_geninventorynumber_getTemplateFieldByType($type) {
-	switch ($type) {
-		case COMPUTER_TYPE :
-			return "template_computer";
-		case MONITOR_TYPE :
-			return "template_monitor";
-		case PRINTER_TYPE :
-			return "template_printer";
-		case PERIPHERAL_TYPE :
-			return "template_peripheral";
-		case NETWORKING_TYPE :
-			return "template_networking";
-		case PHONE_TYPE :
-			return "template_phone";
-	}
-}
-
-function plugin_geninventorynumber_autoName($objectName, $type, $FK_entities = 0,$fields) {
+function plugin_geninventorynumber_autoName($objectName, $type, $FK_entities = 0, $fields, $field_params = array ()) {
 	global $DB;
 
 	$len = strlen($objectName);
 	if ($len > 8 && substr($objectName, 0, 4) === '&lt;' && substr($objectName, $len -4, 4) === '&gt;') {
-      
-      $autoNum = substr($objectName, 4, $len -8);
+
+		$autoNum = substr($objectName, 4, $len -8);
 		$mask = '';
 		if (preg_match("/\\#{1,10}/", $autoNum, $mask)) {
-         $serial= (isset($fields['serial'])?$fields['serial']:'');
+			$serial = (isset ($fields['serial']) ? $fields['serial'] : '');
 
 			$global = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
 			$autoNum = str_replace(array (
@@ -116,7 +103,7 @@ function plugin_geninventorynumber_autoName($objectName, $type, $FK_entities = 0
 				'_',
 				'%',
 				'\\g',
-            '\\s'
+				'\\s'
 			), array (
 				date('y'),
 				date('Y'),
@@ -125,18 +112,18 @@ function plugin_geninventorynumber_autoName($objectName, $type, $FK_entities = 0
 				'\\_',
 				'\\%',
 				'',
-            $serial
+				$serial
 			), $autoNum);
 			$mask = $mask[0];
 			$pos = strpos($autoNum, $mask) + 1;
 			$len = strlen($mask);
 			$like = str_replace('#', '_', $autoNum);
 
-			if (plugin_geninventorynumber_isGlobalIndexByType($type))
+			if ($field_params[$type]['use_index']) {
 				$sql = "SELECT next_number FROM glpi_plugin_geninventorynumber_config WHERE FK_entities=$FK_entities";
-			else
+			} else {
 				$sql = "SELECT next_number FROM glpi_plugin_geninventorynumber_indexes WHERE FK_entities=$FK_entities AND field='otherserial' AND type=$type";
-
+			}
 			$result = $DB->query($sql);
 
 			$objectName = str_replace(array (
@@ -153,63 +140,38 @@ function plugin_geninventorynumber_autoName($objectName, $type, $FK_entities = 0
 	return $objectName;
 }
 
-function plugin_geninventorynumber_incrementNumber($FK_entities = 0, $type) {
+function plugin_geninventorynumber_getIndexByTypeName($type) {
 	global $DB;
 
-	if (plugin_geninventorynumber_isGlobalIndexByType($type))
-		$sql = "UPDATE glpi_plugin_geninventorynumber_config SET next_number=next_number+1 WHERE FK_entities=$FK_entities";
-	else
-		$sql = "UPDATE glpi_plugin_geninventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=$FK_entities AND type=$type AND field='otherserial'";
-	$DB->query($sql);
-}
-
-function plugin_geninventorynumber_isActive($type) {
-	global $GENINVENTORYNUMBER_INVENTORY_TYPES;
-	$config = plugin_geninventorynumber_getConfig(0);
-	if ($config->fields["active"] && $config->fields["generate_internal"] && $config->fields[$GENINVENTORYNUMBER_INVENTORY_TYPES[$type] . "_gen_enabled"])
-		return true;
-	else
-		return false;
-}
-
-function plugin_geninventorynumber_isGlobalIndexByType($type) {
-	global $GENINVENTORYNUMBER_INVENTORY_TYPES;
-
-	if (isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$type])) {
-		$config = plugin_geninventorynumber_getConfig(0);
-		return $config->fields[$GENINVENTORYNUMBER_INVENTORY_TYPES[$type] . "_global_index"];
+	$query = "SELECT next_number FROM `glpi_plugin_geninventorynumber_indexes` WHERE type='$type'";
+	$result = $DB->query($query);
+	if (!$DB->numrows($result)) {
+		return 0;
+	} else {
+		return $DB->result($result, 0, "next_number");
 	}
 
-	return null;
-}
-
-function plugin_geninventorynumber_getIndexByTypeName($type) {
-	global $DB, $GENINVENTORYNUMBER_INVENTORY_TYPES;
-
-	$type_value = array_search($type, $GENINVENTORYNUMBER_INVENTORY_TYPES);
-
-	$query = "SELECT next_number FROM glpi_plugin_geninventorynumber_indexes WHERE type=$type_value";
-	$result = $DB->query($query);
-	return $DB->result($result, 0, "next_number");
 }
 
 function glpi_plugin_geninventorynumber_updateIndexByType($type, $index) {
 	global $DB;
-	$query = "UPDATE glpi_plugin_geninventorynumber_indexes SET next_number=$index WHERE type=$type";
+	$query = "UPDATE `glpi_plugin_geninventorynumber_indexes` SET next_number='$index' WHERE type='$type'";
 	$DB->query($query);
 }
 
 function plugin_geninventorynumber_updateIndexes($params) {
-	global $DB, $GENINVENTORYNUMBER_INVENTORY_TYPES;
+	global $DB;
 
 	if (isset ($params["update"])) {
 		$config = new PluginGenInventoryNumberConfig;
 		$config->update($params);
+	}
+
+	if (isset ($params["update_fields"])) {
 
 		//Update each type's index
-		foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type => $type_name) {
-			if (isset ($params["next_number_$type_name"]))
-				glpi_plugin_geninventorynumber_updateIndexByType($type, $params["next_number_$type_name"]);
+		foreach ($params["IDS"] as $type => $datas) {
+			plugin_geninventorynumber_saveField($datas);
 		}
 	}
 }

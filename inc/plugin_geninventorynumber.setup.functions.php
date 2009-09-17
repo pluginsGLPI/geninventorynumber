@@ -129,6 +129,40 @@ function plugin_geninventorynumber_updatev130() {
       $query = "ALTER TABLE `glpi_plugin_geninventorynumber_config` ADD `comments` TEXT";
       $DB->query($query);
    }
+   
+   if (!TableExists("glpi_plugin_geninventorynumber_fields")) {
+         	$query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_fields` (
+        `ID` int(11) NOT NULL auto_increment,
+        `config_id` int(11) NOT NULL default '0',
+        `device_type` int(11) NOT NULL default '0',
+        `template` varchar(255) NOT NULL,
+        `enabled` smallint(1) NOT NULL default '0',
+        `use_index` smallint(1) NOT NULL default '0',
+        `index` bigint(20) NOT NULL default '0',
+        PRIMARY KEY  (`ID`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+      $DB->query($query);
+      
+      $config = new PluginGenInventoryNumberConfig;
+      $config->getFromDB(1);
+      
+      $types = array (
+         COMPUTER_TYPE=>"computer",
+         MONITOR_TYPE=>"monitor",
+         PRINTER_TYPE=>"printer",
+         NETWORKING_TYPE=>"networking",
+         PERIPHERAL_TYPE=>"peripheral",
+         PHONE_TYPE=>"phone");
+         $field = new PluginGenInventoryNumberFieldDetail;
+      foreach ($types as $type => $value) {
+      	$input["config_id"] = 1;
+         $input["device_type"] = $type;
+         $input["template"] = $config->fields["template_".$value];
+         $input["enabled"] = $config->fields[$value."_gen_enabled"];
+         $input["index"] = $config->fields[$value."_global_index"];
+         $field->add($input);
+      }
+   }
 }
 
 

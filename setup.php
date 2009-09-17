@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * @version $Id: setup.php,v 1.2 2006/04/02 14:45:27 moyo Exp $
  ----------------------------------------------------------------------
@@ -33,39 +34,46 @@
 // Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
-include_once ("config/plugin_geninventorynumber.define.php");
 foreach (glob(GLPI_ROOT . '/plugins/geninventorynumber/inc/*.php') as $file)
 	include_once ($file);
 
 function plugin_init_geninventorynumber() {
-	global $PLUGIN_HOOKS, $CFG_GLPI,$LANG;
+	global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_INVENTORY_TYPES, $CFG_GLPI, $LANG;
 
-	$PLUGIN_HOOKS['change_profile']['geninventorynumber'] = 'plugin_geninventorynumber_changeprofile';
+   $GENINVENTORYNUMBER_INVENTORY_TYPES = array (
+      COMPUTER_TYPE,
+      MONITOR_TYPE,
+      PRINTER_TYPE,
+      NETWORKING_TYPE,
+      PERIPHERAL_TYPE,
+      PHONE_TYPE
+   );
+   
+	registerPluginType('geninventorynumber', 'PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE', 1561, array (
+		'classname' => 'PluginGenInventoryNumberConfig',
+		'tablename' => 'glpi_plugin_geninventorynumber_config',
+		'formpage' => 'front/plugin_geninventorynumber.config.form.php',
+		'searchpage' => 'front/plugin_geninventorynumber.config.php',
+		'typename' => 'config',
+		
+	));
 
-   $plugin = new Plugin;
-	if ($plugin->isActivated('geninventorynumber'))
-	{
-      registerPluginType('geninventorynumber', 'PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE', 1561, array (
-         'classname' => 'PluginGenInventoryNumberConfig',
-         'tablename' => 'glpi_plugin_geninventorynumber_config',
-         'formpage' => 'front/plugin_geninventorynumber.config.form.php',
-         'searchpage' => 'front/plugin_geninventorynumber.config.php',
-         'typename' => 'config',
-      ));
-
+	$plugin = new Plugin;
+	if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
+		$PLUGIN_HOOKS['change_profile']['geninventorynumber'] = 'plugin_geninventorynumber_changeprofile';
 
 		$PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 		$PLUGIN_HOOKS['pre_item_update']['geninventorynumber'] = 'plugin_pre_item_update_geninventorynumber';
-	  	$PLUGIN_HOOKS['item_add']['geninventorynumber'] = 'plugin_item_add_geninventorynumber';
+		$PLUGIN_HOOKS['item_add']['geninventorynumber'] = 'plugin_item_add_geninventorynumber';
 
 		$PLUGIN_HOOKS['headings']['geninventorynumber'] = 'plugin_get_headings_geninventorynumber';
 		$PLUGIN_HOOKS['headings_action']['geninventorynumber'] = 'plugin_headings_actions_geninventorynumber';
 
-      if (haveRight("config", "w")) {
-            $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/plugin_geninventorynumber.config.php';
-      }
+		if (haveRight("config", "w")) {
+			$PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/plugin_geninventorynumber.config.php';
+		}
 	}
-		
+
 }
 
 function plugin_version_geninventorynumber() {
@@ -76,7 +84,7 @@ function plugin_version_geninventorynumber() {
 		'minGlpiVersion' => '0.72',
 		'version' => '1.3.0',
 		'author' => 'Walid Nouh',
-      'homepage'=>'https://forge.indepnet.net/wiki/geninventorynumber'
+		'homepage' => 'https://forge.indepnet.net/wiki/geninventorynumber'
 	);
 }
 
@@ -93,35 +101,33 @@ function plugin_geninventorynumber_check_config() {
 }
 
 function plugin_geninventorynumber_getSearchOption() {
-   global $LANG;
-   $sopt = array ();
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE]['common'] = $LANG["plugin_geninventorynumber"]["title"][1];
+	global $LANG;
+	$sopt = array ();
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE]['common'] = $LANG["plugin_geninventorynumber"]["title"][1];
 
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['table'] = 'glpi_plugin_geninventorynumber_config';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['field'] = 'name';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['linkfield'] = '';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['name'] = $LANG['common'][16];
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['datatype'] = 'itemlink';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['table'] = 'glpi_plugin_geninventorynumber_config';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['field'] = 'name';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['linkfield'] = '';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['name'] = $LANG['common'][16];
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][1]['datatype'] = 'itemlink';
 
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['table'] = 'glpi_plugin_geninventorynumber_config';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['field'] = 'active';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['linkfield'] = '';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['name'] = $LANG['common'][60];
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['datatype'] = 'bool';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['table'] = 'glpi_plugin_geninventorynumber_config';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['field'] = 'active';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['linkfield'] = '';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['name'] = $LANG['common'][60];
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][2]['datatype'] = 'bool';
 
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['table'] = 'glpi_plugin_geninventorynumber_config';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['field'] = 'comments';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['linkfield'] = '';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['name'] = $LANG['common'][25];
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['table'] = 'glpi_plugin_geninventorynumber_config';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['field'] = 'comments';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['linkfield'] = '';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][3]['name'] = $LANG['common'][25];
 
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['table'] = 'glpi_plugin_geninventorynumber_config';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['field'] = 'ID';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['linkfield'] = '';
-   $sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['name'] = $LANG["common"][2];
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['table'] = 'glpi_plugin_geninventorynumber_config';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['field'] = 'ID';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['linkfield'] = '';
+	$sopt[PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE][30]['name'] = $LANG["common"][2];
 
-
-   return $sopt;
+	return $sopt;
 
 }
-
 ?>

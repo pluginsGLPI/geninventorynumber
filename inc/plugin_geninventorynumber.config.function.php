@@ -44,46 +44,52 @@ function plugin_geninventorynumber_dropdownFields($name,$value) {
    dropdownArrayValues($name,$fields,$value);	
 }
 function plugin_geninventorynumber_showCoreConfig($target,$ID) {
-	global $LANG, $CFG_GLPI, $DB, $ALLOWED_TYPES;
+	global $LANG, $CFG_GLPI, $DB;
 
 	$config = new PluginGenInventoryNumberConfig;
 	$config->getFromDB($ID);
-
+   $fields = plugin_geninventorynumber_getFieldInfos($config->fields['field']);
+   
 	echo "<form name='form_core_config' method='post' action=\"$target\">";
 	echo "<div align='center'>";
 	echo "<table class='tab_cadre_fixe' cellpadding='5'>";
 	echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
 
-	echo "<input type='hidden' name='ID' value='1'>";
+	echo "<input type='hidden' name='ID' value='$ID'>";
 	echo "<input type='hidden' name='FK_entities' value='0'>";
 
 	echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][10] . "</th><th>" . $LANG["common"][60] . "</th>";
 	echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . "</th><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
 
-	foreach ($ALLOWED_TYPES as $type => $value) {
-		echo "<td class='tab_bg_1' align='center'>" . $value . "</td>";
+   $commonitem = new CommonItem;
+   
+	foreach ($fields as $type => $value) {
+      $commonitem->setType($type,true);
+		echo "<td class='tab_bg_1' align='center'>" . $commonitem->getType() . "</td>";
 		echo "<td class='tab_bg_1'>";
-		echo "<input type='text' name='template_$type' value=\"" . $config->fields["template_$type"] . "\" " . (!$config->fields[$type . "_gen_enabled"] ? "disabled" : "") . ">";
+      echo "<input type='hidden' name='IDS[$type][ID]' value='".$value["ID"]."'>";
+      echo "<input type='hidden' name='IDS[$type][device_type]' value='$type'>";
+      echo "<input type='text' name='IDS[$type][template]' value=\"" . $value["template"] . "\">";
 		echo "</td>";
 		echo "<td class='tab_bg_1' align='center'>";
-		dropdownYesNo($type . "_gen_enabled", $config->fields[$type . "_gen_enabled"]);
+		dropdownYesNo("IDS[$type][enabled]", $value["enabled"]);
 		echo "</td>";
 		echo "<td class='tab_bg_1' align='center'>";
-		dropdownYesNo($type . "_global_index", $config->fields[$type . "_global_index"]);
+		dropdownYesNo("IDS[$type][use_index]", $value["use_index"]);
 		echo "</td>";
 		echo "<td class='tab_bg_1'>";
-		if ($config->fields[$type . "_gen_enabled"] && !$config->fields[$type . "_global_index"])
+		if ($value["enabled"] && !$value["use_index"])
 			$disabled = "";
 		else
 			$disabled = "disabled";
 
-		echo "<input type='text' name='next_number_$type' value='" . plugin_geninventorynumber_getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
+		echo "<input type='text' name='IDS[$type][index]' value='" . plugin_geninventorynumber_getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
 		echo "</td>";
 		echo "</tr>";
 	}
 
 	echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-	echo "<input type='submit' name='update' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
+	echo "<input type='submit' name='update_fields' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
 	echo "</td></tr>";
 
 	echo "</table></form>";
