@@ -162,6 +162,30 @@ function plugin_geninventorynumber_updatev130() {
          $input["index"] = $config->fields[$value."_global_index"];
          $field->add($input);
       }
+      
+      $query = "ALTER TABLE `glpi_plugin_geninventorynumber_config`
+                 DROP `template_computer`,
+                 DROP `template_monitor`,
+                 DROP `template_printer`,
+                 DROP `template_peripheral`,
+                 DROP `template_phone`,
+                 DROP `template_networking`,
+                 DROP `generate_ocs`,
+                 DROP `generate_data_injection`,
+                 DROP `generate_internal`,
+                 DROP `computer_gen_enabled`,
+                 DROP `monitor_gen_enabled`,
+                 DROP `printer_gen_enabled`,
+                 DROP `peripheral_gen_enabled`,
+                 DROP `phone_gen_enabled`,
+                 DROP `networking_gen_enabled`,
+                 DROP `computer_global_index`,
+                 DROP `monitor_global_index`,
+                 DROP `printer_global_index`,
+                 DROP `peripheral_global_index`,
+                 DROP `phone_global_index`,
+                 DROP `networking_global_index`;";
+      $DB->query($query);
    }
 }
 
