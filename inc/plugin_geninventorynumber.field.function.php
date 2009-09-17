@@ -45,7 +45,6 @@ function plugin_geninventorynumber_getFieldInfos($field) {
                   WHERE config.field='$field' AND config.ID=fields.config_id
                      ORDER BY fields.device_type";
    $result = $DB->query($query);
-   
    $fields = array();
    while ($datas = $DB->fetch_array($result)) {
    	$fields[$datas['device_type']] = $datas;

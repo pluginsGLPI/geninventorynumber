@@ -110,9 +110,8 @@ function plugin_headings_geninventorynumber($type, $ID, $withtemplate = 0) {
 
 function plugin_pre_item_update_geninventorynumber($parm) {
 	global $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG;
-
-	if (isset ($parm["_item_type_"]) && isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$parm["_item_type_"]])) {
-      
+   
+	if (isset ($parm["_item_type_"]) && in_array ($parm["_item_type_"],$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
       $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
 		$template = addslashes_deep($fields[$parm["_item_type_"]]['template']);
  		if ($fields[$parm["_item_type_"]]['enabled'] && $fields[$parm["_item_type_"]]['template'] != '') {
@@ -319,25 +318,31 @@ function plugin_geninventorynumber_isTypeRegistered($type, $field = 'otherserial
 }
 
 function plugin_geninventorynumber_registerType($type, $field = 'otherserial') {
-	$config_id = plugin_geninventorynumber_isTypeRegistered($type, $field);
-	if (!$config_id) {
-		$field = new PluginGenInventoryNumberFieldDetail;
-
-		$input["config_id"] = $config_id;
-		$input["device_type"] = $type;
-		$input["template"] = "&lt;#######&gt;";
-		$input["enabled"] = 0;
-		$input["index"] = 0;
-		$field->add($input);
-      
+	global $DB;
+   $config_id = plugin_geninventorynumber_isTypeRegistered($type, $field);
+   if ($config_id) {
+      $sql = "SELECT ID FROM `glpi_plugin_geninventorynumber_fields` WHERE `config_id`='$config_id' AND `device_type`='$type'";
+      $result = $DB->query($sql);
+      if (!$DB->numrows($result)) {
+         $field = new PluginGenInventoryNumberFieldDetail;
+   
+         $input["config_id"] = $config_id;
+         $input["device_type"] = $type;
+         $input["template"] = "&lt;#######&gt;";
+         $input["enabled"] = 0;
+         $input["index"] = 0;
+         $field->add($input);
+         
          $sql = "INSERT INTO `glpi_plugin_geninventorynumber_indexes` (
                      `ID` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', $type, 'otherserial', '0');";
          $DB->query($sql) or die($DB->error());
+      }
  	}
 }
 
 function plugin_geninventorynumber_unRegisterType($type, $field = 'otherserial') {
-	$query = "DELETE FROM `glpi_plugin_geninventorynumber_fields` WHERE device_type='$type'";
+	global $DB;
+   $query = "DELETE FROM `glpi_plugin_geninventorynumber_fields` WHERE device_type='$type'";
 	$result = $DB->query($query);
 
    $query = "DELETE FROM `glpi_plugin_geninventorynumber_indexes` WHERE type='$type' AND field='$field'";
