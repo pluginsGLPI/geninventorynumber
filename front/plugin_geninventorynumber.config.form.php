@@ -42,10 +42,11 @@ include (GLPI_ROOT . "/inc/includes.php");
 checkRight("config", "w");
 
 $config = new PluginGenInventoryNumberConfig;
-plugin_geninventorynumber_updateIndexes(array_merge($_GET,$_POST));
+$_GET = array_merge($_GET,$_POST);
+plugin_geninventorynumber_updateIndexes($_GET);
 
 commonHeader($LANG["plugin_geninventorynumber"]["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
-$config->showForm($_SERVER["PHP_SELF"],$_GET["ID"]);
+$config->showForm($_SERVER['PHP_SELF'],$_GET["ID"]);
 
 commonFooter();
 

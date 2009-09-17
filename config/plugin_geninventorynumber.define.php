@@ -33,7 +33,7 @@
 // Original Author of file: Walid Nouh
 // Purpose of file:
 // ----------------------------------------------------------------------
-global $ALLOWED_TYPES, $INVENTORY_TYPES, $LANG,$TEMPORARY_IDS;
+global $ALLOWED_TYPES, $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG,$TEMPORARY_IDS;
 $ALLOWED_TYPES = array (
 	"computer" => $LANG["Menu"][0],
 	"networking" => $LANG["Menu"][1],
@@ -43,7 +43,7 @@ $ALLOWED_TYPES = array (
 	"phone" => $LANG["Menu"][34]
 );
 
-$INVENTORY_TYPES = array (
+$GENINVENTORYNUMBER_INVENTORY_TYPES = array (
 	COMPUTER_TYPE=>"computer",
 	MONITOR_TYPE=>"monitor",
 	PRINTER_TYPE=>"printer",

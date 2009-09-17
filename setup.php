@@ -62,7 +62,7 @@ function plugin_init_geninventorynumber() {
 		$PLUGIN_HOOKS['headings_action']['geninventorynumber'] = 'plugin_headings_actions_geninventorynumber';
 
       if (haveRight("config", "w")) {
-            $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/plugin_geninventorynumber.config.form.php';
+            $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/plugin_geninventorynumber.config.php';
       }
 	}
 		

@@ -108,9 +108,9 @@ function plugin_headings_geninventorynumber($type, $ID, $withtemplate = 0) {
 }
 
 function plugin_pre_item_update_geninventorynumber($parm) {
-	global $INVENTORY_TYPES, $LANG;
+	global $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG;
 
-	if (isset ($parm["_item_type_"]) && isset ($INVENTORY_TYPES[$parm["_item_type_"]])) {
+	if (isset ($parm["_item_type_"]) && isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$parm["_item_type_"]])) {
 
 		$config = plugin_geninventorynumber_getConfig(0);
 		$template = addslashes_deep($config->fields[plugin_geninventorynumber_getTemplateFieldByType($parm["_item_type_"])]);
@@ -133,10 +133,10 @@ function plugin_geninventorynumber_haveTypeRight($type, $right) {
 }
 
 function plugin_geninventorynumber_MassiveActions($type) {
-	global $LANG, $INVENTORY_TYPES;
+	global $LANG, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
 	$values = array ();
-	if (isset ($INVENTORY_TYPES[$type])) {
+	if (isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$type])) {
 		if (plugin_geninventorynumber_haveRight("generate", "w")) {
 			$values["plugin_geninventorynumber_generate"] = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
 		}
@@ -151,9 +151,9 @@ function plugin_geninventorynumber_MassiveActions($type) {
 }
 
 function plugin_geninventorynumber_MassiveActionsDisplay($type, $action) {
-	global $LANG, $INVENTORY_TYPES;
+	global $LANG, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
-	if (isset ($INVENTORY_TYPES[$type])) {
+	if (isset ($GENINVENTORYNUMBER_INVENTORY_TYPES[$type])) {
 		switch ($action) {
 			case "plugin_geninventorynumber_generate" :
 			case "plugin_geninventorynumber_generate_overwrite" :
@@ -167,7 +167,7 @@ function plugin_geninventorynumber_MassiveActionsDisplay($type, $action) {
 }
 
 function plugin_geninventorynumber_MassiveActionsProcess($data) {
-	global $DB, $INVENTORY_TYPES;
+	global $DB, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
 	switch ($data['action']) {
 		case "plugin_geninventorynumber_generate" :
@@ -207,7 +207,7 @@ function plugin_geninventorynumber_checkRight($module, $right) {
 }
 
 function plugin_geninventorynumber_Install() {
-	global $DB, $INVENTORY_TYPES;
+	global $DB, $GENINVENTORYNUMBER_INVENTORY_TYPES;
 
 	if (!TableExists("glpi_plugin_geninventorynumber_config") && !TableExists("glpi_plugin_generateinventorynumber_config")) {
 		$sql = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_config` (
@@ -276,7 +276,7 @@ function plugin_geninventorynumber_Install() {
 		            ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
 		$DB->query($sql) or die($DB->error());
 
-		foreach ($INVENTORY_TYPES as $type => $name) {
+		foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type => $name) {
 			$sql = "INSERT INTO `glpi_plugin_geninventorynumber_indexes` (
 			            `ID` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', $type, 'otherserial', '0');";
 			$DB->query($sql) or die($DB->error());
