@@ -83,8 +83,8 @@ function plugin_version_geninventorynumber() {
 		'name' => $LANG["plugin_geninventorynumber"]["title"][1],
 		'minGlpiVersion' => '0.72',
 		'version' => '1.3.0',
-		'author' => 'Walid Nouh',
-		'homepage' => 'https://forge.indepnet.net/wiki/geninventorynumber'
+		'author' => 'Walid Nouh & Dévi Balpe',
+		'homepage' => 'https://forge.indepnet.net/project/show/geninventorynumber'
 	);
 }
 
