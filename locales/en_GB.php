@@ -40,6 +40,9 @@ $LANG["plugin_geninventorynumber"]["config"][8] = "Field to generate";
 $LANG["plugin_geninventorynumber"]["config"][9] = "GLPI's inventory items configuration";
 $LANG["plugin_geninventorynumber"]["config"][10] = "Generation templates : ";
 
+$LANG["plugin_geninventorynumber"]["config"][11] = "Unicity";
+$LANG["plugin_geninventorynumber"]["config"][12] = "Unicity management";
+
 $LANG["plugin_geninventorynumber"]["setup"][0] = "Configure plugin ";
 $LANG["plugin_geninventorynumber"]["setup"][3] = "Attention, la désinstallation du plugin est irréversible.<br> Vous perdrez toutes les données.";
 $LANG["plugin_geninventorynumber"]["setup"][4] = "Please place yourself in the root entity";
@@ -53,4 +56,6 @@ $LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Generate inventory num
 $LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regenerate inventory number (overwrite)";
 $LANG["plugin_geninventorynumber"]["massiveaction"][2] = "You can't modify inventory number";
 $LANG["plugin_geninventorynumber"]["massiveaction"][3] = "An inventory number have been generated";
+$LANG["plugin_geninventorynumber"]["massiveaction"][4] = "Cannot add object because this inventory number still exists";
+
 ?>

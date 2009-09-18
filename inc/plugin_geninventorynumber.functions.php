@@ -167,12 +167,37 @@ function plugin_geninventorynumber_updateIndexes($params) {
 		$config->update($params);
 	}
 
-	if (isset ($params["update_fields"])) {
-
+	if (isset ($params["update_fields"]) || isset ($params["update_unicity"])) {
+      $field = new PluginGenInventoryNumberFieldDetail;
+ 
 		//Update each type's index
 		foreach ($params["IDS"] as $type => $datas) {
-			plugin_geninventorynumber_saveField($datas);
+			   $field->update($datas);
 		}
 	}
+}
+
+function plugin_geninventorynumber_unicityByOtherSerialAndType($device_type,$otherserial) {
+	global $DB,$LINK_ID_TABLE,$CFG_GLPI;
+   
+   $and = "";
+   if (in_array($LINK_ID_TABLE[$device_type],$CFG_GLPI["template_tables"])) {
+   	$and.= " AND `is_template`=0";
+   }
+
+   if (in_array($LINK_ID_TABLE[$device_type],$CFG_GLPI["deleted_tables"])) {
+      $and.= " AND `deleted`=0";
+   }
+
+   $query = "SELECT count(ID) as cpt FROM `".$LINK_ID_TABLE[$device_type]."` " .
+            "  WHERE `otherserial`='$otherserial' $and";
+
+   $result = $DB->query($query);
+   if (!$DB->result($result,0,"cpt")) {
+   	return true;
+   }
+   else {
+   	return false;
+   }           
 }
 ?>

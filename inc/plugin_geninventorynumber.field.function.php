@@ -51,9 +51,4 @@ function plugin_geninventorynumber_getFieldInfos($field) {
    }        
    return $fields;
 }
-
-function plugin_geninventorynumber_saveField($fields) {
-	$field = new PluginGenInventoryNumberFieldDetail;
-    $field->update($fields);
-}
 ?>

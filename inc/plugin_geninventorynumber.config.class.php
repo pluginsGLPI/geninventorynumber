@@ -48,6 +48,7 @@ class PluginGenInventoryNumberConfig extends CommonDBTM {
    function defineTabs($ID, $withtemplate) {
       global $LANG;
       $ong[1] = $LANG["plugin_geninventorynumber"]["config"][7];
+      $ong[2] = $LANG["plugin_geninventorynumber"]["config"][11];
       return $ong;
    }
 

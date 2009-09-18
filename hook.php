@@ -110,7 +110,11 @@ function plugin_headings_geninventorynumber($type, $ID, $withtemplate = 0) {
 
 function plugin_pre_item_update_geninventorynumber($parm) {
 	global $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG;
-   
+
+   $config = plugin_geninventorynumber_getConfig();
+   if (!$config->fields["active"])
+      return $parm;
+
 	if (isset ($parm["_item_type_"]) && in_array ($parm["_item_type_"],$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
       $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
 		$template = addslashes_deep($fields[$parm["_item_type_"]]['template']);
@@ -124,6 +128,47 @@ function plugin_pre_item_update_geninventorynumber($parm) {
 	}
 
 	return $parm;
+}
+
+function plugin_pre_item_add_geninventorynumber($parm) {
+   global $GENINVENTORYNUMBER_INVENTORY_TYPES, $LANG;
+
+   $config = plugin_geninventorynumber_getConfig();
+   if (!$config->fields["active"])
+      return $parm;
+      
+   if (!isset($parm['otherserial']) || (isset($parm['otherserial']) && $parm['otherserial'] == '')) {
+   	return $parm;
+   }
+      
+   if (isset($parm["_item_type_"])) {
+   	$device_type = $parm["_item_type_"];
+   }
+   elseif (isset($parm['type'])) {
+   	$device_type = $parm['type'];
+   }
+
+   if (in_array ($device_type,$GENINVENTORYNUMBER_INVENTORY_TYPES)) {
+
+      $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
+      if ($fields[$device_type]['use_unicity']) {
+         $can_add = true;
+
+         foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type) {
+            if (!plugin_geninventorynumber_unicityByOtherSerialAndType($type,$parm['otherserial'])) {
+            	$can_add = false;
+            }
+         }
+         
+         if (!$can_add) {
+            unset ($parm["otherserial"]);
+            $_SESSION["MESSAGE_AFTER_REDIRECT"] = $LANG["plugin_geninventorynumber"]["massiveaction"][4];
+            return false;
+         }
+
+      }
+   }
+   return $parm;
 }
 
 // Define rights for the plugin types
@@ -268,6 +313,7 @@ function plugin_geninventorynumber_Install() {
 		        `enabled` smallint(1) NOT NULL default '0',
 		        `use_index` smallint(1) NOT NULL default '0',
 		        `index` bigint(20) NOT NULL default '0',
+              `use_unicity` smallint(1) NOT NULL default '0',
 		        PRIMARY KEY  (`ID`)
 		      ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
 		$DB->query($query);
@@ -284,11 +330,11 @@ function plugin_geninventorynumber_Install() {
 
 		plugin_geninventorynumber_createfirstaccess($_SESSION['glpiactiveprofile']['ID']);
 	} else {
-		if (!TableExists("glpi_generateinventorynumber_indexes")) {
-			plugin_geninventorynumber_updatev11();
-		}
+		plugin_geninventorynumber_updatev11();
 		plugin_geninventorynumber_updatev120();
 		plugin_geninventorynumber_updatev130();
+      plugin_geninventorynumber_updatev140();
+      
 	}
 
 	return true;

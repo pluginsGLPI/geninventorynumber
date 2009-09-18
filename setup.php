@@ -46,7 +46,8 @@ function plugin_init_geninventorynumber() {
       PRINTER_TYPE,
       NETWORKING_TYPE,
       PERIPHERAL_TYPE,
-      PHONE_TYPE
+      PHONE_TYPE,
+      SOFTWARELICENSE_TYPE
    );
    
 	registerPluginType('geninventorynumber', 'PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE', 1561, array (
@@ -65,6 +66,7 @@ function plugin_init_geninventorynumber() {
 		$PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 		$PLUGIN_HOOKS['pre_item_update']['geninventorynumber'] = 'plugin_pre_item_update_geninventorynumber';
 		$PLUGIN_HOOKS['item_add']['geninventorynumber'] = 'plugin_item_add_geninventorynumber';
+      $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'] = 'plugin_pre_item_add_geninventorynumber';
 
 		$PLUGIN_HOOKS['headings']['geninventorynumber'] = 'plugin_get_headings_geninventorynumber';
 		$PLUGIN_HOOKS['headings_action']['geninventorynumber'] = 'plugin_headings_actions_geninventorynumber';
@@ -82,7 +84,7 @@ function plugin_version_geninventorynumber() {
 	return array (
 		'name' => $LANG["plugin_geninventorynumber"]["title"][1],
 		'minGlpiVersion' => '0.72',
-		'version' => '1.3.0',
+		'version' => '1.4.0',
 		'author' => 'Walid Nouh & Dévi Balpe',
 		'homepage' => 'https://forge.indepnet.net/project/show/geninventorynumber'
 	);
