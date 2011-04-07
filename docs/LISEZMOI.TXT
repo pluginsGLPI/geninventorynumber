@@ -39,7 +39,7 @@ Contributeur : Hôpital Saint-Cyr, Villeneuve/Lot, 47. France
 
 Ce plugin vous permet de générer automatiquement un numéro d’inventaire.
 
-Compatibilité 0.71.
+Compatibilité 0.78.
 
 2 - Installation
 

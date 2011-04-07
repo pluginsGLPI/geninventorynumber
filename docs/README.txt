@@ -39,7 +39,7 @@ Contributeur : Hôpital Saint-Cyr, Villeneuve/Lot, 47. France
 
 This plugin enables inventory numbers automatic generation.
 
-Compatibility 0.71
+Compatibility 0.78
 
 2 - Installation
 
