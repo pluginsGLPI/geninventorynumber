@@ -34,7 +34,7 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-foreach (glob(GLPI_ROOT . '/plugins/GenInventoryNumber/inc/*.php') as $file) {
+foreach (glob(GLPI_ROOT . '/plugins/geninventorynumber/inc/*.php') as $file) {
 	include_once ($file);
 }
 
