@@ -51,8 +51,8 @@ class geninventorynumberProfile extends CommonDBTM {
 	function showForm($target,$ID){
 		global $LANG;
 		
-		if (!haveRight("profile","r")) return false;
-		$canedit=haveRight("profile","w");
+		if (!Session::haveRight("profile","r")) return false;
+		$canedit=Session::haveRight("profile","w");
 
 		if ($ID){
 			$this->getFromDB($ID);

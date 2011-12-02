@@ -40,9 +40,6 @@ $LANG["plugin_geninventorynumber"]["config"][8] = "Champs à générer";
 $LANG["plugin_geninventorynumber"]["config"][9] = "Configuration des objets d'inventaire de GLPI";
 $LANG["plugin_geninventorynumber"]["config"][10] = "Modèle de génération : ";
 
-$LANG["plugin_geninventorynumber"]["config"][11] = "Unicité";
-$LANG["plugin_geninventorynumber"]["config"][12] = "Gestion de l'unicité'";
-
 $LANG["plugin_geninventorynumber"]["setup"][0] = "Configuration du plugin";
 $LANG["plugin_geninventorynumber"]["setup"][5] = "Gestion des droits";
 

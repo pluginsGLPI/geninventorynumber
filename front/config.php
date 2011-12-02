@@ -31,16 +31,8 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("search","transfer");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-commonHeader($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
-
-$PluginGeninventorynumberConfig=new PluginGeninventorynumberConfig();
-if ($PluginGeninventorynumberConfig->canView() || haveRight("config","w")) {
-	Search::show("PluginGeninventorynumberConfig");
-}
-commonFooter();
-
-?>
+$dropdown = new PluginGeninventorynumberConfig();
+include (GLPI_ROOT."/front/dropdown.common.php");

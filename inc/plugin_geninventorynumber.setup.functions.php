@@ -38,51 +38,7 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-function plugin_geninventorynumber_createfirstaccess($ID) {
 
-	global $DB;
-
-	include_once (GLPI_ROOT . "/inc/profile.class.php");
-	$inventoryProfile = new geninventorynumberProfile;
-	if (!$inventoryProfile->getFromDB($ID)) {
-
-		$Profile = new Profile();
-		$Profile->getFromDB($ID);
-		$name = $Profile->fields["name"];
-
-		$query = "INSERT INTO `glpi_plugin_geninventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`, `generate_overwrite`) VALUES ('$ID', '$name','geninventorynumber','0','w','w');";
-		$DB->query($query);
-	}
-}
-
-function plugin_geninventorynumber_createaccess($ID) {
-
-	global $DB;
-
-	$Profile = new Profile();
-	$Profile->getFromDB($ID);
-	$name = $Profile->fields["name"];
-
-	$query = "INSERT INTO `glpi_plugin_geninventorynumber_profiles` ( `ID`, `name` , `interface`, `is_default`, `generate`, `generate_overwrite`) VALUES ('$ID', '$name','geninventorynumber','0',NULL,NULL);";
-	$DB->query($query);
-
-}
-
-function plugin_geninventorynumber_updatev11() {
-	global $DB;
-
-	if (!TableExists("glpi_generateinventorynumber_indexes")) {
-		$sql = " CREATE TABLE `glpi_generateinventorynumber_indexes` (
-		         `ID` INT( 11 ) NOT NULL AUTO_INCREMENT ,
-		         `FK_entities` INT( 11 ) NOT NULL DEFAULT '0',
-		         `type` INT( 11 ) NOT NULL DEFAULT '-1',
-		         `field` VARCHAR( 255 ) NOT NULL DEFAULT 'otherserial',
-		         `index` INT( 11 ) NOT NULL DEFAULT '0',
-		         PRIMARY KEY ( `ID` )
-		         ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
-		$DB->query($sql) or die($DB->error());
-	}
-}
 
 function plugin_geninventorynumber_updatev120() {
 	global $DB;
@@ -98,11 +54,6 @@ function plugin_geninventorynumber_updatev120() {
 
 	if (TableExists("glpi_plugin_generateinventorynumber_profiles")) {
 		$query = "RENAME TABLE `glpi_plugin_generateinventorynumber_profiles` TO `glpi_plugin_geninventorynumber_profiles`";
-		$DB->query($query);
-	}
-
-	if (TableExists("glpi_plugin_generateinventorynumber_indexes")) {
-		$query = "RENAME TABLE `glpi_plugin_generateinventorynumber_indexes` TO `glpi_plugin_geninventorynumber_indexes`";
 		$DB->query($query);
 	}
 }
@@ -216,7 +167,5 @@ function plugin_geninventorynumber_updatev140() {
                      `ID` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', ".SOFTWARELICENSE_TYPE.", 'otherserial', '0');";
          $DB->query($sql) or die($DB->error());
    } 
-   
-              
 }
 ?>

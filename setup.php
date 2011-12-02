@@ -1,133 +1,125 @@
 <?php
 
-
 /*
- * @version $Id: setup.php,v 1.2 2006/04/02 14:45:27 moyo Exp $
- ----------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2006 by the INDEPNET Development Team.
+ * @version $Id: soap.php 306 2011-11-08 12:36:05Z remi $
+ -------------------------------------------------------------------------
+ geninventorynumber - plugin for GLPI
+ Copyright (C) 2003-2011 by the geninventorynumber Development Team.
 
- http://indepnet.net/   http://glpi-project.org/
- ----------------------------------------------------------------------
+ https://forge.indepnet.net/projects/geninventorynumber
+ -------------------------------------------------------------------------
 
  LICENSE
 
- This file is part of GLPI.
+ This file is part of geninventorynumber plugin.
 
- GLPI is free software; you can redistribute it and/or modify
+ geninventorynumber is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- GLPI is distributed in the hope that it will be useful,
+ geninventorynumber is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with GLPI; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- ------------------------------------------------------------------------
- */
-
-// ----------------------------------------------------------------------
-// Original Author of file: Walid Nouh
-// Purpose of file:
-// ----------------------------------------------------------------------
-foreach (glob(GLPI_ROOT . '/plugins/geninventorynumber/inc/*.php') as $file)
-	include_once ($file);
+ along with webservices. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ --------------------------------------------------------------------------
+ @package   order
+ @author    Walid Nouh
+ @copyright Copyright (c) 2010-2011 Walid Nouh
+ @license   GPLv2+
+            http://www.gnu.org/licenses/gpl.txt
+ @link      https://forge.indepnet.net/projects/geninventorynumber
+ @link      http://www.glpi-project.org/
+ @since     2009
+ ---------------------------------------------------------------------- */
 
 /**
 * Plugin initialization
 *
-* @return	null
 */
 function plugin_init_geninventorynumber() {
-	global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_INVENTORY_TYPES, $CFG_GLPI, $LANG;
+   global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_TYPES, $CFG_GLPI, $LANG;
 
-   $GENINVENTORYNUMBER_INVENTORY_TYPES = array (
-      COMPUTER_TYPE,
-      MONITOR_TYPE,
-      PRINTER_TYPE,
-      NETWORKING_TYPE,
-      PERIPHERAL_TYPE,
-      PHONE_TYPE
-   );
+   $GENINVENTORYNUMBER_TYPES = array ('Computer', 'Monitor', 'Printer', 'NetworkEquipment', 
+                                      'Peripheral', 'Phone', 'SoftwareLicense');
 
-	//TODO: How are other types defined ?
+   $plugin = new Plugin();
 
-	Plugin::registerClass('PluginGeninventorynumberConfig',
-		array (
-		'classname' => 'PluginGeninventorynumberConfig',
-		'tablename' => 'glpi_plugin_geninventorynumber_configs',
-		'formpage' => 'front/config.form.php',
-		'searchpage' => 'front/config.php',
-		'typename' => 'configs',
-		)
-	);
+   if ($plugin->isInstalled('geninventorynumber')) {
+      $PLUGIN_HOOKS['migratetypes']['geninventorynumber'] = 'plugin_geninventorynumber_migratetypes';
+   }
 
-	$pre_item_update_actions = array();
-	$item_add_actions = array();
-	foreach ($GENINVENTORYNUMBER_INVENTORY_TYPES as $type) {
-		$item_add_actions[$type] = 'plugin_item_add_geninventorynumber';
-		$pre_item_update_actions[$type] = 'plugin_pre_item_update_geninventorynumber';
-	}
+   if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
+      Plugin::registerClass('PluginGeninventorynumberConfig', 
+                            array('addtabon' => $GENINVENTORYNUMBER_TYPES));
 
-	$plugin = new Plugin;
-	if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
-		$PLUGIN_HOOKS['change_profile']['geninventorynumber'] = 'plugin_geninventorynumber_changeprofile';
+      foreach ($GENINVENTORYNUMBER_TYPES as $type) {
+         $PLUGIN_HOOKS['item_add']['geninventorynumber'][$type] 
+            =  array('PluginGeninventorynumberCommon', 'addItem');
+         $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type] 
+            =  array('PluginGeninventorynumberCommon', 'preUpdateItem');
+      }
 
-		$PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
-		$PLUGIN_HOOKS['item_add']['geninventorynumber'] = $item_add_actions;
-		$PLUGIN_HOOKS['pre_item_update']['geninventorynumber'] = $pre_item_update_actions;
+   if (Session::getLoginUserID()) {
 
-		$PLUGIN_HOOKS['headings']['geninventorynumber'] = 'plugin_get_headings_geninventorynumber';
-		$PLUGIN_HOOKS['headings_action']['geninventorynumber'] = 'plugin_headings_actions_geninventorynumber';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['title']
+                                                   = $LANG["plugin_geninventorynumber"]["title"][1];
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['page']
+                                                   = '/plugins/geninventorynumber/front/model.php';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['links']['search']
+                                                   = '/plugins/geninventorynumber/front/model.php';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['links']['add']
+                                                   = '/plugins/geninventorynumber/front/model.form.php';
 
-		$PLUGIN_HOOKS['pre_item_purge']['geninventorynumber'] = array("Profile"=>'plugin_pre_item_purge_geninventorynumber');
-
-		if (haveRight("config", "w")) {
-			$PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.php';
-		}
-	}
+         $PLUGIN_HOOKS['change_profile']['geninventorynumber'] 
+            = array('PluginGeninventoryNumber', 'changeProfile');
+   
+         if (Session::haveRight("config", "w")) {
+            $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.php';
+         }
+      }
+   }
 }
 
 /**
 * Definition of plugin
 *
-* @return	array	Array on informations about plugin
+* @return   array Array on informations about plugin
 */
 function plugin_version_geninventorynumber() {
-	global $LANG;
-	return array (
-		'name' => $LANG["plugin_geninventorynumber"]["title"][1],
-		'minGlpiVersion' => '0.78',
-		'version' => '1.4.0',
-		'author' => 'Walid Nouh & Dévi Balpe',
-		'homepage' => 'https://forge.indepnet.net/project/show/Geninventorynumber'
-	);
+   global $LANG;
+   return array ('name'           => $LANG["plugin_geninventorynumber"]["title"][1],
+                 'minGlpiVersion' => '0.83',
+                 'version'        => '1.5.0',
+                 'author'         => 'The geninventorynumber team',
+                 'license'        => 'GPLv2+',
+                 'homepage'       => 'https://forge.indepnet.net/project/show/geninventorynumber');
 }
 
 /**
 * Prerequisites check
 *
-* @return	bool	True if plugin can be installed
+* @return   bool  True if plugin can be installed
 */
 function plugin_geninventorynumber_check_prerequisites() {
-	if (GLPI_VERSION >= 0.78) {
-		return true;
-	} else {
-		echo "GLPI version not compatible need 0.78";
-	}
+   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83";
+      return false;
+   }
+   return true;
 }
 
 /**
 * Compatibility check
 *
-* @return	bool	True if plugin compatible with configuration
+* @return   bool  True if plugin compatible with configuration
 */
 function plugin_geninventorynumber_check_config() {
-	return true;
+   return true;
 }
 
 ?>

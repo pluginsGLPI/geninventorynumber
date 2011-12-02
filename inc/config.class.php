@@ -37,76 +37,105 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
-class PluginGeninventorynumberConfig extends CommonDBTM {
+class PluginGeninventorynumberConfig extends CommonDropdown {
 
-    function __construct() {
-        $this->table = "glpi_plugin_geninventorynumber_configs";
-    }
-
-    function defineTabs($options=array()) {
-        global $LANG;
-        $ong[1] = $LANG["plugin_geninventorynumber"]["config"][7];
-        return $ong;
-    }
+   //Menu & navigation
+   public $first_level_menu  = "plugins";
+   public $second_level_menu = "geninventorynumber";
 
     function canCreate() {
-        return haveRight("config", "w");
+        return Session::haveRight("config", "w");
     }
 
     function canView() {
-        return haveRight("config", "r");
+        return Session::haveRight("config", "r");
     }
 
     function canDelete() {
-        return haveRight("config", "w");
+        return Session::haveRight("config", "w");
     }
 
+   //Tabs management
+   function defineTabs($options = array()) {
+      $tabs = array();
+      $this->addStandardTab(__CLASS__, $tabs, $options);
+      return $tabs;
+   }
+   
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      if ($item->getType() == __CLASS__) {
+         return $LANG["plugin_geninventorynumber"]["config"][7];
+      } else {
+         return '';
+      }
+   }
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      switch ($item->getType()) {
+         case __CLASS__:
+         self::showConfig($item->getID());
+         default:
+            break;
+      }
+      return false;
+   }
+   //End tabs management
+   
     static function getTypeName() {
         global $LANG;
-        return $LANG['plugin_geninventorynumber']['types'][0];
+        return $LANG["plugin_geninventorynumber"]["title"][1];
     }
 
     function cleanDBonPurge() {
         $temp = new PluginGeninventorynumberConfigFields();
-        $temp->deleteByCriteria(array('config_id' => $this->fields['id']));
+        $temp->deleteByCriteria(array('plugin_geninventorynumber_configs_id' => $this->fields['id']));
     }
 
     function getSearchOptions() {
         global $LANG;
 
-        $sopt = array();
+        $sopt           = parent::getSearchOptions();
+
         $sopt['common'] = $LANG["plugin_geninventorynumber"]["title"][1];
 
-        $sopt[1]['table'] = $this->gettable();
-        $sopt[1]['field'] = 'name';
-        $sopt[1]['linkfield'] = '';
-        $sopt[1]['name'] = $LANG['common'][16];
-        $sopt[1]['datatype'] = 'itemlink';
+        $sopt[3]['table']     = $this->getTable();
+        $sopt[3]['field']     = 'is_active';
+        $sopt[3]['name']      = $LANG['common'][60];
+        $sopt[3]['datatype']  = 'bool';
 
-        $sopt[2]['table'] = $this->gettable();
-        $sopt[2]['field'] = 'active';
-        $sopt[2]['linkfield'] = '';
-        $sopt[2]['name'] = $LANG['common'][60];
-        $sopt[2]['datatype'] = 'bool';
+        $sopt[4]['table']         = $this->getTable();
+        $sopt[4]['field']         = 'field';
+        $sopt[4]['name']          = $LANG["plugin_geninventorynumber"]["config"][8];
+        $sopt[4]['massiveaction'] = false;
 
-        $sopt[3]['table'] = $this->gettable();
-        $sopt[3]['field'] = 'comments';
-        $sopt[3]['linkfield'] = '';
-        $sopt[3]['name'] = $LANG['common'][25];
-
-        $sopt[30]['table'] = $this->gettable();
-        $sopt[30]['field'] = 'id';
-        $sopt[30]['linkfield'] = '';
-        $sopt[30]['name'] = $LANG["common"][2];
+        $sopt[5]['table']         = $this->getTable();
+        $sopt[5]['field']         = 'field';
+        $sopt[5]['name']          = $LANG["plugin_geninventorynumber"]["config"][8];
+        $sopt[5]['massiveaction'] = false;
 
         return $sopt;
     }
 
+   static function select($entities_id, $field) {
+      $table = getTableForItemType(__CLASS__);
+      $condition = "`field`='$entities_id'";
+      $condition.= getEntitiesRestrictRequest(" AND", $table, "entities_id", $entities_id, true);
+      $configs = getAllDatasFromTable($table, $condition, true);
+      if (!empty($configs)) {
+         return array_pop($configs);
+      } else {
+         return false;
+      }
+   }
+   
     function showForm($id, $options=array()) {
         global $LANG, $CFG_GLPI;
 
-        if (!$this->canView())
+        if (!$this->canView()) {
             return false;
+        }
         if ($id > 0) {
             $this->check($id, 'r');
         } else {
@@ -121,21 +150,25 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<tr class='tab_bg_1'>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG['common'][16] . "</td>";
         echo "<td class='tab_bg_1'>";
-        autocompletionTextField($this, "name");
+        Html::autocompletionTextField($this, "name");
         echo "</td>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" . 
+           $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
         echo "<td class='tab_bg_1'>";
-        Dropdown::showYesNo("active", $this->fields["active"]);
+        Dropdown::showYesNo("is_active", $this->fields["is_active"]);
         echo "</td>";
         echo "</tr>";
         echo "<tr>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" . 
+           $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
         echo "<td class='tab_bg_1'>";
-        plugin_geninventorynumber_dropdownFields('field', $this->fields['field']);
+        self::dropdownFields('field', $this->fields['field']);
         echo "</td>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" . 
+           $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
         echo "<td class='tab_bg_1'>";
-        echo "<input type='text' name='next_number' value='" . $this->fields["next_number"] . "' size='12'>&nbsp;";
+        echo "<input type='text' name='next_number' value='" . $this->fields["next_number"] . 
+           "' size='12'>&nbsp;";
         echo "</td>";
         echo "</tr>";
 
@@ -144,7 +177,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<table>";
         echo "<tr>";
         echo "<td class='tab_bg_1'>" . $LANG['common'][25] . "</td><td>";
-        echo "<textarea cols='60' rows='4' name='comments' >" . $this->fields["comments"] . "</textarea>";
+        echo "<textarea cols='60' rows='4' name='comment' >" . 
+           $this->fields["comment"] . "</textarea>";
         echo "</td>";
         echo "</tr>";
         echo "</table>";
@@ -158,12 +192,156 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return true;
     }
 
+   static function showConfig($id) {
+      global $LANG, $CFG_GLPI, $DB;
+      
+      $config = new self();
+      if ($config->getFromDB($id)) {
+         $fields = PluginGeninventorynumberConfigField::getFieldInfos($config->fields['field']);
+         
+         echo "<form name='form_core_config' method='post' action='".
+            Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+         echo "<div align='center'>";
+         echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+         echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
+      
+         echo "<input type='hidden' name='id' value='$id'>";
+         echo "<input type='hidden' name='entities_id' value='0'>";
+      
+         echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][10] . 
+            "</th><th>" . $LANG["common"][60] . "</th>";
+         echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . 
+            "</th><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
+      
+         foreach ($fields as $type => $value) {
+            echo "<td class='tab_bg_1' align='center'>" . $type. "</td>";
+            echo "<td class='tab_bg_1'>";
+            echo "<input type='hidden' name='ids[$type][id]' value='".$value["id"]."'>";
+            echo "<input type='hidden' name='ids[$type][device_type]' value='$type'>";
+            echo "<input type='text' name='ids[$type][template]' value=\"" . $value["template"] . "\">";
+            echo "</td>";
+            echo "<td class='tab_bg_1' align='center'>";
+            Dropdown::showYesNo("ids[$type][enabled]", $value["enabled"]);
+            echo "</td>";
+            echo "<td class='tab_bg_1' align='center'>";
+            Dropdown::showYesNo("ids[$type][use_index]", $value["use_index"]);
+            echo "</td>";
+            echo "<td class='tab_bg_1'>";
+            if ($value["enabled"] && !$value["use_index"]) {
+               $disabled = "";
+            } else {
+               $disabled = "disabled";
+            }
+      
+            echo "<input type='text' name='ids[$type][index]' value='" . 
+               plugin_geninventorynumber_getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
+            echo "</td>";
+            echo "</tr>";
+         }
+      
+         echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
+         echo "<input type='submit' name='update_fields' value=\"" . $LANG["buttons"][7] . 
+            "\" class='submit'>";
+         echo "</td></tr>";
+      
+         echo "</table></form>";
+      	
+      }
+   }
+
     function getSelectLinkedItem() {
         return "SELECT `id`
               FROM `glpi_plugin_geninventorynumber_configfields`
               WHERE config_id='" . $this->fields['id'] . "'";
     }
 
+   /**
+   * Dropdown of fields the plugin can manage (generate)
+   * 
+   * @param string   Name of the dropdown
+   * @param string   ??? should be an array of options ?
+   * @return   null
+   */
+   function dropdownFields($name, $value) {
+      global $LANG;
+      
+      $fields = array ('otherserial' => $LANG['common'][20],
+                       'immo_number' => $LANG['financial'][20]);
+      return Dropdown::showFromArray($name, $fields, $value);
+   }
+   
+   static function install(Migration $migration) {
+      global $DB;
+      
+      $table = getTableForItemType(__CLASS__);
+   
+      //Rename table if it exists when an old name
+      if (TableExists("glpi_plugin_generateinventorynumber_config")) {
+         $migration->renameTable("glpi_plugin_generateinventorynumber_config", $table);
+      }
+
+      if (!TableExists($table)) {
+         $sql = "CREATE TABLE IF NOT EXISTS `glpi_plugin_geninventorynumber_configs` (
+                    `id` int(11) NOT NULL auto_increment,
+                    `name` varchar(255) DEFAULT NULL,
+                    `field` varchar(255) DEFAULT NULL,
+                    `entities_id` int(11)  NOT NULL default '-1',
+                    `is_recursive` tinyint(1)  NOT NULL default '0',
+                    `is_active` int(1)  NOT NULL default '0',
+                    `next_number` int(11)  NOT NULL default '0',
+                    `comment` text NULL,
+                    `date_mod` datetime NULL,
+                 PRIMARY KEY  (`id`),
+                 KEY `entities_id` (`entities_id`),
+                 KEY `is_recursive` (`is_recursive`), 
+                 KEY `is_active` (`is_active`) 
+                 ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+         $DB->query($sql) or die($DB->error());
+         
+         //Add default config
+         $tmp['name']         = 'otherserial';
+         $tmp['field']        = 'otherserial';
+         $tmp['entities_id']  = 0;
+         $tmp['is_recursive'] = 1;
+         $tmp['is_active']    = 0;
+         $tmp['next_number']  = 0;
+         $config              = new self();
+         $config->add($tmp);
+         
+      } else {
+         $fields = array("template_computer", "template_monitor", "template_printer",
+                         "template_peripheral", "template_phone", "template_networking", 
+                         "generate_ocs", "generate_data_injection", "generate_internal",
+                         "computer_gen_enabled", "monitor_gen_enabled", "printer_gen_enabled",
+                         "peripheral_gen_enabled", "phone_gen_enabled", "networking_gen_enabled",
+                         "computer_global_index", "monitor_global_index", "printer_global_index",
+                         "peripheral_global_index", "phone_global_index", "networking_global_index");
+         foreach ($fields as $field) {
+            $migration->dropField($table, $field);
+         } 
+         $migration->addField($table, "field", "string", array('value' => 'otherserial'));
+         if ($migration->changeField($table, "FK_entities", "entitites_id", "integer", 
+                                 array('value' => -1))) {
+            $migration->addKey($table, "entities_id");
+         }
+         if ($migration->changeField($table, "active", "is_active", "bool")) {
+            $migration->addKey($table, "is_active");
+         }
+         $migration->addField($table, "field", "string");
+         if (!$migration->changeField($table, "comments", "comment", "text")) {
+            $migration->addField($table, "comment", "text");
+         }
+         if ($migration->addField($table, "is_recursive", "bool")) {
+            $migration->addKey($table, "is_recursive");
+         }
+         $migration->addField($table, "date_mod", "datetime");
+         $migration->migrationOneTable($table);
+      }
+   }
+   
+   static function uninstall(Migration $migration) {
+      $migration->dropTable(getTableForItemType(__CLASS__));
+   }
 }
 
 ?>
