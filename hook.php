@@ -47,7 +47,7 @@ function plugin_geninventorynumber_MassiveActions($type) {
    global $LANG, $GENINVENTORYNUMBER_TYPES;
 
    $values = array ();
-   if (in_array($type,$GENINVENTORYNUMBER_TYPES)) {
+   if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
       $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
       if ($fields[$type]['enabled']) {
          if (Session::haveRight("plugin_geninventorynumber_generate", "w")) {
@@ -81,7 +81,8 @@ function plugin_geninventorynumber_MassiveActionsDisplay($options = array()) {
       switch ($options['action']) {
          case "plugin_geninventorynumber_generate" :
          case "plugin_geninventorynumber_generate_overwrite" :
-            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" . $LANG["buttons"][2] . "\" >";
+            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" " .
+                  "class=\"submit\" value=\"" . $LANG["buttons"][2] . "\" >";
             break;
          default :
             break;
@@ -124,29 +125,9 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
 }
 
 /**
-* ???
-*
-* @param
-* @return
-*/
-function plugin_geninventorynumber_checkRight($module, $right) {
-   global $CFG_GLPI;
-
-   if (!Session::haveRight($module, $right)) {
-      // Gestion timeout session
-      if (!isset ($_SESSION["glpiID"])) {
-         Html::redirect($CFG_GLPI["root_doc"] . "/index.php");
-         exit ();
-      }
-
-      Html::displayRightError();
-   }
-}
-
-/**
 * Create database tables for this plugin and updates from older versions
 *
-* @return   null
+* @return   true
 *
 */
 function plugin_geninventorynumber_Install() {;
@@ -168,7 +149,7 @@ function plugin_geninventorynumber_Install() {;
 /**
 * Destroys database tables on uninstall
 *
-* @return   null
+* @return   true
 */
 function plugin_geninventorynumber_Uninstall() {
    
@@ -185,79 +166,4 @@ function plugin_geninventorynumber_Uninstall() {
    return true;
 }
 
-
-
-/**
-* Check if a combination of type/field is already registered in the database
-*
-* @param string   an object type (litteral) (ex : 'Computer')
-* @param string   the checked field for this type (default:  'otherserial')
-* @return   int ou bool  ID of the configuration line in the table or false
-*
-* TODO: check table joins on this request ?
-* NOTE : doesn't seem to be used by this version or version 1.30. Used by other plugins ?
-*/
-function plugin_geninventorynumber_isTypeRegistered($type, $field = 'otherserial') {
-   global $DB;
-   $query = "SELECT config.id FROM `glpi_plugin_geninventorynumber_configfields` as fields,
-                  `glpi_plugin_geninventorynumber_config` as config
-                     WHERE config.field='$field' AND config.ID=fields.config_id
-                        ORDER BY fields.device_type";
-   $result = $DB->query($query);
-   if ($DB->numrows($result)) {
-      return $DB->result($result, 0, 'ID');
-   } else {
-      return false;
-   }
-}
-
-/**
-* Register a combination of type/field into database
-*
-* @param string   an object type (litteral) (ex : 'Computer')
-* @param string   the checked field for this type (default:  'otherserial')
-* @return   null
-*
-* NOTE : doesn't seem to be used by this version or version 1.30. Used by other plugins ?
-*/
-function plugin_geninventorynumber_registerType($type, $field = 'otherserial') {
-   global $DB;
-   $config_id = plugin_geninventorynumber_isTypeRegistered($type, $field);
-   if ($config_id) {
-      $sql = "SELECT id FROM `glpi_plugin_geninventorynumber_configfields` WHERE `config_id`='$config_id' AND `device_type`='$type'";
-      $result = $DB->query($sql);
-      if (!$DB->numrows($result)) {
-         $field = new PluginGeninventorynumberConfigField;
-
-         $input["config_id"] = $config_id;
-         $input["device_type"] = $type;
-         $input["template"] = "&lt;#######&gt;";
-         $input["enabled"] = 0;
-         $input["index"] = 0;
-         $field->add($input);
-
-         $sql = "INSERT INTO `glpi_plugin_geninventorynumber_indexes` (
-                     `id` ,`FK_entities` ,`type` ,`field` ,`next_number`) VALUES (NULL , '0', '$type', 'otherserial', '0');";
-         $DB->query($sql) or die($DB->error());
-      }
-   }
-}
-
-/**
-* Unregister a combination of type/field into database
-*
-* @param string   an object type (litteral) (ex : 'Computer')
-* @param string   the checked field for this type (default:  'otherserial')
-* @return   null
-*
-*  NOTE : doesn't seem to be used by this version or version 1.30. Used by other plugins ?
-*/
-function plugin_geninventorynumber_unRegisterType($type, $field = 'otherserial') {
-   global $DB;
-   $query = "DELETE FROM `glpi_plugin_geninventorynumber_configfields` WHERE device_type='$type'";
-   $result = $DB->query($query);
-
-   $query = "DELETE FROM `glpi_plugin_geninventorynumber_indexes` WHERE type='$type' AND field='$field'";
-   $result = $DB->query($query);
-}
 ?>

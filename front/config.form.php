@@ -40,5 +40,12 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
+if (isset($_POST["update_fields"]) && isset($_POST["ids"])) {
+   $configfield = new PluginGeninventorynumberConfigField();
+   foreach ($_POST['ids'] as $itemtype => $data) {
+      $configfield->update($data);
+   }
+   Html::back();
+}
 $dropdown = new PluginGeninventorynumberConfig();
 include (GLPI_ROOT."/front/dropdown.common.form.php");

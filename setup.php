@@ -66,14 +66,14 @@ function plugin_init_geninventorynumber() {
 
    if (Session::getLoginUserID()) {
 
-         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['title']
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['config']['title']
                                                    = $LANG["plugin_geninventorynumber"]["title"][1];
-         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['page']
-                                                   = '/plugins/geninventorynumber/front/model.php';
-         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['links']['search']
-                                                   = '/plugins/geninventorynumber/front/model.php';
-         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['PluginGeninventoryNumberConfig']['links']['add']
-                                                   = '/plugins/geninventorynumber/front/model.form.php';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['config']['page']
+                                                   = '/plugins/geninventorynumber/front/config.php';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['config']['links']['search']
+                                                   = '/plugins/geninventorynumber/front/config.php';
+         $PLUGIN_HOOKS['submenu_entry']['geninventorynumber']['options']['config']['links']['add']
+                                                   = '/plugins/geninventorynumber/front/config.form.php';
 
          $PLUGIN_HOOKS['change_profile']['geninventorynumber'] 
             = array('PluginGeninventoryNumber', 'changeProfile');

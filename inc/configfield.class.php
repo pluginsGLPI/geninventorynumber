@@ -114,22 +114,24 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
                  `id` int(11) NOT NULL auto_increment,
                  `plugin_geninventorynumber_configs_id` int(11) NOT NULL default '0',
-                 `itemtype` int(11) NOT NULL default '0',
-                 `template` varchar(255) NOT NULL,
-                 `is_active` smallint(1) NOT NULL default '0',
-                 `use_index` smallint(1) NOT NULL default '0',
+                 `itemtype` VARCHAR(255) COLLATE utf8_unicode_ci,
+                 `template` VARCHAR(255) COLLATE utf8_unicode_ci,
+                 `is_active` tinyint(1) NOT NULL default '0',
+                 `use_index` tinyint(1) NOT NULL default '0',
                  `index` bigint(20) NOT NULL default '0',
-                 PRIMARY KEY  (`ID`),
+                 PRIMARY KEY  (`id`),
                  KEY `is_active` (`is_active`) 
-               ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+               ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query);
          
          $field = new self();
          foreach ($GENINVENTORYNUMBER_TYPES as $itemtype) {
-            if ($configs = PluginGeninventorynumberConfig::select(0, 'otherserial')) {
-               $input["plugin_geninventorynumber_configs_id"] = $configs['id'];
-               $input["template"] = "&lt;#######&gt;";
+            $configs_id = PluginGeninventorynumberConfig::select(0, 'otherserial');
+            if ($configs_id) {
+               $input["plugin_geninventorynumber_configs_id"] = $configs_id;
+               $input["template"]  = "&lt;#######&gt;";
                $input["is_active"] = 0;
+               $input["itemtype"]  = $itemtype;
                $input["use_index"] = 0;
                $input["index"]     = 0;
                $field->add($input);
@@ -138,9 +140,9 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       } else {
          $migration->changeField($table, "ID", "id", "integer", "NOT NULL auto_increment");
          $migration->changeField($table, "device_type", "itemtype", "string");
-         if ($migration->changeField($table, "enabled", "is_active", "bool")) {
-            $migration->addKey($table, "is_active");
-         }
+         $migration->changeField($table, "template", "template", "string");
+         $migration->changeField($table, "enabled", "is_active", "bool");
+         $migration->addKey($table, "is_active");
          $migration->changeField($table, "config_id", "plugin_geninventorynumber_configs_id", 
                                  "integer");
          $migration->migrationOneTable($table);

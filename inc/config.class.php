@@ -42,23 +42,31 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
    //Menu & navigation
    public $first_level_menu  = "plugins";
    public $second_level_menu = "geninventorynumber";
+   public $third_level_menu  = "config"; 
+   public $dohistory         = true;
+   
+   function canCreate() {
+       return Session::haveRight("config", "w");
+   }
 
-    function canCreate() {
-        return Session::haveRight("config", "w");
-    }
+   function canView() {
+       return Session::haveRight("config", "r");
+   }
 
-    function canView() {
-        return Session::haveRight("config", "r");
-    }
-
-    function canDelete() {
-        return Session::haveRight("config", "w");
-    }
-
+   function canDelete() {
+       return Session::haveRight("config", "w");
+   }
+   
+   //Remove standard dropdown header
+   function title() {
+      return "";
+   }
+   
    //Tabs management
    function defineTabs($options = array()) {
       $tabs = array();
       $this->addStandardTab(__CLASS__, $tabs, $options);
+      $this->addStandardTab('Log', $tabs, $options);
       return $tabs;
    }
    
@@ -83,15 +91,15 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
    }
    //End tabs management
    
-    static function getTypeName() {
-        global $LANG;
-        return $LANG["plugin_geninventorynumber"]["title"][1];
-    }
+   static function getTypeName($nb = 1) {
+       global $LANG;
+       return $LANG["plugin_geninventorynumber"]["title"][1];
+   }
 
-    function cleanDBonPurge() {
-        $temp = new PluginGeninventorynumberConfigFields();
-        $temp->deleteByCriteria(array('plugin_geninventorynumber_configs_id' => $this->fields['id']));
-    }
+   function cleanDBonPurge() {
+       $temp = new PluginGeninventorynumberConfigFields();
+       $temp->deleteByCriteria(array('plugin_geninventorynumber_configs_id' => $this->fields['id']));
+   }
 
     function getSearchOptions() {
         global $LANG;
@@ -111,20 +119,34 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
         $sopt[4]['massiveaction'] = false;
 
         $sopt[5]['table']         = $this->getTable();
-        $sopt[5]['field']         = 'field';
-        $sopt[5]['name']          = $LANG["plugin_geninventorynumber"]["config"][8];
+        $sopt[5]['field']         = 'next_number';
+        $sopt[5]['name']          = $LANG["plugin_geninventorynumber"]["config"][6] . " " . 
+            $LANG["common"][59];
         $sopt[5]['massiveaction'] = false;
+        $sopt[5]['datatype']      = 'integer';
 
         return $sopt;
     }
 
+   /**
+    * Get configuration id by entity and field
+    * 
+    * @params $entities_id
+    * @params $field
+    * 
+    * @return the configuration id or false
+    */
    static function select($entities_id, $field) {
+      global $DB;
       $table = getTableForItemType(__CLASS__);
-      $condition = "`field`='$entities_id'";
-      $condition.= getEntitiesRestrictRequest(" AND", $table, "entities_id", $entities_id, true);
-      $configs = getAllDatasFromTable($table, $condition, true);
-      if (!empty($configs)) {
-         return array_pop($configs);
+      $query = "SELECT `$table`.`id` FROM `$table` 
+                LEFT JOIN `glpi_entities` ON `$table`.`entities_id` = `glpi_entities`.`id` 
+                WHERE `field`='$field' ".
+                  getEntitiesRestrictRequest(" AND", $table, "entities_id", $entities_id, true).
+                "ORDER BY `glpi_entities`.`level` DESC LIMIT 1";
+      $results = $DB->query($query);
+      if ($DB->numrows($results) > 0) {
+         return $DB->result($results, 0, "id");
       } else {
          return false;
       }
@@ -213,28 +235,28 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
          echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . 
             "</th><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
       
-         foreach ($fields as $type => $value) {
-            echo "<td class='tab_bg_1' align='center'>" . $type. "</td>";
+         foreach ($fields as $itemtype => $value) {
+            echo "<td class='tab_bg_1' align='center'>" . $itemtype::getTypeName(). "</td>";
             echo "<td class='tab_bg_1'>";
-            echo "<input type='hidden' name='ids[$type][id]' value='".$value["id"]."'>";
-            echo "<input type='hidden' name='ids[$type][device_type]' value='$type'>";
-            echo "<input type='text' name='ids[$type][template]' value=\"" . $value["template"] . "\">";
+            echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
+            echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
+            echo "<input type='text' name='ids[$itemtype][template]' value=\"" . $value["template"] . "\">";
             echo "</td>";
             echo "<td class='tab_bg_1' align='center'>";
-            Dropdown::showYesNo("ids[$type][enabled]", $value["enabled"]);
+            Dropdown::showYesNo("ids[$itemtype][is_active]", $value["is_active"]);
             echo "</td>";
             echo "<td class='tab_bg_1' align='center'>";
-            Dropdown::showYesNo("ids[$type][use_index]", $value["use_index"]);
+            Dropdown::showYesNo("ids[$itemtype][use_index]", $value["use_index"]);
             echo "</td>";
             echo "<td class='tab_bg_1'>";
-            if ($value["enabled"] && !$value["use_index"]) {
+            if ($value["is_active"] && !$value["use_index"]) {
                $disabled = "";
             } else {
                $disabled = "disabled";
             }
       
-            echo "<input type='text' name='ids[$type][index]' value='" . 
-               plugin_geninventorynumber_getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
+            echo "<input type='text' name='ids[$itemtype][index]' value='".
+               $value['index']."' size='12' " . $disabled . ">";
             echo "</td>";
             echo "</tr>";
          }
@@ -243,17 +265,15 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
          echo "<input type='submit' name='update_fields' value=\"" . $LANG["buttons"][7] . 
             "\" class='submit'>";
          echo "</td></tr>";
-      
          echo "</table></form>";
-      	
       }
    }
 
-    function getSelectLinkedItem() {
-        return "SELECT `id`
-              FROM `glpi_plugin_geninventorynumber_configfields`
-              WHERE config_id='" . $this->fields['id'] . "'";
-    }
+   function getSelectLinkedItem() {
+       return "SELECT `id`
+             FROM `glpi_plugin_geninventorynumber_configfields`
+             WHERE config_id='" . $this->fields['id'] . "'";
+   }
 
    /**
    * Dropdown of fields the plugin can manage (generate)
@@ -265,9 +285,24 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
    function dropdownFields($name, $value) {
       global $LANG;
       
-      $fields = array ('otherserial' => $LANG['common'][20],
-                       'immo_number' => $LANG['financial'][20]);
-      return Dropdown::showFromArray($name, $fields, $value);
+      $fields = array ('otherserial' => $LANG['common'][20]);
+                       //'immo_number' => $LANG['financial'][20]);
+      return Dropdown::showFromArray($name, $fields, array('value' => $value));
+   }
+   
+   static function getNextIndex($entities_id, $field, $itemtype = false) {
+      $configs_id = self::select($entities_id, $field);
+      if ($configs_id) {
+         $config = new self();
+         $config->getFromDB($configs_id);
+         if ($itemtype) {
+            return $config->fields['next_number'];
+         } else {
+            return PluginGeninventorynumberIndex::getIndexByitemtype($configs_id, $itemtype);
+         }
+      } else {
+         return false;
+      }
    }
    
    static function install(Migration $migration) {

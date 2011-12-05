@@ -43,7 +43,27 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginGeninventorynumberIndex extends CommonDBTM {
-   
+   /**
+   * Returns current index for a given object type
+   * 
+   * @param string   type of the context
+   * @return   int      0 or the current index
+   *
+   * NOTE: Utilis� uniquement pour l'affichage dans l'�dition de la configuration (ShowCoreConfig)
+   */
+   static function getIndexByitemtype($configs_id, $itemtype) {
+      global $DB;
+
+      $query = "SELECT `index` FROM `".getTableForItemType(__CLASS__)."` " .
+               "WHERE `itemtype`='$itemtype' AND `plugin_geninventorynumber_configs_id`='$configs_id'";
+      $result = $DB->query($query);
+      if (!$DB->numrows($result)) {
+         return 0;
+      } else {
+         return $DB->result($result, 0, "index");
+      }
+   }
+
    static function install(Migration $migration) {
       global $GENINVENTORYNUMBER_TYPES, $DB;
 
@@ -59,13 +79,14 @@ class PluginGeninventorynumberIndex extends CommonDBTM {
                   `entities_id` INT( 11 ) NOT NULL DEFAULT '0',
                   `type` INT( 11 ) NOT NULL DEFAULT '-1',
                   `field` VARCHAR( 255 ) NOT NULL DEFAULT 'otherserial',
-                  `index` INT( 11 ) NOT NULL DEFAULT '0',
+                  `index` BIGINT( 20 ) NOT NULL DEFAULT '0',
                   PRIMARY KEY ( `id` )
                   ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
          $DB->query($sql) or die($DB->error());
      } else {
         $migration->changeField($table, "ID", "id", "integer", "NOT NULL auto_increment");
         $migration->changeField($table, "FK_entities", "entities_id", "integer");
+        $migration->changeField($table, "next_number", "index", "integer");
         $migration->addKey($table, "entities_id");
         $migration->migrationOneTable($table);
      }
