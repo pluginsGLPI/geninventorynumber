@@ -147,7 +147,13 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
 
    static function install(Migration $migration) {
       global $DB;
+      
       $table = getTableForItemType(__CLASS__);
+      
+      if (TableExists("glpi_plugin_generateinventorynumber_profiles")) {
+         $migration->renameTable("glpi_plugin_generateinventorynumber_profiles", $table);
+      }
+
       if (!TableExists($table)) {
          $sql = "CREATE TABLE  IF NOT EXISTS `glpi_plugin_geninventorynumber_profiles` (
                     `id` int(11) NOT NULL auto_increment,

@@ -305,6 +305,20 @@ class PluginGeninventorynumberConfig extends CommonDropdown {
       }
    }
    
+   static function setNextIndex($entities_id, $field, $itemtype = false) {
+      $configs_id = self::select($entities_id, $field);
+      if ($configs_id) {
+         $config = new self();
+         $config->getFromDB($configs_id);
+         if ($itemtype) {
+            $config->update(array('id' => $config->getID(), 
+                                  'next_number' => $config->fields['next_number']) +1);
+         } else {
+            PluginGeninventorynumberIndex::setIndexByitemtype($configs_id, $itemtype);
+         }
+      }
+   }
+   
    static function install(Migration $migration) {
       global $DB;
       

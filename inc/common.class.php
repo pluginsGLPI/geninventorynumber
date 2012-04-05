@@ -52,7 +52,7 @@ class PluginGeninventorynumberCommon extends CommonDBTM {
    */
    function preUpdateItem(CommonDBTM $item) {
       global $LANG;
-   
+   /*
       $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
       $template = addslashes_deep($fields[$item->getType()]['template']);
       if ($fields[$item->getType()]['is_active'] && $fields[$item->getType()]['template'] != '') {
@@ -62,6 +62,7 @@ class PluginGeninventorynumberCommon extends CommonDBTM {
                                              false, ERROR);
           }
       }
+      */
       return $item;
    }
 
@@ -71,39 +72,38 @@ class PluginGeninventorynumberCommon extends CommonDBTM {
    * @param object   CommonDBTM object just added
    * @return   null
    */
-   function addItem($item) {
+   static function addItem(CommonDBTM $item) {
       global $DB, $LANG;
+      
+      $fields = PluginGeninventorynumberConfigField::getFieldInfos('otherserial');
    
-      $massive_action = false;
-      $type = get_class($item);
-      $fields = plugin_geninventorynumber_getFieldInfos('otherserial');
-   
-      if (isset ($fields[$type])) {
-         $config = new PluginGeninventorynumberConfig;
+      if (isset ($fields[get_class($item)])) {
+         $config = new PluginGeninventorynumberConfig();
          $config->getFromDb(1);
    
          //Globally check if auto generation is on
          if ($config->fields['active']) {
-            if ($fields[$type]['enabled']) {
-               $template = addslashes_deep($fields[$type]['template']);
+            if ($fields[$fields[get_class($item)]]['os_active']) {
+               $template = addslashes_deep($fields[get_class($item)]['template']);
    
-               $commonitem = new $type;
-               $commonitem->getFromDB($item->fields["id"]);
-   
-               $generated_field = PluginGeninventorynumberCommon::autoName($template, $type, 0, $commonitem->fields, $fields);
+               $generated_field = PluginGeninventorynumberCommon::autoName($template, 
+                                                                           $fields[$item['itemtype']], 
+                                                                           0, 
+                                                                           $commonitem->fields, 
+                                                                           $fields);
    
                //Cannot use update() because it'll launch pre_item_update and clean the inventory number...
-               $sql = "UPDATE " . $commonitem->getTable() . " SET otherserial='" . $generated_field . "' WHERE id=" . $item->fields["id"];
+               $sql = "UPDATE `" . $item->getTable() . "` 
+                       SET `otherserial`='" . $generated_field . "' 
+                       WHERE `id`='" . $item->getID()."'";
                $DB->query($sql);
-   
-               if (!$massive_action && strstr($_SESSION["MESSAGE_AFTER_REDIRECT"], $LANG["plugin_geninventorynumber"]["massiveaction"][3]) === false)
+
+               if (strstr($_SESSION["MESSAGE_AFTER_REDIRECT"], 
+                          $LANG["plugin_geninventorynumber"]["massiveaction"][3]) === false)
                   $_SESSION["MESSAGE_AFTER_REDIRECT"] .= $LANG["plugin_geninventorynumber"]["massiveaction"][3];
-   
-               if ($fields[$type]['use_index'])
-                  $sql = "UPDATE glpi_plugin_geninventorynumber_configs SET next_number=next_number+1 WHERE FK_entities=0";
-               else
-                  $sql = "UPDATE glpi_plugin_geninventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=0 AND type='".$type."' AND field='otherserial'";
-               $DB->query($sql);
+
+               PluginGeninventorynumberCommon::setNextIndex($item->fields['entities_id'], 
+                                                            'otherserial', get_class($item));
             }
          }
       }

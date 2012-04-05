@@ -37,24 +37,6 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-/**
-* Migration operations from version 1.0 to 1.1.0
-* 
-* @return	null
-*/
-function plugin_geninventorynumber_updatev11() {
-   global $DB;
-
-   $sql = " CREATE TABLE `glpi_generateinventorynumber_indexes` (
-      `ID` INT( 11 ) NOT NULL AUTO_INCREMENT ,
-      `FK_entities` INT( 11 ) NOT NULL DEFAULT '0',
-      `type` INT( 11 ) NOT NULL DEFAULT '-1',
-      `field` VARCHAR( 255 ) NOT NULL DEFAULT 'otherserial',
-      `index` INT( 11 ) NOT NULL DEFAULT '0',
-      PRIMARY KEY ( `ID` )
-      ) ENGINE = MYISAM CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
-   $DB->query($sql) or die($DB->error());
-}
 
 /**
 * Migration operations from version 1.1.0 to 1.2.0

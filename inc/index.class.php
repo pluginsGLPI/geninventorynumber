@@ -64,6 +64,17 @@ class PluginGeninventorynumberIndex extends CommonDBTM {
       }
    }
 
+   static function setIndexByitemtype($configs_id, $itemtype) {
+      global $DB;
+
+      $query = "SELECT `index`, `id` FROM `".getTableForItemType(__CLASS__)."` " .
+               "WHERE `itemtype`='$itemtype' AND `plugin_geninventorynumber_configs_id`='$configs_id'";
+      $result = $DB->query($query);
+      $config = new self();
+      $config->update(array('id' => $DB->result($result, 0, "id"), 
+                            'index' => $DB->result($result, 0, "index")) + 1);
+   }
+   
    static function install(Migration $migration) {
       global $GENINVENTORYNUMBER_TYPES, $DB;
 
