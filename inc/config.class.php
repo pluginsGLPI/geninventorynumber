@@ -1,4 +1,3 @@
-<<<<<<< .mine
 <?php
 /*
  * @version $Id: bill.tabs.php 530 2011-06-30 11:30:17Z walid $
@@ -55,7 +54,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
     static function getTypeName() {
         global $LANG;
-        return $LANG['plugin_geninventorynumber']['types'][0];
+        return $LANG["plugin_geninventorynumber"]["title"][1];
     }
 
     function cleanDBonPurge() {
@@ -109,17 +108,17 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<tr class='tab_bg_1'>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG['common'][16] . "</td>";
         echo "<td class='tab_bg_1'>";
-        autocompletionTextField($this, "name");
+        Html::autocompletionTextField($this, "name");
         echo "</td>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
         echo "<td class='tab_bg_1'>";
-        Dropdown::showYesNo("active", $this->fields["active"]);
+        Dropdown::showYesNo("is_active", $this->fields["is_active"]);
         echo "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
         echo "<td class='tab_bg_1'>";
-        plugin_geninventorynumber_dropdownFields('field', $this->fields['field']);
+        self::dropdownFields('field', $this->fields['field']);
         echo "</td>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
         echo "<td class='tab_bg_1'>";
@@ -132,7 +131,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<table>";
         echo "<tr>";
         echo "<td class='tab_bg_1'>" . $LANG['common'][25] . "</td><td>";
-        echo "<textarea cols='60' rows='4' name='comments' >" . $this->fields["comments"] . "</textarea>";
+        echo "<textarea cols='60' rows='4' name='comment' >" . $this->fields["comment"] . "</textarea>";
         echo "</td>";
         echo "</tr>";
         echo "</table>";
@@ -146,6 +145,19 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return true;
     }
 
+    /**
+     * Dropdown of fields the plugin can manage (generate)
+     *
+     * @param	string	Name of the dropdown
+     * @param	string	??? should be an array of options ?
+     * @return	null
+     */
+    static function dropdownFields($name, $value) {
+       global $LANG;
+       $fields['otherserial'] = $LANG['common'][20];
+       Dropdown::showFromArray($name,$fields,$value);
+    }
+    
     function getSelectLinkedItem() {
         return "SELECT `id`
               FROM `glpi_plugin_geninventorynumber_configfields`

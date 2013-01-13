@@ -30,30 +30,44 @@
 
 class PluginGeninventorynumberIndex extends CommonDBTM {
 
-    function canCreate() {
+   function canCreate() {
+      return Session::haveRight("config", "w");
+   }
+
+   function canView() {
+       return Session::haveRight("config", "r");
+   }
+
+   function canDelete() {
        return Session::haveRight("config", "w");
    }
 
-    function canView() {
-        return Session::haveRight("config", "r");
-    }
+   static function getTypeName() {
+       global $LANG;
+       return $LANG['plugin_geninventorynumber']['types'][2];
+   }
 
-    function canDelete() {
-        return Session::haveRight("config", "w");
-    }
+   static function getIndexByTypeName($itemtype) {
+      global $DB;
+        
+      $query = "SELECT `next_number`
+                FROM `glpi_plugin_geninventorynumber_indexes`
+                WHERE `itemtype`='$itemtype'";
+      $result = $DB->query($query);
+      if (!$DB->numrows($result)) {
+         return 0;
+      } else {
+         return $DB->result($result, 0, "next_number");
+      }
+   }
 
-    static function getTypeName() {
-        global $LANG;
-        return $LANG['plugin_geninventorynumber']['types'][2];
-    }
-
-    static function install(Migration $migration) {
-       global $DB, $GENINVENTORYNUMBER_TYPES;
-       $table = getTableForItemType(__CLASS__);
+   static function install(Migration $migration) {
+      global $DB, $GENINVENTORYNUMBER_TYPES;
+      $table = getTableForItemType(__CLASS__);
        
-       if (TableExists("glpi_plugin_generateinventorynumber_indexes")) {
-          $migration->renameTable("glpi_plugin_generateinventorynumber_indexes", $table);
-       }
+      if (TableExists("glpi_plugin_generateinventorynumber_indexes")) {
+         $migration->renameTable("glpi_plugin_generateinventorynumber_indexes", $table);
+      }
        
        if (!TableExists($table)) {
           $sql = "CREATE TABLE  IF NOT EXISTS `$table` (
@@ -83,10 +97,9 @@ class PluginGeninventorynumberIndex extends CommonDBTM {
             $migration->migrationOneTable($table);
             Plugin::migrateItemType(array(), array("glpi_displaypreferences"), array($table));
          }
-        
-    }
-    $migration->migrationOneTable($table);
- }
+      }
+      $migration->migrationOneTable($table);
+   }
     
    static function uninstall(Migration $migration) {
       $migration->dropTable(getTableForItemType(__CLASS__));

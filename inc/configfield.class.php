@@ -121,4 +121,93 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
    static function uninstall(Migration $migration) {
       $migration->dropTable(getTableForItemType(__CLASS__));
    }
-}=======
+
+   static function showForConfig($id) {
+      global $LANG, $CFG_GLPI, $DB;
+      
+      $config = new PluginGeninventorynumberConfig();
+      $config->getFromDB($id);
+      $fields = self::getFieldInfos($config->fields['field']);
+      $target = Toolbox::getItemTypeFormUrl(__CLASS__);
+      echo "<form name='form_core_config' method='post' action=\"$target\">";
+      echo "<div align='center'>";
+      echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+      echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
+      
+      echo "<input type='hidden' name='id' value='$id'>";
+      echo "<input type='hidden' name='entities_id' value='0'>";
+      
+      echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][10];
+      echo "</th><th>" . $LANG["common"][60] . "</th>";
+      echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . "</th>";
+      echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
+      
+      foreach ($fields as $type => $value) {
+         echo "<td class='tab_bg_1' align='center'>" . $type. "</td>";
+         echo "<td class='tab_bg_1'>";
+         echo "<input type='hidden' name='ids[$type][id]' value='".$value["id"]."'>";
+         echo "<input type='hidden' name='ids[$type][itemtype]' value='$type'>";
+         echo "<input type='text' name='ids[$type][template]' value=\"" . $value["template"] . "\">";
+         echo "</td>";
+         echo "<td class='tab_bg_1' align='center'>";
+         Dropdown::showYesNo("ids[$type][is_active]", $value["is_active"]);
+         echo "</td>";
+         echo "<td class='tab_bg_1' align='center'>";
+         Dropdown::showYesNo("ids[$type][use_index]", $value["use_index"]);
+         echo "</td>";
+         echo "<td class='tab_bg_1'>";
+         if ($value["is_active"] && !$value["use_index"]) {
+            $disabled = "";
+         } else {
+            $disabled = "disabled";
+         }
+      
+         echo "<input type='text' name='ids[$type][index]' value='" .
+            PluginGeninventorynumberIndex::getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
+         echo "</td>";
+         echo "</tr>";
+      }
+      
+      echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
+      echo "<input type='submit' name='update_fields' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
+      echo "</td></tr>";
+      
+      echo "</table>";
+      Html::closeForm();
+   }
+
+   static function getFieldInfos($field) {
+      global $DB;
+      $query = "SELECT fields.*
+                FROM `glpi_plugin_geninventorynumber_configfields` as fields,
+                     `glpi_plugin_geninventorynumber_configs` as config
+                WHERE `config`.`field`='$field'
+                   AND `config`.`id`=`fields`.`plugin_geninventorynumber_configs_id`
+                ORDER BY `fields`.`itemtype`";
+      $result = $DB->query($query);
+      $fields = array();
+      foreach ($DB->request($query) as $data) {
+         $fields['itemtype'] = $data;
+      }
+      return $fields;
+   }
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+       
+      $type = get_class($item);
+      if ($type == 'PluginGeninventorynumberConfig') {
+         return array(1 => $LANG['title'][26]);
+      }
+      return '';
+   }
+    
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      $type = get_class($item);
+      if ($type == 'PluginGeninventorynumberConfig') {
+         $fields = new self();
+         $fields->showForConfig($item->getID());
+         return true;
+      }
+   }
+}

@@ -32,18 +32,18 @@ function plugin_init_geninventorynumber() {
    global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_TYPES, $CFG_GLPI, $LANG;
 
    $GENINVENTORYNUMBER_TYPES = array ('Computer', 'Monitor', 'Printer', 'NetworkEquipement',
-         'Peripheral', 'Phone');
+                                       'Peripheral', 'Phone');
 
    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
     
    $pre_item_update_actions = array();
-   $item_add_actions = array();
+   $item_add_actions        = array();
    foreach ($GENINVENTORYNUMBER_TYPES as $type) {
       $item_add_actions[$type]        = 'plugin_item_add_geninventorynumber';
       $pre_item_update_actions[$type] = 'plugin_pre_item_update_geninventorynumber';
    }
 
-   $plugin = new Plugin;
+   $plugin = new Plugin();
    if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
       $PLUGIN_HOOKS['change_profile']['geninventorynumber']     = 'plugin_geninventorynumber_changeprofile';
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
@@ -53,8 +53,13 @@ function plugin_init_geninventorynumber() {
       $PLUGIN_HOOKS['headings_action']['geninventorynumber']    = 'plugin_headings_actions_geninventorynumber';
       $PLUGIN_HOOKS['pre_item_purge']['geninventorynumber']     = array("Profile" => 'plugin_pre_item_purge_geninventorynumber');
 
-      Plugin::registerClass('PluginGeninventorynumberProfile', array('addtabon' => array('Profile')));
-
+      Plugin::registerClass('PluginGeninventorynumberProfile',
+                            array('addtabon' => array('Profile')));
+      Plugin::registerClass('PluginGeninventorynumberConfigField',
+                            array('addtabon' => array('PluginGeninventorynumberConfig')));
+      $PLUGIN_HOOKS['change_profile']['geninventorynumber']
+         = array('PluginGeninventorynumberProfile', 'changeProfile');
+      
       $PLUGIN_HOOKS['pre_item_purge']['geninventorynumber']
       = array('Profile' => array('PluginGeninventorynumberProfile', 'purgeProfiles'));
 
