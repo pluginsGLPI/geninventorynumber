@@ -31,18 +31,20 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
+$NEEDED_ITEMS=array("search","transfer");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-<<<<<<< .mine
+
+Session::checkRight("config","r");
+
 Html::header($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
 
-$PluginGeninventorynumberConfig=new PluginGeninventorynumberConfig();
-if ($PluginGeninventorynumberConfig->canView() || Session::haveRight("config","w")) {
-	Search::show("PluginGeninventorynumberConfig");
-}
-Html::footer();
+manageGetValuesInSearch(PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE);
 
-?>=======
-$dropdown = new PluginGeninventorynumberConfig();
-include (GLPI_ROOT."/front/dropdown.common.php");>>>>>>> .r67
+searchForm(PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE,$_GET);
+
+showList(PLUGIN_GENINVENTORYNUMBER_CONFIG_TYPE,$_GET["field"]);
+
+Html::footer();
+?>

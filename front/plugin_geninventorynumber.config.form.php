@@ -1,4 +1,5 @@
 <?php
+
 /*
    ----------------------------------------------------------------------
    GLPI - Gestionnaire Libre de Parc Informatique
@@ -31,18 +32,22 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
-
-<<<<<<< .mine
-Html::header($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
-
-$PluginGeninventorynumberConfig=new PluginGeninventorynumberConfig();
-if ($PluginGeninventorynumberConfig->canView() || Session::haveRight("config","w")) {
-	Search::show("PluginGeninventorynumberConfig");
+$NEEDED_ITEMS = array (
+   "setup","plugin"
+);
+if (!defined('GLPI_ROOT')) {
+   define('GLPI_ROOT', '../../..');
 }
+include (GLPI_ROOT . "/inc/includes.php");
+Session::checkRight("config", "w");
+
+$config = new PluginGenInventoryNumberConfig;
+$_GET = array_merge($_GET,$_POST);
+plugin_geninventorynumber_updateIndexes($_GET);
+
+Html::header($LANG["plugin_geninventorynumber"]["title"][1], $_SERVER["PHP_SELF"], "config", "plugins");
+$config->showForm($_SERVER['PHP_SELF'],$_GET["ID"]);
+
 Html::footer();
 
-?>=======
-$dropdown = new PluginGeninventorynumberConfig();
-include (GLPI_ROOT."/front/dropdown.common.php");>>>>>>> .r67
+?>
