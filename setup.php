@@ -45,13 +45,9 @@ function plugin_init_geninventorynumber() {
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
-      $PLUGIN_HOOKS['change_profile']['geninventorynumber']     = 'plugin_geninventorynumber_changeprofile';
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
       $PLUGIN_HOOKS['item_add']['geninventorynumber']           = $item_add_actions;
       $PLUGIN_HOOKS['pre_item_update']['geninventorynumber']    = $pre_item_update_actions;
-      $PLUGIN_HOOKS['headings']['geninventorynumber']           = 'plugin_get_headings_geninventorynumber';
-      $PLUGIN_HOOKS['headings_action']['geninventorynumber']    = 'plugin_headings_actions_geninventorynumber';
-      $PLUGIN_HOOKS['pre_item_purge']['geninventorynumber']     = array("Profile" => 'plugin_pre_item_purge_geninventorynumber');
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
                             array('addtabon' => array('Profile')));

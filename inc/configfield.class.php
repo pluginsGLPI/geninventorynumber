@@ -129,6 +129,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       $config->getFromDB($id);
       $fields = self::getFieldInfos($config->fields['field']);
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
+
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
@@ -184,10 +185,9 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
                 WHERE `config`.`field`='$field'
                    AND `config`.`id`=`fields`.`plugin_geninventorynumber_configs_id`
                 ORDER BY `fields`.`itemtype`";
-      $result = $DB->query($query);
       $fields = array();
       foreach ($DB->request($query) as $data) {
-         $fields['itemtype'] = $data;
+         $fields[$data['itemtype']] = $data;
       }
       return $fields;
    }

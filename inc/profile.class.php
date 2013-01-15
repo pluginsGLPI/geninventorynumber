@@ -66,7 +66,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       global $DB;
     
       $query = "SELECT * FROM `".$this->getTable()."`
-                WHERE `profiles_id` = '" . $profiles_id . "' ";
+                WHERE `profiles_id` = '$profiles_id'";
       if ($result = $DB->query($query)) {
          if ($DB->numrows($result) != 1) {
             return false;
@@ -149,6 +149,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
          $migration->dropField($table, 'interface');
          $migration->dropField($table, 'name');
      }
+     self::changeProfile($_SESSION['glpiactiveprofile']['id']);
    }
     
    static function uninstall(Migration $migration) {

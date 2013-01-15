@@ -42,17 +42,25 @@ class PluginGeninventorynumberIndex extends CommonDBTM {
        return Session::haveRight("config", "w");
    }
 
+   static function updateIndex($new_value, $itemtype) {
+      global $DB;
+      $query = "UPDATE `".getTableForItemType(__CLASS__)."`
+                SET `next_number`='$new_value'
+                WHERE `itemtype`='$itemtype'";
+      $DB->query($query);
+   }
+      
    static function getTypeName() {
        global $LANG;
        return $LANG['plugin_geninventorynumber']['types'][2];
    }
 
-   static function getIndexByTypeName($itemtype) {
+   static function getIndexByTypeName($itemtype, $field = 'otherserial') {
       global $DB;
         
       $query = "SELECT `next_number`
                 FROM `glpi_plugin_geninventorynumber_indexes`
-                WHERE `itemtype`='$itemtype'";
+                WHERE `itemtype`='$itemtype' AND `field`='$field'";
       $result = $DB->query($query);
       if (!$DB->numrows($result)) {
          return 0;

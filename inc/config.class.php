@@ -158,6 +158,18 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        Dropdown::showFromArray($name,$fields,$value);
     }
     
+    static function getNextIndex($field = 'otherserial') {
+       $query = "SELECT `next_number`
+                 FROM `".getTableForItemType(__CLASS__)."`
+                 WHERE `field`='$field'";
+       $results = $DB->query($query);
+       if ($DB->numrows($results)) {
+          return ($DB->result($results, 0 , 'next_number') + 1);
+       } else {
+          return 0;
+       }
+    }
+    
     function getSelectLinkedItem() {
         return "SELECT `id`
               FROM `glpi_plugin_geninventorynumber_configfields`
