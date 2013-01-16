@@ -21,12 +21,12 @@
  --------------------------------------------------------------------------
  @package   geninventorynumber
  @author    the geninventorynumber plugin team
- @copyright Copyright (c) 2010-2011 geninventorynumber plugin team
+ @copyright Copyright (c) 2008-2013 geninventorynumber plugin team
  @license   GPLv2+
             http://www.gnu.org/licenses/gpl.txt
  @link      https://forge.indepnet.net/projects/geninventorynumber
  @link      http://www.glpi-project.org/
- @since     2009
+ @since     2008
  ---------------------------------------------------------------------- */
 
 define('GLPI_ROOT', '../../..');

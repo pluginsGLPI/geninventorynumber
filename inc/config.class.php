@@ -20,12 +20,12 @@
  --------------------------------------------------------------------------
  @package   geninventorynumber
  @author    the geninventorynumber plugin team
- @copyright Copyright (c) 2010-2011 geninventorynumber plugin team
+ @copyright Copyright (c) 2008-2013 geninventorynumber plugin team
  @license   GPLv2+
             http://www.gnu.org/licenses/gpl.txt
  @link      https://forge.indepnet.net/projects/geninventorynumber
  @link      http://www.glpi-project.org/
- @since     2009
+ @since     2008
  ---------------------------------------------------------------------- */
 
 if (!defined('GLPI_ROOT')) {
@@ -35,8 +35,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginGeninventorynumberConfig extends CommonDBTM {
 
     function defineTabs($options=array()) {
-        global $LANG;
-        $ong[1] = $LANG["plugin_geninventorynumber"]["config"][7];
+        $this->addStandardTab(__CLASS__, $ong, $options);
         return $ong;
     }
 
@@ -238,5 +237,21 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
     
     static function uninstall(Migration $migration) {
        $migration->dropTable(getTableForItemType(__CLASS__));
+    }
+
+    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+       global $LANG;
+        
+       if (get_class($item) == __CLASS__) {
+          return array(1 => $LANG['title'][26]);
+       }
+       return '';
+    }
+    
+    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+       if (get_class($item) == __CLASS__) {
+          PluginGeninventorynumberConfigField::showForConfig($item->getID());
+          return true;
+       }
     }
 }

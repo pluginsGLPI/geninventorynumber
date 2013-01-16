@@ -20,12 +20,12 @@ along with GLPI; along with geninventorynumber. If not, see <http://www.gnu.org/
 --------------------------------------------------------------------------
 @package   geninventorynumber
 @author    the geninventorynumber plugin team
-@copyright Copyright (c) 2010-2011 geninventorynumber plugin team
+@copyright Copyright (c) 2008-2013 geninventorynumber plugin team
 @license   GPLv2+
 http://www.gnu.org/licenses/gpl.txt
 @link      https://forge.indepnet.net/projects/geninventorynumber
 @link      http://www.glpi-project.org/
-@since     2009
+@since     2008
 ---------------------------------------------------------------------- */
 
 if (!defined('GLPI_ROOT')) {
@@ -190,24 +190,5 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          $fields[$data['itemtype']] = $data;
       }
       return $fields;
-   }
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
-       
-      $type = get_class($item);
-      if ($type == 'PluginGeninventorynumberConfig') {
-         return array(1 => $LANG['title'][26]);
-      }
-      return '';
-   }
-    
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-      $type = get_class($item);
-      if ($type == 'PluginGeninventorynumberConfig') {
-         $fields = new self();
-         $fields->showForConfig($item->getID());
-         return true;
-      }
    }
 }

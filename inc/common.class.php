@@ -34,7 +34,7 @@
             http://www.gnu.org/licenses/gpl.txt
  @link      https://forge.indepnet.net/projects/geninventorynumber
  @link      http://www.glpi-project.org/
- @since     2009
+ @since     2008
  ---------------------------------------------------------------------- */
 
 
