@@ -47,12 +47,13 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       return Session::haveRight('profile', 'r');
    }
    
-   static function changeProfile($profiles_id) {
+   static function changeProfile() {
       $profile = new self();
-      $profile->getFromDBByProfile($profiles_id);
-      foreach (array('plugin_geninventorynumber_generate',
-                       'plugin_geninventorynumber_overwrite') as $field) {
-         $_SESSION['glpiactiveprofile'][$field] = $profile->fields[$field];
+      if ($profile->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
+         foreach (array('plugin_geninventorynumber_generate',
+                          'plugin_geninventorynumber_overwrite') as $field) {
+            $_SESSION['glpiactiveprofile'][$field] = $profile->fields[$field];
+         }
       }
    }
    

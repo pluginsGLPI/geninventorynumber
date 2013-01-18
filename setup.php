@@ -35,9 +35,10 @@ function plugin_init_geninventorynumber() {
                                        'Peripheral', 'Phone');
 
    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
+   $PLUGIN_HOOKS['change_profile']['geninventorynumber']
+      = array('PluginGeninventorynumberProfile', 'changeProfile');
     
    $pre_item_update_actions = array();
-   $item_add_actions        = array();
    foreach ($GENINVENTORYNUMBER_TYPES as $type) {
       $PLUGIN_HOOKS['item_add']['geninventorynumber'][$type]
          = array('PluginGeninventorynumberGeneration' => 'itemAdd');
@@ -51,10 +52,7 @@ function plugin_init_geninventorynumber() {
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
                             array('addtabon' => array('Profile')));
-      Plugin::registerClass('PluginGeninventorynumberConfigField',
-                            array('addtabon' => array('PluginGeninventorynumberConfig')));
-      $PLUGIN_HOOKS['change_profile']['geninventorynumber']
-         = array('PluginGeninventorynumberProfile', 'changeProfile');
+      Plugin::registerClass('PluginGeninventorynumberConfigField');
       
       $PLUGIN_HOOKS['pre_item_purge']['geninventorynumber']
       = array('Profile' => array('PluginGeninventorynumberProfile', 'purgeProfiles'));
