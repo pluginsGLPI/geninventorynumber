@@ -28,38 +28,27 @@ http://www.gnu.org/licenses/gpl.txt
 @since     2008
 ---------------------------------------------------------------------- */
 
-/**
- * Define list of massive actions available through this plugin
- *
- * @param	string	Type of object currently displayed
- * @return	array	list of key(action name) and values (displayed string) for massive actions
- */
 function plugin_geninventorynumber_MassiveActions($type) {
    global $LANG, $GENINVENTORYNUMBER_TYPES;
 
-   $values = array ();
+   $actions = array ();
    if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
-      $fields = PluginGeninventorynumberConfigField::getFieldInfos('otherserial');
-      if ($fields[$type]['is_active']) {
+      $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
+
+      if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
          if (Session::haveRight("plugin_geninventorynumber_generate", "w")) {
-            $values["plugin_geninventorynumber_generate"]
+            $actions["plugin_geninventorynumber_generate"]
                = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
          }
          if (Session::haveRight("plugin_geninventorynumber_overwrite", "w")) {
-            $values["plugin_geninventorynumber_overwrite"]
+            $actions["plugin_geninventorynumber_overwrite"]
                = $LANG["plugin_geninventorynumber"]["massiveaction"][1];
          }
       }
    }
-   return $values;
+   return $actions;
 }
 
-/**
- * Shows validate button when plugin massive action selected in dropdown
- *
- * @param	array	Options as designed for MassiveActionsDisplay hook
- * @return	string	HTML code for button or empty string
- */
 function plugin_geninventorynumber_MassiveActionsDisplay($options = array()) {
    global $LANG, $GENINVENTORYNUMBER_TYPES;
    if (in_array ($options['itemtype'], $GENINVENTORYNUMBER_TYPES)) {
@@ -76,14 +65,6 @@ function plugin_geninventorynumber_MassiveActionsDisplay($options = array()) {
    return "";
 }
 
-/**
- * Executes massive actions for this plugin
- *
- *	$data structure : array('item'=>array('ID', 'ID2', ...),'itemtype'=>'TypeObjets', 'action'=>'NomAction')
- *
- * @param	array	Massive Actions Parameters (as designed for hook)
- * @return	null
- */
 function plugin_geninventorynumber_MassiveActionsProcess($data) {
    global $DB;
 
@@ -99,7 +80,7 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
                            && isset ($item->fields["otherserial"])
                               && $item->fields["otherserial"] == "") //Or is overwrite action is selected
                      || ($data["action"] == "plugin_geninventorynumber_overwrite")) {
-                  PluginGeninventorynumberGeneration::itemAdd($item);
+                  PluginGeninventorynumberGeneration::itemAdd($item, true);
                }
             }
          }
@@ -109,6 +90,7 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
    }
 }
 
+
 function plugin_geninventorynumber_install() {
    $migration = new Migration("2.0");
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
@@ -117,10 +99,9 @@ function plugin_geninventorynumber_install() {
    PluginGeninventorynumberProfile::install($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
    PluginGeninventorynumberConfigField::install($migration);
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/index.class.php');
-   PluginGeninventorynumberIndex::install($migration);
    return true;
 }
+
 
 function plugin_geninventorynumber_uninstall() {
    $migration = new Migration("2.0");
@@ -130,7 +111,5 @@ function plugin_geninventorynumber_uninstall() {
    PluginGeninventorynumberProfile::uninstall($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
    PluginGeninventorynumberConfigField::uninstall($migration);
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/index.class.php');
-   PluginGeninventorynumberIndex::uninstall($migration);
    return true;
 }

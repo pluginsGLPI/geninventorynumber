@@ -30,21 +30,9 @@
 
 class PluginGeninventorynumberProfile extends CommonDBTM {
 
-   function canDelete() {
-      return Session::haveRight("config", "w");
-   }
-
    static function getTypeName() {
       global $LANG;
       return $LANG["plugin_geninventorynumber"]["profiles"][0];
-   }
-
-   function canCreate() {
-      return Session::haveRight('profile', 'w');
-   }
-    
-   function canView() {
-      return Session::haveRight('profile', 'r');
    }
    
    static function changeProfile() {

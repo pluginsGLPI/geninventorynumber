@@ -109,19 +109,22 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<td class='tab_bg_1'>";
         Html::autocompletionTextField($this, "name");
         echo "</td>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" .
+           $LANG["plugin_geninventorynumber"]["config"][0] . "</td>";
         echo "<td class='tab_bg_1'>";
         Dropdown::showYesNo("is_active", $this->fields["is_active"]);
         echo "</td>";
         echo "</tr>";
         echo "<tr>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" .
+           $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
         echo "<td class='tab_bg_1'>";
         self::dropdownFields('field', $this->fields['field']);
         echo "</td>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" .
+           $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
         echo "<td class='tab_bg_1'>";
-        echo "<input type='text' name='next_number' value='" . $this->fields["next_number"] . "' size='12'>&nbsp;";
+        echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
         echo "</td>";
         echo "</tr>";
 
@@ -150,13 +153,14 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        Dropdown::showFromArray($name,$fields,$value);
     }
     
-    static function getNextIndex($field = 'otherserial') {
-       $query = "SELECT `next_number`
-                 FROM `".getTableForItemType(__CLASS__)."`
-                 WHERE `field`='$field'";
+    static function getNextIndex() {
+       global $DB;
+       
+       $query = "SELECT `index`
+                 FROM `".getTableForItemType(__CLASS__)."`";
        $results = $DB->query($query);
        if ($DB->numrows($results)) {
-          return ($DB->result($results, 0 , 'next_number') + 1);
+          return ($DB->result($results, 0 , 'index') + 1);
        } else {
           return 0;
        }
@@ -195,9 +199,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
                     `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
                     `field`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
                     `entities_id` int(11)  NOT NULL default '-1',
-                    `is_recursive` tinyint(1)  NOT NULL default 0,
                     `is_active` tinyint(1)  NOT NULL default 0,
-                    `next_number` int(11)  NOT NULL default 0,
+                    `index` int(11)  NOT NULL default 0,
                     `comment` text COLLATE utf8_unicode_ci,
                     PRIMARY KEY  (`id`)
                  ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -208,8 +211,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           $tmp['field']        = 'otherserial';
           $tmp['is_active']    = 1;
           $tmp['entities_id']  = 0;
-          $tmp['is_recursive'] = 1;
-          $tmp['next_number']  = 0;
+          $tmp['index']        = 0;
           $config = new self();
           $config->add($tmp);
        } else {
@@ -222,7 +224,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
              $migration->changeField($table, 'comments', 'comment', 'text');
           }
           $migration->changeField($table, 'is_active', 'is_active', 'bool');
-          $migration->addField($table, 'is_recursive', 'bool');
+          $migration->changeField($table, 'next_number', 'index', 'integer');
        }
        
        $migration->migrationOneTable($table);
@@ -246,5 +248,18 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           PluginGeninventorynumberConfigField::showForConfig($item->getID());
           return true;
        }
+    }
+
+    static function updateIndex() {
+       global $DB;
+       $query = "UPDATE `".getTableForItemType(__CLASS__)."`
+                 SET `index`=`index`+1";
+       $DB->query($query);
+    }
+
+    static function isGenerationActive() {
+       $config = new self();
+       $config->getFromDB(1);
+       return $config->fields['is_active'];
     }
 }

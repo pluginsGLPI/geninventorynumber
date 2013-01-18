@@ -1,4 +1,4 @@
-<<?php
+<?php
 /*
  * @version $Id$
  LICENSE
@@ -29,17 +29,19 @@
  ---------------------------------------------------------------------- */
 
 class PluginGeninventorynumberGeneration {
-   static function autoName($objectName, $itemtype, $entities_id = 0,
-                              $fields, $field_params = array ()) {
+
+   static function autoName($config, CommonDBTM $item) {
    
-      $len = strlen($objectName);
-      if ($len > 8 && substr($objectName, 0, 4) === '&lt;'
-         && substr($objectName, $len -4, 4) === '&gt;') {
+      $template = $config['template'];
+      $len      = strlen($template);
+      if ($len > 8
+         && substr($template, 0, 4) === '&lt;'
+            && substr($template, $len - 4, 4) === '&gt;') {
    
-         $autoNum = substr($objectName, 4, $len -8);
+         $autoNum = substr($template, 4, $len -8);
          $mask    = '';
          if (preg_match("/\\#{1,10}/", $autoNum, $mask)) {
-            $serial = (isset ($fields['serial']) ? $fields['serial'] : '');
+            $serial = (isset ($item->fields['serial']) ? $item->fields['serial'] : '');
    
             $global  = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
             $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s'),
@@ -49,87 +51,54 @@ class PluginGeninventorynumberGeneration {
             $pos     = strpos($autoNum, $mask) + 1;
             $len     = strlen($mask);
             $like    = str_replace('#', '_', $autoNum);
-   
-            if ($field_params[$type]['use_index']) {
-               $index = PluginGeninventorynumberConfig::getNextIndex('otherserial');
+
+            if ($config['use_index']) {
+               $index = PluginGeninventorynumberConfig::getNextIndex();
             } else {
-               $index = PluginGeninventorynumberIndex::getIndexByTypeName($itemtype, 'otherserial');
+               $index = PluginGeninventorynumberConfigField::getNextIndex($config['itemtype']);
             }
    
             $next_number = str_pad($index, $len, '0', STR_PAD_LEFT);
-            $objectName  = str_replace(array ($mask, '\\_', '\\%'),
+            $template    = str_replace(array ($mask, '\\_', '\\%'),
                                        array ($next_number,  '_',  '%'),
                                        $autoNum);
          }
       }
-      return $objectName;
+      return $template;
    }
 
-   static function itemAdd(CommonDBTM $item) {
-      global $DB, $LANG;
+   static function itemAdd(CommonDBTM $item, $massiveaction = false) {
+      global $LANG;
       
-      $itemtypes = PluginGeninventorynumberConfigField::getEnabledItemTypes();
-      if (in_array(get_class($item), $itemtypes)) {
-         self::autoName();
+      $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item));
+      if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
+         $field
+            = self::autoName($config, $item);
+         $tmp = clone $item;
+         $item->fields['otherserial'] = $field;
+         $tmp->update($item->fields);
+         if (!$massiveaction &&
+               strstr($_SESSION["MESSAGE_AFTER_REDIRECT"],
+                      $LANG["plugin_geninventorynumber"]["massiveaction"][3]) === false) {
+            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3]);
+         }
+         
+         if ($config['use_index']) {
+            PluginGeninventorynumberConfig::updateIndex();
+         } else {
+            PluginGeninventorynumberConfigField::updateIndex(get_class($item));
+         }
       }
    }
    
    static function preItemUpdate(CommonDBTM $item) {
-   }
-   
-   function plugin_item_add_geninventorynumber($parm, $massive_action = false, $field = 'otherserial') {
-      global $DB, $LANG;
-   
-      $fields = plugin_geninventorynumber_getFieldInfos($field);
-   
-      if (isset ($parm["type"]) && isset ($fields[$parm["type"]])) {
-         $config = plugin_geninventorynumber_getConfig();
-   
-         //Globally check if auto generation is on
-         if ($config->fields['active']) {
-   
-            if ($fields[$parm["type"]]['enabled']) {
-               $template = addslashes_deep($fields[$parm["type"]]['template']);
-   
-               $commonitem = new CommonItem;
-               $commonitem->getFromDB($parm["type"], $parm["ID"]);
-   
-               $generated_field = plugin_geninventorynumber_autoName($template, $parm["type"], 0, $commonitem->obj->fields, $fields);
-   
-               //Cannot use update() because it'll launch pre_item_update and clean the inventory number...
-               $sql = "UPDATE " . $commonitem->obj->table . " SET otherserial='" . $generated_field . "' WHERE ID=" . $parm["ID"];
-               $DB->query($sql);
-   
-               if (!$massive_action && strstr($_SESSION["MESSAGE_AFTER_REDIRECT"], $LANG["plugin_geninventorynumber"]["massiveaction"][3]) === false)
-                  $_SESSION["MESSAGE_AFTER_REDIRECT"] .= $LANG["plugin_geninventorynumber"]["massiveaction"][3];
-   
-               if ($fields[$parm["type"]]['use_index'])
-                  $sql = "UPDATE glpi_plugin_geninventorynumber_config SET next_number=next_number+1 WHERE FK_entities=0";
-               else
-                  $sql = "UPDATE glpi_plugin_geninventorynumber_indexes SET next_number=next_number+1 WHERE FK_entities=0 AND type='".$parm["type"]."' AND field='otherserial'";
-               $DB->query($sql);
-   
-            }
-         }
-      }
-   
-      return $parm;
-   }
-
-   function plugin_geninventorynumber_updateIndexes($params) {
-      global $DB;
-   
-      if (isset ($params["update"])) {
-         $config = new PluginGenInventoryNumberConfig;
-         $config->update($params);
-      }
-   
-      if (isset ($params["update_fields"]) || isset ($params["update_unicity"])) {
-         $field = new PluginGenInventoryNumberFieldDetail;
-   
-         //Update each type's index
-         foreach ($params["IDS"] as $type => $datas) {
-            $field->update($datas);
+      global $LANG;
+      if (PluginGeninventorynumberConfig::isGenerationActive()
+            && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
+         if ($item->fields['otherserial'] != $item->input['otherserial']) {
+            $item->input['otherserial'] = $item->fields['otherserial'];
+            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][2],
+                                             true, ERROR);
          }
       }
    }

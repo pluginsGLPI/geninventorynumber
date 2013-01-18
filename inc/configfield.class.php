@@ -39,6 +39,15 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       return $LANG['plugin_geninventorynumber']['types'][1];
    }
 
+   static function getConfigFieldByItemType($itemtype) {
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'");
+      if (!empty($infos)) {
+         return array_pop($infos);
+      } else {
+         return $infos;
+      }
+   }
+   
    static function install(Migration $migration) {
       global $DB, $GENINVENTORYNUMBER_TYPES;
       $table = getTableForItemType(__CLASS__);
@@ -95,12 +104,11 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       
       $config = new PluginGeninventorynumberConfig();
       $config->getFromDB($id);
-      $fields = self::getFieldInfos($config->fields['field']);
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
 
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
-      echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+      echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
       
       echo "<input type='hidden' name='id' value='$id'>";
@@ -111,22 +119,23 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . "</th>";
       echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
       
-      foreach ($fields as $type => $value) {
-         echo "<td class='tab_bg_1' align='center'>" . $type. "</td>";
+      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
+         $itemtype = $value['itemtype'];
+         echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
          echo "<td class='tab_bg_1'>";
-         echo "<input type='hidden' name='ids[$type][id]' value='".$value["id"]."'>";
-         echo "<input type='hidden' name='ids[$type][itemtype]' value='$type'>";
-         echo "<input type='text' name='ids[$type][template]' value=\"" . $value["template"] . "\">";
+         echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
+         echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
+         echo "<input type='text' name='ids[$itemtype][template]' value=\"" . $value["template"] . "\">";
          echo "</td>";
          echo "<td class='tab_bg_1' align='center'>";
-         Dropdown::showYesNo("ids[$type][is_active]", $value["is_active"]);
+         Dropdown::showYesNo("ids[$itemtype][is_active]", $value["is_active"]);
          echo "</td>";
          echo "<td class='tab_bg_1' align='center'>";
-         Dropdown::showYesNo("ids[$type][use_index]", $value["use_index"]);
+         Dropdown::showYesNo("ids[$itemtype][use_index]", $value["use_index"]);
          echo "</td>";
          echo "<td class='tab_bg_1' align='center'>";
          if ($value["is_active"] && !$value["use_index"]) {
-            echo "<input type='text' name='ids[$type][index]' value='" .
+            echo "<input type='text' name='ids[$itemtype][index]' value='" .
             $value['index'] . "' size='12'>";
          }
          echo "</td>";
@@ -141,21 +150,6 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       Html::closeForm();
    }
 
-   static function getFieldInfos($field) {
-      global $DB;
-      $query = "SELECT fields.*
-                FROM `glpi_plugin_geninventorynumber_configfields` as fields,
-                     `glpi_plugin_geninventorynumber_configs` as config
-                WHERE `config`.`field`='$field'
-                   AND `config`.`id`=`fields`.`plugin_geninventorynumber_configs_id`
-                ORDER BY `fields`.`itemtype`";
-      $fields = array();
-      foreach ($DB->request($query) as $data) {
-         $fields[$data['itemtype']] = $data;
-      }
-      return $fields;
-   }
-
    static function getEnabledItemTypes() {
       global $DB;
       $query = "SELECT DISTINCT `itemtype`
@@ -166,5 +160,40 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          $types[] = $data['itemtype'];
       }
       return $types;
+   }
+   
+   static function isActiveForItemType($itemtype) {
+      global $DB;
+      $query = "SELECT `is_active`
+                FROM `".getTableForItemType(__CLASS__)."`
+                WHERE `itemtype`='$itemtype'";
+      $results = $DB->query($query);
+      if ($DB->numrows($results)) {
+         return $DB->result($results, 0, 'is_active');
+      } else {
+         return false;
+      }
+   }
+
+   static function getNextIndex($itemtype) {
+      global $DB;
+   
+      $query = "SELECT `index`
+                FROM `".getTableForItemType(__CLASS__)."`
+                WHERE `itemtype`='$itemtype'";
+      $result = $DB->query($query);
+      if (!$DB->numrows($result)) {
+         return 0;
+      } else {
+         return ($DB->result($result, 0, "index") + 1);
+      }
+   }
+
+   static function updateIndex($itemtype) {
+      global $DB;
+      $query = "UPDATE `".getTableForItemType(__CLASS__)."`
+                SET `index`=`index`+1
+                WHERE `itemtype`='$itemtype'";
+      $DB->query($query);
    }
 }

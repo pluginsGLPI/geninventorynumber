@@ -53,4 +53,3 @@ $LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Générer un numéro d
 $LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";
 $LANG["plugin_geninventorynumber"]["massiveaction"][2] = "Vous ne pouvez pas modifier le numéro d'inventaire";
 $LANG["plugin_geninventorynumber"]["massiveaction"][3] = "Un numéro d'inventaire a été généré";
-$LANG["plugin_geninventorynumber"]["massiveaction"][4] = "Impossible d'ajouter l'objet car le numéro d'inventaire existe déjà";
