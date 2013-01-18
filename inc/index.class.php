@@ -30,18 +30,6 @@
 
 class PluginGeninventorynumberIndex extends CommonDBTM {
 
-   function canCreate() {
-      return Session::haveRight("config", "w");
-   }
-
-   function canView() {
-       return Session::haveRight("config", "r");
-   }
-
-   function canDelete() {
-       return Session::haveRight("config", "w");
-   }
-
    static function updateIndex($new_value, $itemtype) {
       global $DB;
       $query = "UPDATE `".getTableForItemType(__CLASS__)."`

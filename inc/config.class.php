@@ -144,13 +144,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return true;
     }
 
-    /**
-     * Dropdown of fields the plugin can manage (generate)
-     *
-     * @param	string	Name of the dropdown
-     * @param	string	??? should be an array of options ?
-     * @return	null
-     */
     static function dropdownFields($name, $value) {
        global $LANG;
        $fields['otherserial'] = $LANG['common'][20];

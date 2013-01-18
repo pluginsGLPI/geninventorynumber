@@ -39,15 +39,15 @@ function plugin_init_geninventorynumber() {
    $pre_item_update_actions = array();
    $item_add_actions        = array();
    foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-      $item_add_actions[$type]        = 'plugin_item_add_geninventorynumber';
-      $pre_item_update_actions[$type] = 'plugin_pre_item_update_geninventorynumber';
+      $PLUGIN_HOOKS['item_add']['geninventorynumber'][$type]
+         = array('PluginGeninventorynumberGeneration' => 'itemAdd');
+      $PLUGIN_HOOKS['item_add']['geninventorynumber'][$type]
+         = array('PluginGeninventorynumberGeneration' => 'preItemUpdate');
    }
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
-      $PLUGIN_HOOKS['item_add']['geninventorynumber']           = $item_add_actions;
-      $PLUGIN_HOOKS['pre_item_update']['geninventorynumber']    = $pre_item_update_actions;
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
                             array('addtabon' => array('Profile')));

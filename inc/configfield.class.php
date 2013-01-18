@@ -34,38 +34,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfigField extends CommonDBTM {
 
-   function getFromDBbyConfigAndType($config_id,$itemtype) {
-      global $DB;
-
-      $query = "SELECT * FROM '".$this->getTable()."' " .
-            "WHERE 'config_id' = '" . $config_id . "'
-                  AND 'device_type' = '" . $itemtype . "'";
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
-            return false;
-         }
-         $this->fields = $DB->fetch_assoc($result);
-         if (is_array($this->fields) && count($this->fields)) {
-            return true;
-         } else {
-            return false;
-         }
-      }
-      return false;
-   }
-
-   function canCreate() {
-      return Session::haveRight("config", "w");
-   }
-
-   function canView() {
-      return Session::haveRight("config", "r");
-   }
-
-   function canDelete() {
-      return Session::haveRight("config", "w");
-   }
-
    static function getTypeName() {
       global $LANG;
       return $LANG['plugin_geninventorynumber']['types'][1];
@@ -156,15 +124,11 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          echo "<td class='tab_bg_1' align='center'>";
          Dropdown::showYesNo("ids[$type][use_index]", $value["use_index"]);
          echo "</td>";
-         echo "<td class='tab_bg_1'>";
+         echo "<td class='tab_bg_1' align='center'>";
          if ($value["is_active"] && !$value["use_index"]) {
-            $disabled = "";
-         } else {
-            $disabled = "disabled";
+            echo "<input type='text' name='ids[$type][index]' value='" .
+            $value['index'] . "' size='12'>";
          }
-      
-         echo "<input type='text' name='ids[$type][index]' value='" .
-            PluginGeninventorynumberIndex::getIndexByTypeName($type) . "' size='12' " . $disabled . ">";
          echo "</td>";
          echo "</tr>";
       }
@@ -190,5 +154,17 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          $fields[$data['itemtype']] = $data;
       }
       return $fields;
+   }
+
+   static function getEnabledItemTypes() {
+      global $DB;
+      $query = "SELECT DISTINCT `itemtype`
+                FROM `".getTableForItemType(__CLASS__)."`
+                ORDER BY `itemtype` ASC";
+      $types = array();
+      foreach ($DB->request($query) as $data) {
+         $types[] = $data['itemtype'];
+      }
+      return $types;
    }
 }

@@ -65,6 +65,18 @@ class PluginGeninventorynumberGeneration {
       return $objectName;
    }
 
+   static function itemAdd(CommonDBTM $item) {
+      global $DB, $LANG;
+      
+      $itemtypes = PluginGeninventorynumberConfigField::getEnabledItemTypes();
+      if (in_array(get_class($item), $itemtypes)) {
+         self::autoName();
+      }
+   }
+   
+   static function preItemUpdate(CommonDBTM $item) {
+   }
+   
    function plugin_item_add_geninventorynumber($parm, $massive_action = false, $field = 'otherserial') {
       global $DB, $LANG;
    
