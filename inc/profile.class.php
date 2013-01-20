@@ -30,11 +30,6 @@
 
 class PluginGeninventorynumberProfile extends CommonDBTM {
 
-   static function getTypeName() {
-      global $LANG;
-      return $LANG["plugin_geninventorynumber"]["profiles"][0];
-   }
-   
    static function changeProfile() {
       $profile = new self();
       if ($profile->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
@@ -94,7 +89,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       $this->showFormHeader();
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td>" . $LANG["plugin_geninventorynumber"]["profiles"][1] . ":</td>";
+      echo "<td>" . $LANG["plugin_geninventorynumber"]["massiveaction"][0] . ":</td>";
       echo "<td>";
       Profile::dropdownNoneReadWrite("plugin_geninventorynumber_generate",
                                      $this->fields["plugin_geninventorynumber_generate"], 1, 0, 1);
@@ -134,9 +129,22 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
          $migration->changeField($table, 'generate', 'plugin_geninventorynumber_generate', 'char');
          $migration->changeField($table, 'generate_overwrite', 'plugin_geninventorynumber_overwrite',
                                  'char');
-         $migration->addField($table, 'profiles_id', 'integer');
+         if ($migration->addField($table, 'profiles_id', 'integer')) {
+            $migration->migrationOneTable($table);
+            foreach ($DB->request($table, "`name`=''", array('name', 'id')) as $data) {
+               $query = "SELECT `id` FROM `glpi_profiles` WHERE `name`='".$data['name']."'";
+               $results = $DB->query($query);
+               if ($DB->numrows($results)) {
+                  $query_update = "UPDATE `$table`
+                                   SET `profiles_id`='".$DB->result($results, 0, 'id')."'
+                                   WHERE `id`='".$data['id']."'";
+                  $DB->query($query_update);
+               }
+            }
+         }
          $migration->dropField($table, 'interface');
          $migration->dropField($table, 'name');
+         $migration->migrationOneTable($table);
      }
      self::changeProfile($_SESSION['glpiactiveprofile']['id']);
    }

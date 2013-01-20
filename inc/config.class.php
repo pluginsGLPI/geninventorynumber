@@ -81,7 +81,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
         $sopt[3]['table'] = $this->getTable();
         $sopt[3]['field'] = 'index';
-        $sopt[3]['name'] = $LANG["plugin_geninventorynumber"]["config"][6];
+        $sopt[3]['name'] = $LANG["plugin_geninventorynumber"]["config"][2];
 
         return $sopt;
     }
@@ -114,7 +114,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "</tr>";
         echo "<tr>";
         echo "<td class='tab_bg_1' align='center'>" .
-           $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
+           $LANG["plugin_geninventorynumber"]["config"][2] . " " . $LANG["common"][59] . "</td>";
         echo "<td class='tab_bg_1'>";
         echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
         echo "</td><td colspan='2'></td>";
@@ -196,7 +196,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        } else {
           $migration->addField($table, 'name', 'string', array('value' => 'otherserial'));
           $migration->addField($table, 'field', 'string', array('value' => 'otherserial'));
-          $migration->changeField($table, 'ID', 'ID', 'autoincrement');
+          $migration->changeField($table, 'ID', 'id', 'autoincrement');
           $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
           $migration->changeField($table, 'active', 'is_active', 'bool');
           if (!$migration->addField($table, 'comment', 'text')) {
@@ -207,6 +207,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           $migration->dropField($table, 'field');
        }
        
+       //Remove unused table
+       if (TableExists('glpi_plugin_geninventorynumber_indexes')) {
+          $migration->dropTable('glpi_plugin_geninventorynumber_indexes');
+       }
        $migration->migrationOneTable($table);
     }
     

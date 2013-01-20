@@ -31,19 +31,12 @@
 $LANG["plugin_geninventorynumber"]["title"][1] = "Génération numéros d'inventaire";
 
 $LANG["plugin_geninventorynumber"]["config"][0] = "Génération activée (global)";
-$LANG["plugin_geninventorynumber"]["config"][5] = "Utiliser index global";
-$LANG["plugin_geninventorynumber"]["config"][6] = "Position de l'index";
-$LANG["plugin_geninventorynumber"]["config"][7] = "Coeur";
-$LANG["plugin_geninventorynumber"]["config"][8] = "Champs à générer";
-$LANG["plugin_geninventorynumber"]["config"][9] = "Configuration des objets d'inventaire de GLPI";
-$LANG["plugin_geninventorynumber"]["config"][10] = "Modèle de génération : ";
+$LANG["plugin_geninventorynumber"]["config"][1] = "Utiliser index global";
+$LANG["plugin_geninventorynumber"]["config"][2] = "Position de l'index";
+$LANG["plugin_geninventorynumber"]["config"][3] = "Configuration des objets d'inventaire de GLPI";
+$LANG["plugin_geninventorynumber"]["config"][4] = "Modèle de génération";
 
-$LANG["plugin_geninventorynumber"]["setup"][0] = "Configuration du plugin";
-$LANG["plugin_geninventorynumber"]["setup"][5] = "Gestion des droits";
-
-$LANG["plugin_geninventorynumber"]["profiles"][0] = "Gestion des droits";
-$LANG["plugin_geninventorynumber"]["profiles"][1] = "Générer des numéros d'inventaire";
-$LANG["plugin_geninventorynumber"]["profiles"][2] = "Listes des profils déjà configurés";
+$LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Générer des numéros d'inventaire";
 
 $LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Générer un numéro d'inventaire";
 $LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";

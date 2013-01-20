@@ -70,9 +70,10 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          $DB->query($query);
           
       } else {
-         $migration->changeField($table, 'ID', 'ID', 'autoincrement');
+         $migration->changeField($table, 'ID', 'id', 'autoincrement');
          $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', 'integer');
          if ($migration->changeField($table, 'device_type', 'itemtype', 'string')) {
+            $migration->migrationOneTable($table);
             Plugin::migrateItemType(array(), array("glpi_displaypreferences"), array($table));
          }
          $migration->changeField($table, 'enabled', 'is_active', 'boolean');
@@ -109,15 +110,15 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][9] . "</th></tr>";
+      echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][3] . "</th></tr>";
       
       echo "<input type='hidden' name='id' value='$id'>";
       echo "<input type='hidden' name='entities_id' value='0'>";
       
-      echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][10];
+      echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][4];
       echo "</th><th>" . $LANG["common"][60] . "</th>";
-      echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][5] . "</th>";
-      echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][6] . "</th></tr>";
+      echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][1] . "</th>";
+      echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][2] . "</th></tr>";
       
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
