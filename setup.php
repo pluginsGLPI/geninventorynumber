@@ -57,7 +57,7 @@ function plugin_init_geninventorynumber() {
       = array('Profile' => array('PluginGeninventorynumberProfile', 'purgeProfiles'));
 
       if (Session::haveRight("config", "w")) {
-         $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.php';
+         $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.form.php';
       }
    }
 }

@@ -34,8 +34,11 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfig extends CommonDBTM {
 
+   var $dohistory = true;
+   
     function defineTabs($options=array()) {
         $this->addStandardTab(__CLASS__, $ong, $options);
+        $this->addStandardTab('Log', $ong, $options);
         return $ong;
     }
 
@@ -48,17 +51,12 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
     }
 
     function canDelete() {
-        return Session::haveRight("config", "w");
+        return false;
     }
 
     static function getTypeName() {
         global $LANG;
         return $LANG["plugin_geninventorynumber"]["title"][1];
-    }
-
-    function cleanDBonPurge() {
-        $temp = new PluginGeninventorynumberConfigFields();
-        $temp->deleteByCriteria(array('config_id' => $this->fields['id']));
     }
 
     function getSearchOptions() {
@@ -67,23 +65,23 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         $sopt = array();
         $sopt['common'] = $LANG["plugin_geninventorynumber"]["title"][1];
 
-        $sopt[1]['table'] = $this->gettable();
+        $sopt[1]['table'] = $this->getTable();
         $sopt[1]['field'] = 'name';
         $sopt[1]['name'] = $LANG['common'][16];
         $sopt[1]['datatype'] = 'itemlink';
 
-        $sopt[2]['table'] = $this->gettable();
+        $sopt[2]['table'] = $this->getTable();
         $sopt[2]['field'] = 'is_active';
         $sopt[2]['name'] = $LANG['common'][60];
         $sopt[2]['datatype'] = 'bool';
 
-        $sopt[3]['table'] = $this->gettable();
+        $sopt[3]['table'] = $this->getTable();
         $sopt[3]['field'] = 'comment';
         $sopt[3]['name'] = $LANG['common'][25];
 
-        $sopt[30]['table'] = $this->gettable();
-        $sopt[30]['field'] = 'id';
-        $sopt[30]['name'] = $LANG["common"][2];
+        $sopt[3]['table'] = $this->getTable();
+        $sopt[3]['field'] = 'index';
+        $sopt[3]['name'] = $LANG["plugin_geninventorynumber"]["config"][6];
 
         return $sopt;
     }
@@ -103,7 +101,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
         $this->showTabs($options);
         $this->showFormHeader($options);
-
         echo "<tr class='tab_bg_1'>";
         echo "<td class='tab_bg_1' align='center'>" . $LANG['common'][16] . "</td>";
         echo "<td class='tab_bg_1'>";
@@ -117,15 +114,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "</tr>";
         echo "<tr>";
         echo "<td class='tab_bg_1' align='center'>" .
-           $LANG["plugin_geninventorynumber"]["config"][8] . "</td>";
-        echo "<td class='tab_bg_1'>";
-        self::dropdownFields('field', $this->fields['field']);
-        echo "</td>";
-        echo "<td class='tab_bg_1' align='center'>" .
            $LANG["plugin_geninventorynumber"]["config"][6] . " " . $LANG["common"][59] . "</td>";
         echo "<td class='tab_bg_1'>";
         echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
-        echo "</td>";
+        echo "</td><td colspan='2'></td>";
         echo "</tr>";
 
         echo "<tr>";
@@ -147,12 +139,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return true;
     }
 
-    static function dropdownFields($name, $value) {
-       global $LANG;
-       $fields['otherserial'] = $LANG['common'][20];
-       Dropdown::showFromArray($name,$fields,$value);
-    }
-    
     static function getNextIndex() {
        global $DB;
        
@@ -166,12 +152,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        }
     }
     
-    function getSelectLinkedItem() {
-        return "SELECT `id`
-              FROM `glpi_plugin_geninventorynumber_configfields`
-              WHERE config_id='" . $this->fields['id'] . "'";
-    }
-
     static function install(Migration $migration) {
        global $DB;
        $table = getTableForItemType(__CLASS__);
@@ -197,7 +177,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           $sql = "CREATE TABLE IF NOT EXISTS `$table` (
                     `id` int(11) NOT NULL auto_increment,
                     `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-                    `field`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
                     `entities_id` int(11)  NOT NULL default '-1',
                     `is_active` tinyint(1)  NOT NULL default 0,
                     `index` int(11)  NOT NULL default 0,
@@ -225,6 +204,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           }
           $migration->changeField($table, 'is_active', 'is_active', 'bool');
           $migration->changeField($table, 'next_number', 'index', 'integer');
+          $migration->dropField($table, 'field');
        }
        
        $migration->migrationOneTable($table);

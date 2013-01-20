@@ -31,10 +31,6 @@
 $LANG["plugin_geninventorynumber"]["title"][1] = "Génération numéros d'inventaire";
 
 $LANG["plugin_geninventorynumber"]["config"][0] = "Génération activée (global)";
-$LANG["plugin_geninventorynumber"]["config"][1] = "Composants impactés";
-$LANG["plugin_geninventorynumber"]["config"][2] = "Actif sur remontées OCS";
-$LANG["plugin_geninventorynumber"]["config"][3] = "Création dans GLPI (OCS ou manuel)";
-$LANG["plugin_geninventorynumber"]["config"][4] = "Injection de données (fichiers CSV)";
 $LANG["plugin_geninventorynumber"]["config"][5] = "Utiliser index global";
 $LANG["plugin_geninventorynumber"]["config"][6] = "Position de l'index";
 $LANG["plugin_geninventorynumber"]["config"][7] = "Coeur";

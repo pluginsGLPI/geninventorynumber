@@ -37,16 +37,9 @@ if (isset($_POST['update'])) {
    $config = new PluginGeninventorynumberConfig();
    $config->update($_POST);
    Html::back();
-} elseif (isset($_POST["update_fields"]) && isset($_POST["ids"])) {
-   $configfield = new PluginGeninventorynumberConfigField();
-   foreach ($_POST['ids'] as $itemtype => $data) {
-      $configfield->update($data);
-   }
-   Html::back();
 }
-
 Html::header($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
 
 $config = new PluginGeninventorynumberConfig();
-$config->showForm($_GET['id']);
+$config->showForm(1);
 Html::footer();
