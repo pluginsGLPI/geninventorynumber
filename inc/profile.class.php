@@ -40,6 +40,18 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       }
    }
    
+   function canCreate() {
+      return Session::haveRight('profile', 'w');
+   }
+   
+   function canDelete() {
+      return false;
+   }
+   
+   function canView() {
+      return Session::haveRight('profile', 'r');
+   }
+   
    //if profile deleted
    static function purgeProfiles(Profile $prof) {
       $profile = new self();
@@ -125,13 +137,13 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
          $DB->query($sql) or die($DB->error());
          PluginGeninventoryNumberProfile::createFirstAccess();
       } else {
-         $migration->changeField($table, 'ID', 'ID', 'autoincrement');
+         $migration->changeField($table, 'ID', 'id', 'autoincrement');
          $migration->changeField($table, 'generate', 'plugin_geninventorynumber_generate', 'char');
          $migration->changeField($table, 'generate_overwrite', 'plugin_geninventorynumber_overwrite',
                                  'char');
          if ($migration->addField($table, 'profiles_id', 'integer')) {
             $migration->migrationOneTable($table);
-            foreach ($DB->request($table, "`name`=''", array('name', 'id')) as $data) {
+            foreach ($DB->request($table, "", array('name', 'id')) as $data) {
                $query = "SELECT `id` FROM `glpi_profiles` WHERE `name`='".$data['name']."'";
                $results = $DB->query($query);
                if ($DB->numrows($results)) {
@@ -139,6 +151,9 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
                                    SET `profiles_id`='".$DB->result($results, 0, 'id')."'
                                    WHERE `id`='".$data['id']."'";
                   $DB->query($query_update);
+               } else {
+                  $query_drop = "DELETE FROM `$table` WHERE `id`='".$data['id']."'";
+                  $DB->query($query_drop);
                }
             }
          }

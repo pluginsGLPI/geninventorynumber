@@ -34,18 +34,20 @@ class PluginGeninventorynumberGeneration {
    
       $template = $config['template'];
       $len      = strlen($template);
+      
       if ($len > 8
          && substr($template, 0, 4) === '&lt;'
             && substr($template, $len - 4, 4) === '&gt;') {
    
          $autoNum = substr($template, 4, $len -8);
          $mask    = '';
+
          if (preg_match("/\\#{1,10}/", $autoNum, $mask)) {
             $serial = (isset ($item->fields['serial']) ? $item->fields['serial'] : '');
             $name   = (isset ($item->fields['name']) ? $item->fields['name'] : '');
             
             $global  = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
-            $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s', '\\n'),
+            $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\r', '\\n'),
                                    array (date('y'), date('Y'), date('m'), date('d'), '\\_',
                                            '\\%', '', $serial, $name), $autoNum);
             $mask    = $mask[0];
@@ -68,19 +70,20 @@ class PluginGeninventorynumberGeneration {
       return $template;
    }
 
-   static function itemAdd(CommonDBTM $item, $massiveaction = false) {
+   static function preItemAdd(CommonDBTM $item, $massiveaction = false) {
       global $LANG;
       
       $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item));
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
          $tmp = clone $item;
-         $item->fields['otherserial'] = self::autoName($config, $item);
-         if ($massiveaction) {
-            $item->fields['massiveaction'] = true;
-         }
-         $tmp->update($item->fields);
+
          if (!$massiveaction) {
-            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3]);
+            $item->input['otherserial'] = self::autoName($config, $item);
+            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3], true);
+         } else {
+            $item->fields['otherserial']   = self::autoName($config, $item);
+            $item->fields['massiveaction'] = true;
+            $tmp->update($item->fields);
          }
          
          if ($config['use_index']) {
@@ -96,7 +99,9 @@ class PluginGeninventorynumberGeneration {
       if (PluginGeninventorynumberConfig::isGenerationActive()
             && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))
                && !isset($item->input['massiveaction'])) {
-         if ($item->fields['otherserial'] != $item->input['otherserial']) {
+         if (isset($item->fields['otherserial'])
+                && isset($item->input['otherserial'])
+                   && $item->fields['otherserial'] != $item->input['otherserial']) {
             $item->input['otherserial'] = $item->fields['otherserial'];
             Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][2],
                                              true, ERROR);

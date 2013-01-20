@@ -27,6 +27,16 @@ http://www.gnu.org/licenses/gpl.txt
 @link      http://www.glpi-project.org/
 @since     2008
 ---------------------------------------------------------------------- */
+function plugin_geninventorynumber_postinit() {
+   global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
+   
+   foreach ($GENINVENTORYNUMBER_TYPES as $type) {
+      $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
+      = array('PluginGeninventorynumberGeneration', 'preItemAdd');
+      $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
+      = array('PluginGeninventorynumberGeneration', 'preItemUpdate');
+   }
+}
 
 function plugin_geninventorynumber_MassiveActions($type) {
    global $LANG, $GENINVENTORYNUMBER_TYPES;
@@ -80,7 +90,7 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
                            && isset ($item->fields["otherserial"])
                               && $item->fields["otherserial"] == "") //Or is overwrite action is selected
                      || ($data["action"] == "plugin_geninventorynumber_overwrite")) {
-                  PluginGeninventorynumberGeneration::itemAdd($item, true);
+                  PluginGeninventorynumberGeneration::preItemAdd($item, true);
                }
             }
          }
@@ -94,10 +104,10 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
 function plugin_geninventorynumber_install() {
    $migration = new Migration("2.0");
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   PluginGeninventorynumberConfig::install($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   PluginGeninventorynumberProfile::install($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+   PluginGeninventorynumberConfig::install($migration);
+   PluginGeninventorynumberProfile::install($migration);
    PluginGeninventorynumberConfigField::install($migration);
    return true;
 }
@@ -106,10 +116,10 @@ function plugin_geninventorynumber_install() {
 function plugin_geninventorynumber_uninstall() {
    $migration = new Migration("2.0");
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   PluginGeninventorynumberConfig::uninstall($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   PluginGeninventorynumberProfile::uninstall($migration);
    include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+   PluginGeninventorynumberConfig::uninstall($migration);
+   PluginGeninventorynumberProfile::uninstall($migration);
    PluginGeninventorynumberConfigField::uninstall($migration);
    return true;
 }

@@ -93,7 +93,6 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
             
          }
       }
-
    }
     
    static function uninstall(Migration $migration) {
@@ -196,5 +195,24 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
                 SET `index`=`index`+1
                 WHERE `itemtype`='$itemtype'";
       $DB->query($query);
+   }
+
+   static function registerNewItemType($itemtype) {
+      if (!countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+         $config = new self();
+         $input["plugin_geninventorynumber_configs_id"] = 1;
+         $input["itemtype"]                             = $type;
+         $input["template"]                             = "&lt;#######&gt;";
+         $input["is_active"]                            = 0;
+         $input["index"]                                = 0;
+         $config->add($input);
+       }
+   }
+
+   static function unregisterNewItemType($itemtype) {
+      if (countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+         $config = new self();
+         $config->deleteByCriteria(array('itemtype' => $itemtype));
+      }
    }
 }

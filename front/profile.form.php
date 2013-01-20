@@ -36,6 +36,8 @@ Session::checkRight("profile","r");
 //Save profile
 if (isset ($_POST['update'])) {
    $prof = new PluginGeninventorynumberProfile();
-   $prof->update($_POST);
+   if ($prof->update($_POST)) {
+      PluginGeninventorynumberProfile::changeProfile();
+   }
    Html::back();
 }

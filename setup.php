@@ -34,17 +34,11 @@ function plugin_init_geninventorynumber() {
    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
    $PLUGIN_HOOKS['change_profile']['geninventorynumber']
       = array('PluginGeninventorynumberProfile', 'changeProfile');
-   
+   $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
+       
    $GENINVENTORYNUMBER_TYPES = array ('Computer', 'Monitor', 'Printer', 'NetworkEquipment',
-                                       'Peripheral', 'Phone');
-    
-   foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-      $PLUGIN_HOOKS['item_add']['geninventorynumber'][$type]
-         = array('PluginGeninventorynumberGeneration', 'itemAdd');
-      $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
-         = array('PluginGeninventorynumberGeneration', 'preItemUpdate');
-   }
-    
+                                       'Peripheral', 'Phone', 'SoftwareLicense');
+   
    $plugin = new Plugin();
    if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;

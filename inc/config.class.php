@@ -187,7 +187,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           
           $tmp['id']           = 1;
           $tmp['name']         = 'otherserial';
-          $tmp['field']        = 'otherserial';
           $tmp['is_active']    = 1;
           $tmp['entities_id']  = 0;
           $tmp['index']        = 0;
@@ -246,4 +245,5 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        $config->getFromDB(1);
        return $config->fields['is_active'];
     }
+ 
 }
