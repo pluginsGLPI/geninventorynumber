@@ -47,7 +47,7 @@ class PluginGeninventorynumberGeneration {
             $name   = (isset ($item->fields['name']) ? $item->fields['name'] : '');
             
             $global  = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
-            $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\r', '\\n'),
+            $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s', '\\n'),
                                    array (date('y'), date('Y'), date('m'), date('d'), '\\_',
                                            '\\%', '', $serial, $name), $autoNum);
             $mask    = $mask[0];
@@ -79,7 +79,9 @@ class PluginGeninventorynumberGeneration {
 
          if (!$massiveaction) {
             $item->input['otherserial'] = self::autoName($config, $item);
-            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3], true);
+            if (!isCommandLine()) {
+               Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3], true);
+            }
          } else {
             $item->fields['otherserial']   = self::autoName($config, $item);
             $item->fields['massiveaction'] = true;
@@ -103,8 +105,10 @@ class PluginGeninventorynumberGeneration {
                 && isset($item->input['otherserial'])
                    && $item->fields['otherserial'] != $item->input['otherserial']) {
             $item->input['otherserial'] = $item->fields['otherserial'];
-            Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][2],
-                                             true, ERROR);
+            if (!isCommandLine()) {
+               Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][2],
+                                                true, ERROR);
+            }
          }
       }
    }
