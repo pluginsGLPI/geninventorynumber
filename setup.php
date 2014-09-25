@@ -62,7 +62,7 @@ function plugin_version_geninventorynumber() {
                    'minGlpiVersion' => '0.83.3',
                    'version'        => '2.0',
                    'author'         => "<a href='http://www.teclib.com'>TECLIB'</a>",
-                   'homepage'       => 'https://forge.indepnet.net/project/show/Geninventorynumber');
+                   'homepage'       => 'https://github.com/TECLIB/geninventorynumber');
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
