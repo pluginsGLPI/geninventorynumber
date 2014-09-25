@@ -1,4 +1,4 @@
-== Génération de numéros d'inventaire
+Génération de numéros d'inventaire
 
 Cette extention vous permet de générer automatiquement un numéro d'inventaire. La configuration donne la possibilité de définir :
 
@@ -6,7 +6,7 @@ Cette extention vous permet de générer automatiquement un numéro d'inventaire
 * Les modèles de numéros à générer
 * Si les compteurs sont globaux ou spécifiques pour chaque type
 
-== Inventory numbers generation
+Inventory numbers generation
 
 This plugin enables inventory numbers automatic generation. The configuration allows you to define :
 
