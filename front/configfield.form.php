@@ -29,8 +29,7 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
 if (isset($_POST["update_fields"]) && isset($_POST["ids"])) {
    $configfield = new PluginGeninventorynumberConfigField();

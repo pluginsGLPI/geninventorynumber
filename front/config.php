@@ -29,10 +29,9 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
-Html::header($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
+Html::header(__('Setup'),$_SERVER['PHP_SELF'], "config", "plugins");
 
 $PluginGeninventorynumberConfig=new PluginGeninventorynumberConfig();
 if ($PluginGeninventorynumberConfig->canView() || Session::haveRight("config","w")) {

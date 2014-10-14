@@ -115,7 +115,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       echo "<input type='hidden' name='entities_id' value='0'>";
       
       echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][4];
-      echo "</th><th>" . $LANG["common"][60] . "</th>";
+      echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][1] . "</th>";
       echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][2] . "</th></tr>";
       
@@ -143,7 +143,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       }
       
       echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-      echo "<input type='submit' name='update_fields' value=\"" . $LANG["buttons"][7] . "\" class='submit'>";
+      echo "<input type='submit' name='update_fields' value=\"" . __('Update') . "\" class='submit'>";
       echo "</td></tr>";
       
       echo "</table>";

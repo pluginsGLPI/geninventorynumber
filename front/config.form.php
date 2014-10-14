@@ -29,16 +29,14 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-define('GLPI_ROOT', '../../..');
-
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
 if (isset($_POST['update'])) {
    $config = new PluginGeninventorynumberConfig();
    $config->update($_POST);
    Html::back();
 }
-Html::header($LANG["Menu"][0],$_SERVER['PHP_SELF'],"config","plugins");
+Html::header(__('Setup'),$_SERVER['PHP_SELF'], "config", "plugins");
 
 $config = new PluginGeninventorynumberConfig();
 $config->showForm(1);

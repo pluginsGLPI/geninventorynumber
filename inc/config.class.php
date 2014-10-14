@@ -37,20 +37,21 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    var $dohistory = true;
    
     function defineTabs($options=array()) {
+        $ong = array();
         $this->addStandardTab(__CLASS__, $ong, $options);
         $this->addStandardTab('Log', $ong, $options);
         return $ong;
     }
 
-    function canCreate() {
+    static function canCreate() {
         return Session::haveRight("config", "w");
     }
 
-    function canView() {
+    static function canView() {
         return Session::haveRight("config", "r");
     }
 
-    function canDelete() {
+    static function canDelete() {
         return false;
     }
 
@@ -102,7 +103,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         $this->showTabs($options);
         $this->showFormHeader($options);
         echo "<tr class='tab_bg_1'>";
-        echo "<td class='tab_bg_1' align='center'>" . $LANG['common'][16] . "</td>";
+        echo "<td class='tab_bg_1' align='center'>" . __('Name') . "</td>";
         echo "<td class='tab_bg_1'>";
         Html::autocompletionTextField($this, "name");
         echo "</td>";
@@ -114,7 +115,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "</tr>";
         echo "<tr>";
         echo "<td class='tab_bg_1' align='center'>" .
-           $LANG["plugin_geninventorynumber"]["config"][2] . " " . $LANG["common"][59] . "</td>";
+           $LANG["plugin_geninventorynumber"]["config"][2] . " " . __('Global') . "</td>";
         echo "<td class='tab_bg_1'>";
         echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
         echo "</td><td colspan='2'></td>";
@@ -124,7 +125,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         echo "<td class='tab_bg_1' colspan='4'>";
         echo "<table>";
         echo "<tr>";
-        echo "<td class='tab_bg_1'>" . $LANG['common'][25] . "</td><td>";
+        echo "<td class='tab_bg_1'>" . __('Comments') . "</td><td>";
         echo "<textarea cols='60' rows='4' name='comment' >" . $this->fields["comment"] . "</textarea>";
         echo "</td>";
         echo "</tr>";
@@ -221,7 +222,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
        global $LANG;
         
        if (get_class($item) == __CLASS__) {
-          return array(1 => $LANG['title'][26]);
+          return array(1 => __('Main'));
        }
        return '';
     }
