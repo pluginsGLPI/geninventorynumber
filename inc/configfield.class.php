@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfigField extends CommonDBTM {
 
-   static function getTypeName() {
+   static function getTypeName($nb = 0) {
       global $LANG;
       return $LANG['plugin_geninventorynumber']['types'][1];
    }
@@ -121,7 +121,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
-         echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
+         echo "<td class='tab_bg_1' align='center'>" . $itemtype::getTypeName(). "</td>";
          echo "<td class='tab_bg_1'>";
          echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
          echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";

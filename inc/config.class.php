@@ -42,19 +42,19 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return $ong;
     }
 
-    static function canCreate() {
+    function canCreate() {
         return Session::haveRight("config", "w");
     }
 
-    static function canView() {
+    function canView() {
         return Session::haveRight("config", "r");
     }
 
-    static function canDelete() {
+    function canDelete() {
         return false;
     }
 
-    static function getTypeName() {
+    static function getTypeName($nb = 0) {
         global $LANG;
         return $LANG["plugin_geninventorynumber"]["title"][1];
     }
@@ -67,17 +67,17 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
         $sopt[1]['table'] = $this->getTable();
         $sopt[1]['field'] = 'name';
-        $sopt[1]['name'] = $LANG['common'][16];
+        $sopt[1]['name'] = __('Name');
         $sopt[1]['datatype'] = 'itemlink';
 
         $sopt[2]['table'] = $this->getTable();
         $sopt[2]['field'] = 'is_active';
-        $sopt[2]['name'] = $LANG['common'][60];
+        $sopt[2]['name'] = __('Active');
         $sopt[2]['datatype'] = 'bool';
 
         $sopt[3]['table'] = $this->getTable();
         $sopt[3]['field'] = 'comment';
-        $sopt[3]['name'] = $LANG['common'][25];
+        $sopt[3]['name'] = __('Comments');
 
         $sopt[3]['table'] = $this->getTable();
         $sopt[3]['field'] = 'index';
