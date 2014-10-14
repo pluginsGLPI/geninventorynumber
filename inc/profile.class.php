@@ -40,15 +40,15 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       }
    }
    
-   function canCreate() {
+   static function canCreate() {
       return Session::haveRight('profile', 'w');
    }
    
-   function canDelete() {
+   static function canDelete() {
       return false;
    }
    
-   function canView() {
+   static function canView() {
       return Session::haveRight('profile', 'r');
    }
    

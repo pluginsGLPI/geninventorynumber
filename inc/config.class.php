@@ -42,15 +42,15 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
         return $ong;
     }
 
-    function canCreate() {
+    static function canCreate() {
         return Session::haveRight("config", "w");
     }
 
-    function canView() {
+    static function canView() {
         return Session::haveRight("config", "r");
     }
 
-    function canDelete() {
+    static function canDelete() {
         return false;
     }
 

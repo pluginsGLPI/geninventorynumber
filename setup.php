@@ -66,7 +66,7 @@ function plugin_version_geninventorynumber() {
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
       echo "This plugin requires GLPI 0.83.3 or higher";
    } else {
       return true;

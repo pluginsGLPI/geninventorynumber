@@ -66,7 +66,7 @@ function plugin_geninventorynumber_MassiveActionsDisplay($options = array()) {
          case "plugin_geninventorynumber_generate" :
          case "plugin_geninventorynumber_overwrite" :
             echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" .
-               $LANG["buttons"][2] . "\" >";
+               $LANG["plugin_geninventorynumber"]["buttons"][0] . "\" >";
             break;
          default :
             break;
@@ -98,6 +98,7 @@ function plugin_geninventorynumber_MassiveActionsProcess($data) {
       default :
          break;
    }
+   return true;
 }
 
 

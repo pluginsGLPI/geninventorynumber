@@ -36,9 +36,9 @@ $LANG["plugin_geninventorynumber"]["config"][2] = "Global index position";
 $LANG["plugin_geninventorynumber"]["config"][3] = "GLPI's inventory items configuration";
 $LANG["plugin_geninventorynumber"]["config"][4] = "Generation templates";
 
-$LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Generate inventory numbers";
-
 $LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Generate inventory number";
 $LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regenerate inventory number (overwrite)";
 $LANG["plugin_geninventorynumber"]["massiveaction"][2] = "You can't modify inventory number";
 $LANG["plugin_geninventorynumber"]["massiveaction"][3] = "An inventory number have been generated";
+
+$LANG["plugin_geninventorynumber"]["buttons"][0] = "Generate";

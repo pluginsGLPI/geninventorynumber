@@ -36,9 +36,9 @@ $LANG["plugin_geninventorynumber"]["config"][2] = "Position de l'index";
 $LANG["plugin_geninventorynumber"]["config"][3] = "Configuration des objets d'inventaire de GLPI";
 $LANG["plugin_geninventorynumber"]["config"][4] = "Modèle de génération";
 
-$LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Générer des numéros d'inventaire";
-
 $LANG["plugin_geninventorynumber"]["massiveaction"][0] = "Générer un numéro d'inventaire";
 $LANG["plugin_geninventorynumber"]["massiveaction"][1] = "Regénérer un numéro d'inventaire (écraser)";
 $LANG["plugin_geninventorynumber"]["massiveaction"][2] = "Vous ne pouvez pas modifier le numéro d'inventaire";
 $LANG["plugin_geninventorynumber"]["massiveaction"][3] = "Un numéro d'inventaire a été généré";
+
+$LANG["plugin_geninventorynumber"]["buttons"][0] = "Générer";

@@ -70,7 +70,7 @@ class PluginGeninventorynumberGeneration {
       return $template;
    }
 
-   static function preItemAdd(CommonDBTM $item, $massiveaction = false) {
+   static function preItemAdd($item, $massiveaction = false) {
       global $LANG;
       
       $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item));
@@ -86,6 +86,7 @@ class PluginGeninventorynumberGeneration {
             $item->fields['otherserial']   = self::autoName($config, $item);
             $item->fields['massiveaction'] = true;
             $tmp->update($item->fields);
+			Session::addMessageAfterRedirect($LANG["plugin_geninventorynumber"]["massiveaction"][3], true);
          }
          
          if ($config['use_index']) {
