@@ -59,16 +59,16 @@ function plugin_init_geninventorynumber() {
 function plugin_version_geninventorynumber() {
    global $LANG;
    return array ('name'           => $LANG["plugin_geninventorynumber"]["title"][1],
-                   'minGlpiVersion' => '0.83.3',
-                   'version'        => '2.0',
-				   'license'        => 'GPLv3',
+                   'minGlpiVersion' => '0.84',
+                   'version'        => '2.1',
+		   'license'        => 'GPLv2+',
                    'author'         => "<a href='http://www.teclib.com'>TECLIB'</a>",
                    'homepage'       => 'https://github.com/TECLIB/geninventorynumber');
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI 0.83.3 or higher";
+   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
+      echo "This plugin requires GLPI 0.84 or higher";
    } else {
       return true;
    }
