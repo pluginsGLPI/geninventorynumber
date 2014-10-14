@@ -61,6 +61,7 @@ function plugin_version_geninventorynumber() {
    return array ('name'           => $LANG["plugin_geninventorynumber"]["title"][1],
                    'minGlpiVersion' => '0.83.3',
                    'version'        => '2.0',
+				   'license'        => 'GPLv3',
                    'author'         => "<a href='http://www.teclib.com'>TECLIB'</a>",
                    'homepage'       => 'https://github.com/TECLIB/geninventorynumber');
 }
