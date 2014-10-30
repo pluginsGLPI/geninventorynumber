@@ -1,6 +1,6 @@
 Génération de numéros d'inventaire
 
-Cette extention vous permet de générer automatiquement un numéro d'inventaire. La configuration donne la possibilité de définir :
+Cette extension vous permet de générer automatiquement un numéro d'inventaire. La configuration donne la possibilité de définir :
 
 * Les types qui nécessitent cette automatisation
 * Les modèles de numéros à générer
