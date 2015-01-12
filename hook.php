@@ -27,100 +27,61 @@ http://www.gnu.org/licenses/gpl.txt
 @link      http://www.glpi-project.org/
 @since     2008
 ---------------------------------------------------------------------- */
-function plugin_geninventorynumber_postinit() {
-   global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
-   
-   foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-      $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
-      = array('PluginGeninventorynumberGeneration', 'preItemAdd');
-      $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
-      = array('PluginGeninventorynumberGeneration', 'preItemUpdate');
-   }
-}
-
-function plugin_geninventorynumber_MassiveActions($type) {
-   global $LANG, $GENINVENTORYNUMBER_TYPES;
-
-   $actions = array ();
-   if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
-      $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
-
-      if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
-         if (Session::haveRight("plugin_geninventorynumber_generate", "w")) {
-            $actions["plugin_geninventorynumber_generate"]
-               = $LANG["plugin_geninventorynumber"]["massiveaction"][0];
-         }
-         if (Session::haveRight("plugin_geninventorynumber_overwrite", "w")) {
-            $actions["plugin_geninventorynumber_overwrite"]
-               = $LANG["plugin_geninventorynumber"]["massiveaction"][1];
-         }
+   function plugin_geninventorynumber_postinit() {
+      global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
+      
+      foreach ($GENINVENTORYNUMBER_TYPES as $type) {
+	 $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
+	 = array('PluginGeninventorynumberGeneration', 'preItemAdd');
+	 $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
+	 = array('PluginGeninventorynumberGeneration', 'preItemUpdate');
       }
    }
-   return $actions;
-}
 
-function plugin_geninventorynumber_MassiveActionsDisplay($options = array()) {
-   global $LANG, $GENINVENTORYNUMBER_TYPES;
-   if (in_array ($options['itemtype'], $GENINVENTORYNUMBER_TYPES)) {
-      switch ($options['action']) {
-         case "plugin_geninventorynumber_generate" :
-         case "plugin_geninventorynumber_overwrite" :
-            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" .
-               $LANG["plugin_geninventorynumber"]["buttons"][0] . "\" >";
-            break;
-         default :
-            break;
+   function plugin_geninventorynumber_MassiveActions($type) {
+      global $GENINVENTORYNUMBER_TYPES;
+
+      $actions = array ();
+      if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
+	 $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
+
+	 if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
+	    if (Session::haveRight("plugin_geninventorynumber", CREATE)) {
+	       $actions['PluginGeninventorynumberGeneration'.
+		  MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_generate']
+		  = __('GenerateInventoryNumber', 'geninventorynumber');
+	    }
+	    if (Session::haveRight("plugin_geninventorynumber", UPDATE)) {
+	       $actions['PluginGeninventorynumberGeneration'.
+		  MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_overwrite']
+		  = __('RegenerateInventoryNumber', 'geninventorynumber');
+	    }
+	 }
       }
+      return $actions;
    }
-   return "";
-}
 
-function plugin_geninventorynumber_MassiveActionsProcess($data) {
-   global $DB;
-
-   switch ($data['action']) {
-      case "plugin_geninventorynumber_generate" :
-      case "plugin_geninventorynumber_overwrite" :
-         foreach ($data["item"] as $key => $val) {
-            if ($val == 1) {
-               $item = new $data['itemtype'];
-               $item->getFromDB($key);
-               if (//Only generates inventory number for object without it !
-                     (($data["action"] == "plugin_geninventorynumber_generate")
-                           && isset ($item->fields["otherserial"])
-                              && $item->fields["otherserial"] == "") //Or is overwrite action is selected
-                     || ($data["action"] == "plugin_geninventorynumber_overwrite")) {
-                  PluginGeninventorynumberGeneration::preItemAdd($item, true);
-               }
-            }
-         }
-         break;
-      default :
-         break;
+   // KK CHECK
+   function plugin_geninventorynumber_install() {
+      $migration = new Migration("2.2");
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+      PluginGeninventorynumberConfig::install($migration);
+      PluginGeninventorynumberProfile::install();
+      PluginGeninventorynumberConfigField::install($migration);
+      return true;
    }
-   return true;
-}
 
-
-function plugin_geninventorynumber_install() {
-   $migration = new Migration("2.0");
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
-   PluginGeninventorynumberConfig::install($migration);
-   PluginGeninventorynumberProfile::install($migration);
-   PluginGeninventorynumberConfigField::install($migration);
-   return true;
-}
-
-
-function plugin_geninventorynumber_uninstall() {
-   $migration = new Migration("2.0");
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
-   PluginGeninventorynumberConfig::uninstall($migration);
-   PluginGeninventorynumberProfile::uninstall($migration);
-   PluginGeninventorynumberConfigField::uninstall($migration);
-   return true;
-}
+   // KK CHECK
+   function plugin_geninventorynumber_uninstall() {
+      $migration = new Migration("2.2");
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
+      include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+      PluginGeninventorynumberConfig::uninstall($migration);
+      PluginGeninventorynumberProfile::removeRightsFromSession();
+      PluginGeninventorynumberProfile::uninstallProfile();
+      PluginGeninventorynumberConfigField::uninstall($migration);
+      return true;
+   }

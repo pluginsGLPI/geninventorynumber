@@ -29,15 +29,13 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-include ("../../../inc/includes.php");
+include ('../../../inc/includes.php');
+
+$config = new PluginGeninventorynumberConfig();
 
 if (isset($_POST['update'])) {
-   $config = new PluginGeninventorynumberConfig();
    $config->update($_POST);
    Html::back();
 }
-Html::header(__('Setup'),$_SERVER['PHP_SELF'], "config", "plugins");
 
-$config = new PluginGeninventorynumberConfig();
-$config->showForm(1);
-Html::footer();
+

@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id$
+ * @version $Id: configfield.form.php 79 2013-01-21 08:56:14Z walid $
  -------------------------------------------------------------------------
  geninventorynumber - plugin for GLPI
  Copyright (C) 2003-2011 by the geninventorynumber Development Team.
@@ -29,10 +29,11 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-include ("../../../inc/includes.php");
+include ('../../../inc/includes.php');
+
+   $configfield = new PluginGeninventorynumberConfigField();
 
 if (isset($_POST["update_fields"]) && isset($_POST["ids"])) {
-   $configfield = new PluginGeninventorynumberConfigField();
    foreach ($_POST['ids'] as $itemtype => $data) {
       $configfield->update($data);
    }

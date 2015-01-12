@@ -29,12 +29,25 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
-include ("../../../inc/includes.php");
+include ('../../../inc/includes.php');
 
-Html::header(__('Setup'),$_SERVER['PHP_SELF'], "config", "plugins");
+$config = new PluginGeninventorynumberConfig();
 
-$PluginGeninventorynumberConfig=new PluginGeninventorynumberConfig();
-if ($PluginGeninventorynumberConfig->canView() || Session::haveRight("config","w")) {
-	Search::show("PluginGeninventorynumberConfig");
+/*if (isset($_POST['update'])) {
+   $config->update($_POST);
+   Html::back();
 }
-Html::footer();
+*/
+
+$plugin = new Plugin();
+$config->getFromDB(1);
+if ($plugin->isInstalled("geninventorynumber") && $plugin->isActivated("geninventorynumber")) {
+   Html::header(__('geninventorynumber','geninventorynumber'),$_SERVER['PHP_SELF'],"config","plugins");
+   if (isset($_GET['glpi_tab'])) {
+      $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
+      Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
+   }
+   $config->addDivForTabs();
+   Html::footer();
+}
+

@@ -28,164 +28,166 @@
  @since     2008
  ---------------------------------------------------------------------- */
 
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
 class PluginGeninventorynumberProfile extends CommonDBTM {
 
-   static function changeProfile() {
+   static $rightname = "config";
+
+   /**
+    * @param $ID  integer
+    */
+   static function createFirstAccess($profiles_id) {
+      include_once(GLPI_ROOT."/plugins/geninventorynumber/inc/profile.class.php");
       $profile = new self();
-      if ($profile->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-         foreach (array('plugin_geninventorynumber_generate',
-                          'plugin_geninventorynumber_overwrite') as $field) {
-            $_SESSION['glpiactiveprofile'][$field] = $profile->fields[$field];
+      foreach ($profile->getAllRights() as $right) {
+         self::addDefaultProfileInfos($profiles_id,
+                                      array($right['field'] => ALLSTANDARDRIGHT));
+      }
+   }
+
+   static function addDefaultProfileInfos($profiles_id, $rights) {
+      $profileRight = new ProfileRight();
+      foreach ($rights as $right => $value) {
+         if (!countElementsInTable('glpi_profilerights',
+                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+            $myright['profiles_id'] = $profiles_id;
+            $myright['name']        = $right;
+            $myright['rights']      = $value;
+            $profileRight->add($myright);
+
+            //Add right to the current session
+            $_SESSION['glpiactiveprofile'][$right] = $value;
          }
       }
    }
-   
-   static function canCreate() {
-      return Session::haveRight('profile', 'w');
-   }
-   
-   static function canDelete() {
-      return false;
-   }
-   
-   static function canView() {
-      return Session::haveRight('profile', 'r');
-   }
-   
-   //if profile deleted
-   static function purgeProfiles(Profile $prof) {
+
+   static function removeRightsFromSession() {
       $profile = new self();
-      $profile->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
-   }
-     
-   function getFromDBByProfile($profiles_id) {
-      global $DB;
-    
-      $query = "SELECT * FROM `".$this->getTable()."`
-                WHERE `profiles_id` = '$profiles_id'";
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
-            return false;
-         }
-         $this->fields = $DB->fetch_assoc($result);
-         if (is_array($this->fields) && count($this->fields)) {
-            return true;
-         } else {
-            return false;
+      foreach ($profile->getAllRights() as $right) {
+         if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
+            unset($_SESSION['glpiactiveprofile'][$right['field']]);
          }
       }
-      return false;
-    }
-    
-   static function createFirstAccess() {
-       $tmp['plugin_geninventorynumber_overwrite'] = 'w';
-       $tmp['plugin_geninventorynumber_generate']  = 'w';
-       self::createAccess($_SESSION['glpiactiveprofile']['id'], $tmp);
+      ProfileRight::deleteProfileRights(array($right['field']));
+
    }
 
-   static function createAccess($profiles_id, $rights = array()) {
-      if (!countElementsInTable(getTableForItemType(__CLASS__), "`profiles_id`='$profiles_id'")) {
-         $rights['profiles_id'] = $profiles_id;
-         $profile = new self();
-         $profile->add($rights);
-      }
-   }
-    
-   function showForm($id) {
-      global $LANG;
-      if (!Session::haveRight("profile", "r")) {
-         return false;
+  /**
+    * Show profile form
+    *
+    * @param $items_id integer id of the profile
+    * @param $target value url of target
+    *
+    * @return nothing
+    **/
+   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
+
+      echo "<div class='firstbloc'>";
+      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+          && $openform) {
+         $profile = new Profile();
+         echo "<form method='post' action='".$profile->getFormURL()."'>";
       }
 
-      $this->getFromDBByProfile($id);
-      $this->showFormHeader();
+      $profile = new Profile();
+      $profile->getFromDB($profiles_id);
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>" . $LANG["plugin_geninventorynumber"]["massiveaction"][0] . ":</td>";
-      echo "<td>";
-      Profile::dropdownNoneReadWrite("plugin_geninventorynumber_generate",
-                                     $this->fields["plugin_geninventorynumber_generate"], 1, 0, 1);
-      echo "</td>";
-      echo "<td>" . $LANG["plugin_geninventorynumber"]["massiveaction"][1] . ":</td>";
-      echo "<td>";
-      Profile::dropdownNoneReadWrite("plugin_geninventorynumber_overwrite",
-                                     $this->fields["plugin_geninventorynumber_overwrite"], 1, 0, 1);
-      echo "</td>";
-      echo "</tr>";
-      echo "<input type='hidden' name='id' value=" . $this->fields["id"] . ">";
+      $rights = $this->getAllRights();
+      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                         'default_class' => 'tab_bg_2',
+                                                         'title'         => __('General')));
 
-      $options['candel'] = false;
-      $this->showFormButtons($options);
+      if ($canedit
+          && $closeform) {
+         echo "<div class='center'>";
+         echo Html::hidden('id', array('value' => $profiles_id));
+         echo Html::submit(_sx('button', 'Save'),
+                           array('name' => 'update'));
+         echo "</div>\n";
+         Html::closeForm();
+      }
+      echo "</div>";
    }
 
-   static function install(Migration $migration) {
+   static function getAllRights() {
+      return array(array('itemtype'  => 'PluginGeninventorynumber',
+                         'label'     => __('GenerateInventoryNumber', 'geninventorynumber'),
+                         'field'     => 'plugin_geninventorynumber',
+			 'rights' => array(CREATE    => __('Create'),UPDATE    => __('Update'))));
+   }
+
+   static function install() {
       global $DB;
       $table = getTableForItemType(__CLASS__);
        
-      if (TableExists("glpi_plugin_generateinventorynumber_profiles")) {
-         $migration->renameTable("glpi_plugin_generateinventorynumber_profiles", $table);
+      if ( isset( $_SESSION['glpiactiveprofile'] ) ) {
+	 PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
-       
-      if (!TableExists($table)) {
-         $sql = "CREATE TABLE  IF NOT EXISTS `$table` (
-                   `id` int(11) NOT NULL auto_increment,
-                   `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
-                   `plugin_geninventorynumber_generate` char(1) default NULL,
-                   `plugin_geninventorynumber_overwrite` char(1) default NULL,
-                   PRIMARY KEY  (`id`)
-              ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-         $DB->query($sql) or die($DB->error());
-         PluginGeninventoryNumberProfile::createFirstAccess();
-      } else {
-         $migration->changeField($table, 'ID', 'id', 'autoincrement');
-         $migration->changeField($table, 'generate', 'plugin_geninventorynumber_generate', 'char');
-         $migration->changeField($table, 'generate_overwrite', 'plugin_geninventorynumber_overwrite',
-                                 'char');
-         if ($migration->addField($table, 'profiles_id', 'integer')) {
-            $migration->migrationOneTable($table);
-            foreach ($DB->request($table, "", array('name', 'id')) as $data) {
-               $query = "SELECT `id` FROM `glpi_profiles` WHERE `name`='".$data['name']."'";
-               $results = $DB->query($query);
-               if ($DB->numrows($results)) {
-                  $query_update = "UPDATE `$table`
-                                   SET `profiles_id`='".$DB->result($results, 0, 'id')."'
-                                   WHERE `id`='".$data['id']."'";
-                  $DB->query($query_update);
-               } else {
-                  $query_drop = "DELETE FROM `$table` WHERE `id`='".$data['id']."'";
-                  $DB->query($query_drop);
-               }
-            }
-         }
-         $migration->dropField($table, 'interface');
-         $migration->dropField($table, 'name');
-         $migration->migrationOneTable($table);
-     }
-     self::changeProfile($_SESSION['glpiactiveprofile']['id']);
+
+      if (TableExists("glpi_plugin_geninventorynumber_profiles")) {
+
+	 $query = "SELECT * 
+		  FROM `".$table."`";
+	 $results = $DB->query($query);
+
+	 if ($DB->numrows($results)) {
+
+	    $profile = new self();
+
+	    while ($data=$DB->fetch_array($results)) {
+
+	       foreach ($profile->getAllRights() as $right => $rights) {
+
+		  if (!countElementsInTable('glpi_profilerights',
+		     "`profiles_id`='".$data['profiles_id']."' AND `name`='".$rights['field']."'")) {
+
+		     $profileRight = new ProfileRight();
+
+		     $myright = array();
+		     $myright['name']        = $rights['field'];
+		     $myright['profiles_id'] = $data['profiles_id'];
+
+		     if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
+			$myright['rights'] = CREATE;
+
+		     if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
+			$myright['rights'] += UPDATE;
+
+		     $profileRight->add($myright);
+		  }
+	       }
+	    }
+
+	 }
+	 // KK TODO: DROP OLD _profile TABLE
+      }
    }
-    
-   static function uninstall(Migration $migration) {
-      $migration->dropTable(getTableForItemType(__CLASS__));
+
+   static function uninstallProfile() {
+
+      $pfProfile = new self();
+      $a_rights = $pfProfile->getAllRights();
+
+      foreach ($a_rights as $data) {
+         ProfileRight::deleteProfileRights(array($data['field']));
+      }
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
-   
-      $type = get_class($item);
-      if ($type == 'Profile') {
-         if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-            return array(1 => $LANG["plugin_geninventorynumber"]["title"][1]);
-         }
+
+      if ($item->fields['interface'] == 'central') {
+         return self::createTabEntry(__('geninventorynumber', 'geninventorynumber'));
       }
-      return '';
    }
-   
+
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-      if (get_class($item) == 'Profile') {
-         $profile = new self();
-         self::createAccess($item->getField('id'));
-         $profile->showForm($item->getField('id'));
-         return true;
-      }
+
+      $profile = new self();
+      $profile->showForm($item->getID());
+      return true;
    }
+
 }
