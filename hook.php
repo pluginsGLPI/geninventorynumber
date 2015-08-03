@@ -63,19 +63,19 @@ http://www.gnu.org/licenses/gpl.txt
 
    // KK CHECK
    function plugin_geninventorynumber_install() {
-      $migration = new Migration("2.2");
+      $migration = new Migration("0.85+1.0");
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
       PluginGeninventorynumberConfig::install($migration);
-      PluginGeninventorynumberProfile::install();
+      PluginGeninventorynumberProfile::install($migration);
       PluginGeninventorynumberConfigField::install($migration);
       return true;
    }
 
    // KK CHECK
    function plugin_geninventorynumber_uninstall() {
-      $migration = new Migration("2.2");
+      $migration = new Migration("0.85+1.0");
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');

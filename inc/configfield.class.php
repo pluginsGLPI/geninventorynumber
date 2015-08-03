@@ -32,9 +32,11 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginGeninventorynumberConfigField extends CommonDBTM {
+class PluginGeninventorynumberConfigField extends CommonDBChild {
 
-// var $dohistory = true;
+   var $dohistory = true;
+   static public $itemtype = 'PluginGeninventorynumberConfig';
+   static public $items_id = 'plugin_geninventorynumber_configs_id';
 
    static function getTypeName($nb=0) {
       return __('PerDeviceTypeConfiguration', 'geninventorynumber');

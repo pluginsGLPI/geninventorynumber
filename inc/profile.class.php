@@ -119,50 +119,40 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
 			 'rights' => array(CREATE    => __('Create'),UPDATE    => __('Update'))));
    }
 
-   static function install() {
+   static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
        
       if ( isset( $_SESSION['glpiactiveprofile'] ) ) {
-	 PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+	       PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
 
       if (TableExists("glpi_plugin_geninventorynumber_profiles")) {
+          foreach (getAllDatasFromTable($table) as $data) {
+             $profile = new self();
+             foreach ($profile->getAllRights() as $right => $rights) {
 
-	 $query = "SELECT * 
-		  FROM `".$table."`";
-	 $results = $DB->query($query);
+                if (!countElementsInTable('glpi_profilerights',
+                                          "`profiles_id`='".$data['profiles_id']."' 
+                                            AND `name`='".$rights['field']."'")) {
 
-	 if ($DB->numrows($results)) {
+                   $profileRight = new ProfileRight();
 
-	    $profile = new self();
+                   $myright = array();
+                   $myright['name']        = $rights['field'];
+                   $myright['profiles_id'] = $data['profiles_id'];
 
-	    while ($data=$DB->fetch_array($results)) {
+                   if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
+                       $myright['rights'] = CREATE;
 
-	       foreach ($profile->getAllRights() as $right => $rights) {
+                   if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
+                      $myright['rights'] += UPDATE;
 
-		  if (!countElementsInTable('glpi_profilerights',
-		     "`profiles_id`='".$data['profiles_id']."' AND `name`='".$rights['field']."'")) {
-
-		     $profileRight = new ProfileRight();
-
-		     $myright = array();
-		     $myright['name']        = $rights['field'];
-		     $myright['profiles_id'] = $data['profiles_id'];
-
-		     if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
-			$myright['rights'] = CREATE;
-
-		     if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
-			$myright['rights'] += UPDATE;
-
-		     $profileRight->add($myright);
-		  }
-	       }
-	    }
-
-	 }
-	 // KK TODO: DROP OLD _profile TABLE
+                  $profileRight->add($myright);
+               }
+            }
+         }
+         $migration->dropTable($table);
       }
    }
 

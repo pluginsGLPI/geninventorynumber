@@ -47,8 +47,9 @@ function plugin_init_geninventorynumber() {
       Plugin::registerClass('PluginGeninventorynumberConfig');
       Plugin::registerClass('PluginGeninventorynumberConfigField');
       
-      $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.php';
-      $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']['config'] = 'PluginGeninventorynumberConfig';
+      if (Session::haveRight('config', UPDATE)) {
+         $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber'] = array ('tools' => 'PluginGeninventorynumberConfig');        
+      }
    }
 }
 
