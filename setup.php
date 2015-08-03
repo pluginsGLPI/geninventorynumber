@@ -29,46 +29,40 @@ http://www.gnu.org/licenses/gpl.txt
 ---------------------------------------------------------------------- */
 
 function plugin_init_geninventorynumber() {
-   global $PLUGIN_HOOKS, $CFG_GLPI, $LANG, $GENINVENTORYNUMBER_TYPES;
+   global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
-   $PLUGIN_HOOKS['change_profile']['geninventorynumber']
-      = array('PluginGeninventorynumberProfile', 'changeProfile');
    $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
        
    $GENINVENTORYNUMBER_TYPES = array ('Computer', 'Monitor', 'Printer', 'NetworkEquipment',
                                        'Peripheral', 'Phone', 'SoftwareLicense');
    
    $plugin = new Plugin();
-   if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')) {
+   if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')
+      && (Session::haveRight("config", CREATE))) {
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
                             array('addtabon' => array('Profile')));
+      Plugin::registerClass('PluginGeninventorynumberConfig');
       Plugin::registerClass('PluginGeninventorynumberConfigField');
       
-      $PLUGIN_HOOKS['pre_item_purge']['geninventorynumber']
-      = array('Profile' => array('PluginGeninventorynumberProfile', 'purgeProfiles'));
-
-      if (Session::haveRight("config", "w")) {
-         $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.form.php';
-      }
+      $PLUGIN_HOOKS['config_page']['geninventorynumber'] = 'front/config.php';
+      $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']['config'] = 'PluginGeninventorynumberConfig';
    }
 }
 
 function plugin_version_geninventorynumber() {
-   global $LANG;
-   return array ('name'           => $LANG["plugin_geninventorynumber"]["title"][1],
+   return array ('name'           => __('geninventorynumber', 'geninventorynumber'),
                    'minGlpiVersion' => '0.84',
-                   'version'        => '2.1',
-		   'license'        => 'GPLv2+',
-                   'author'         => "<a href='http://www.teclib.com'>TECLIB'</a>",
-                   'homepage'       => 'https://github.com/TECLIB/geninventorynumber');
+                   'version'        => '2.2kk',
+                   'author'         => "<a href='http://www.teclib.com'>TECLIB' + KK</a>",
+                   'homepage'       => 'https://forge.indepnet.net/project/show/Geninventorynumber');
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI 0.84 or higher";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+      echo "This plugin requires 0.85";
    } else {
       return true;
    }

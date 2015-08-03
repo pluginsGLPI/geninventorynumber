@@ -34,12 +34,14 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfigField extends CommonDBTM {
 
-   static function getTypeName($nb = 0) {
-      global $LANG;
-      return $LANG['plugin_geninventorynumber']['types'][1];
+// var $dohistory = true;
+
+   static function getTypeName($nb=0) {
+      return __('PerDeviceTypeConfiguration', 'geninventorynumber');
    }
 
    static function getConfigFieldByItemType($itemtype) {
+
       $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'");
       if (!empty($infos)) {
          return array_pop($infos);
@@ -56,6 +58,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
          $migration->renameTable("glpi_plugin_geninventorynumber_fields", $table);
       }
+
       if (!TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
             `id` int(11) NOT NULL auto_increment,
@@ -100,7 +103,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
    }
 
    static function showForConfig($id) {
-      global $LANG, $CFG_GLPI, $DB;
+      global $CFG_GLPI, $DB;
       
       $config = new PluginGeninventorynumberConfig();
       $config->getFromDB($id);
@@ -109,19 +112,19 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='5'>" . $LANG["plugin_geninventorynumber"]["config"][3] . "</th></tr>";
+      echo "<tr><th colspan='5'>" . __('PerDeviceTypeConfiguration', 'geninventorynumber') . "</th></tr>";
       
       echo "<input type='hidden' name='id' value='$id'>";
       echo "<input type='hidden' name='entities_id' value='0'>";
       
-      echo "<tr><th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][4];
+      echo "<tr><th colspan='2'>" . __('GenerationModel', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
-      echo "<th>" . $LANG["plugin_geninventorynumber"]["config"][1] . "</th>";
-      echo "<th colspan='2'>" . $LANG["plugin_geninventorynumber"]["config"][2] . "</th></tr>";
+      echo "<th>" . __('UseGlobalIndex', 'geninventorynumber') . "</th>";
+      echo "<th colspan='2'>" . __('IndexPosition', 'geninventorynumber') . "</th></tr>";
       
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
-         echo "<td class='tab_bg_1' align='center'>" . $itemtype::getTypeName(). "</td>";
+         echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
          echo "<td class='tab_bg_1'>";
          echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
          echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
@@ -143,7 +146,7 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
       }
       
       echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-      echo "<input type='submit' name='update_fields' value=\"" . __('Update') . "\" class='submit'>";
+      echo "<input type='submit' name='update_fields' value=\"" . _sx('button','Save') . "\" class='submit'>";
       echo "</td></tr>";
       
       echo "</table>";
@@ -215,4 +218,5 @@ class PluginGeninventorynumberConfigField extends CommonDBTM {
          $config->deleteByCriteria(array('itemtype' => $itemtype));
       }
    }
+
 }
