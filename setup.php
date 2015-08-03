@@ -54,15 +54,15 @@ function plugin_init_geninventorynumber() {
 
 function plugin_version_geninventorynumber() {
    return array ('name'           => __('geninventorynumber', 'geninventorynumber'),
-                   'minGlpiVersion' => '0.84',
-                   'version'        => '2.2kk',
-                   'author'         => "<a href='http://www.teclib.com'>TECLIB' + KK</a>",
-                   'homepage'       => 'https://forge.indepnet.net/project/show/Geninventorynumber');
+                   'minGlpiVersion' => '0.85',
+                   'version'        => '0.85+1.0',
+                   'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+                   'homepage'       => 'https://github.com/teclib/geninventorynumber');
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
-      echo "This plugin requires 0.85";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
+      echo "This plugin requires 0.85 or higher";
    } else {
       return true;
    }
