@@ -82,26 +82,28 @@ class PluginGeninventorynumberGeneration {
 
 	 if ((!$massiveaction) && (!Session::haveRight("plugin_geninventorynumber", CREATE))) { 
 	    if (!isCommandLine()) {
-	       Session::addMessageAfterRedirect(__('GenerateInventoryNumberDenied', 'geninventorynumber'),
-		  true, ERROR);
+	       Session::addMessageAfterRedirect(__('GenerateInventoryNumberDenied', 
+                                                'geninventorynumber'), true, ERROR);
 	    }
 	    return array('noright');
          }
 
-	 $tmp = clone $item;
+	 $tmp    = clone $item;
+         $values = array();
 
 	 if (PluginGeninventorynumberConfig::isGenerationActive()
 	    && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
 
 	    if (!$massiveaction) {
-	       $item->input['otherserial'] = self::autoName($config, $item);
+	       $values['otherserial'] = self::autoName($config, $item);
 	       if (!isCommandLine()) {
 		  Session::addMessageAfterRedirect(__('InventoryNumberGenerated', 'geninventorynumber'), true);
 	       }
 	    } else {
-	       $item->fields['otherserial']   = self::autoName($config, $item);
-	       $item->fields['massiveaction'] = true;
-	       $tmp->update($item->fields);
+	       $values['otherserial']   = self::autoName($config, $item);
+	       $values['massiveaction'] = true;
+               $values['id']            = $item->getID();
+	       $tmp->update($values);
 	    }
 
 	    if ($config['use_index']) {
@@ -111,16 +113,18 @@ class PluginGeninventorynumberGeneration {
 	    }
 	    return array('ok');
 	 } else {
-	    $item->fields['otherserial']   = '';
-	    $tmp->update($item->fields);
+            $values['otherserial'] = '';
+            $values['id']          = $item->getID();
+	    $tmp->update($values);
 	 }	
       }
    }
       
    static function preItemUpdate(CommonDBTM $item) {
 
-      if (!Session::haveRight("plugin_geninventorynumber", UPDATE))
-	 return array('noright');
+      if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
+          return array('noright');
+      }
 
       if (PluginGeninventorynumberConfig::isGenerationActive()
 	 && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))

@@ -61,7 +61,6 @@ http://www.gnu.org/licenses/gpl.txt
       return $actions;
    }
 
-   // KK CHECK
    function plugin_geninventorynumber_install() {
       $migration = new Migration("0.85+1.0");
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
@@ -73,7 +72,6 @@ http://www.gnu.org/licenses/gpl.txt
       return true;
    }
 
-   // KK CHECK
    function plugin_geninventorynumber_uninstall() {
       $migration = new Migration("0.85+1.0");
       include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
