@@ -203,10 +203,14 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function registerNewItemType($itemtype) {
+      if (!class_exists($itemtype)) {
+         return;
+      }
+
       if (!countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
          $config = new self();
          $input["plugin_geninventorynumber_configs_id"] = 1;
-         $input["itemtype"]                             = $type;
+         $input["itemtype"]                             = $itemtype;
          $input["template"]                             = "&lt;#######&gt;";
          $input["is_active"]                            = 0;
          $input["index"]                                = 0;
