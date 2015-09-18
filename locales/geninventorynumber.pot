@@ -1,66 +1,65 @@
 # SOME DESCRIPTIVE TITLE.
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Translators:
-# Jérémy MOREAU <jmoreau.dev@gmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
+"Project-Id-Version: GLPI Project - geninventorynumber plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-08 15:01+0100\n"
-"PO-Revision-Date: 2015-09-18 13:05+0000\n"
-"Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>\n"
-"Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/fr_FR/)\n"
+"PO-Revision-Date: 2014-09-08 13:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: English (France) ()\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
+"Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: inc/profile.class.php:175 inc/config.class.php:58 inc/config.class.php:64
 #: setup.php:34 setup.php:35 setup.php:37 setup.php:43 setup.php:44
 #: setup.php:50 setup.php:54 setup.php:60 hook.php:34 hook.php:36
 msgid "geninventorynumber"
-msgstr "Génération de numéros d'inventaire"
+msgstr ""
 
 #: inc/profile.class.php:103 hook.php:51
 msgid "GenerateInventoryNumber"
-msgstr "Générer un numéro d'inventaire"
+msgstr ""
 
 #: inc/profile.class.php:108 hook.php:55
 msgid "RegenerateInventoryNumber"
-msgstr "Regénérer un numéro d'inventaire (à écraser)"
+msgstr ""
 
 #: inc/generation.class.php:82
 msgid "InventoryNumberGenerated"
-msgstr "Un numéro d'inventaire a été généré"
+msgstr ""
 
 #: inc/generation.class.php:107
 msgid "GenerateInventoryNumberDenied"
-msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"
+msgstr ""
 
 #: inc/configfield.class.php:111
 msgid "GenerationModel"
-msgstr "Modèle de génération : "
+msgstr ""
 
 #: inc/configfield.class.php:116
 msgid "GlobalParameters"
-msgstr "GlobalParameters"
+msgstr ""
 
 #: inc/configfield.class.php:118
 msgid "UseGlobalIndex"
-msgstr "Utiliser l'index global"
+msgstr ""
 
 #: inc/configfield.class.php:119 inc/config.class.php:82
 #: inc/config.class.php:115
 msgid "IndexPosition"
-msgstr "Position de l'index"
+msgstr ""
 
 #: inc/config.class.php:108
 msgid "GenerationEnabled"
-msgstr "Génération activée"
+msgstr ""
 
 #: inc/configfield.class.php:38
 msgid "PerDeviceTypeConfiguration"
-msgstr "Configuration spécifique à un type d'objet d'inventaire"
+msgstr ""
+
