@@ -56,7 +56,7 @@ function plugin_init_geninventorynumber() {
 function plugin_version_geninventorynumber() {
    return array ('name'           => __('geninventorynumber', 'geninventorynumber'),
                    'minGlpiVersion' => '0.85',
-                   'version'        => '0.85+1.0',
+                   'version'        => '0.85+1.1',
                    'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
                    'homepage'       => 'https://github.com/teclib/geninventorynumber');
 }
