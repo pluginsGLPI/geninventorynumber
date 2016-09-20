@@ -56,14 +56,14 @@ function plugin_init_geninventorynumber() {
 function plugin_version_geninventorynumber() {
    return array ('name'           => __('geninventorynumber', 'geninventorynumber'),
                    'minGlpiVersion' => '0.85',
-                   'version'        => '0.85+1.0',
+                   'version'        => '9.1+1.0',
                    'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-                   'homepage'       => 'https://github.com/teclib/geninventorynumber');
+                   'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber');
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
-      echo "This plugin requires 0.85 or higher";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
+      echo "This plugin requires GLPi > 0.85 and < 9.2";
    } else {
       return true;
    }
