@@ -159,7 +159,7 @@ class PluginGeninventorynumberGeneration {
    /**
     * Generate numbers from a massive update
     *
-    * @since 0.85+1.1
+    * @since 9.1+1.0
     *
     * @param CommonDBTM $item Existing item to update
     */
