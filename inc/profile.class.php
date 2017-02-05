@@ -113,7 +113,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
                ['itemtype'  => 'PluginGeninventorynumber',
                 'label'     => __('GenerateInventoryNumber', 'geninventorynumber'),
                 'field'     => 'plugin_geninventorynumber',
-			       'rights' => [CREATE    => __('Create'),
+                'rights' => [CREATE    => __('Create'),
                              UPDATE    => __('Update')]
                             ]
                ];
@@ -124,7 +124,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       $table = getTableForItemType(__CLASS__);
 
       if ( isset( $_SESSION['glpiactiveprofile'] ) ) {
-	       PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+          PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
 
       if (TableExists("glpi_plugin_geninventorynumber_profiles")) {

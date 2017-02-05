@@ -75,7 +75,7 @@ function plugin_geninventorynumber_check_prerequisites() {
 /**
  * Compatibility check
  *
- * @return	bool	True if plugin compatible with configuration
+ * @return   bool   True if plugin compatible with configuration
  */
 function plugin_geninventorynumber_check_config() {
    return true;

@@ -51,10 +51,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       if (get_class($item) == __CLASS__) {
-      	$array_ret = array();
-      	$array_ret[0] = __('General setup');
-      	$array_ret[1] = __('PerDeviceTypeConfiguration', 'geninventorynumber');
-      	return $array_ret;
+         $array_ret = array();
+         $array_ret[0] = __('General setup');
+         $array_ret[1] = __('PerDeviceTypeConfiguration', 'geninventorynumber');
+         return $array_ret;
       }
       return '';
    }
@@ -100,9 +100,9 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       global $CFG_GLPI;
 
       if ($id > 0) {
-	       $this->getFromDB($id);
+          $this->getFromDB($id);
       } else {
-	       $this->getEmpty();
+          $this->getEmpty();
       }
 
       $this->showFormHeader($options);
@@ -115,7 +115,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td class='tab_bg_1' align='center'>" .
-   	   __('GenerationEnabled', 'geninventorynumber') . "</td>";
+         __('GenerationEnabled', 'geninventorynumber') . "</td>";
       echo "<td class='tab_bg_1'>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
@@ -123,7 +123,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr>";
       echo "<td class='tab_bg_1' align='center'>" .
-	       __('IndexPosition', 'geninventorynumber') . " " . __('Global') . "</td>";
+          __('IndexPosition', 'geninventorynumber') . " " . __('Global') . "</td>";
       echo "<td class='tab_bg_1'>";
       echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
       echo "</td><td colspan='2'></td>";
@@ -149,12 +149,12 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       global $DB;
 
       $query = "SELECT `index`
-	             FROM `".getTableForItemType(__CLASS__)."`";
+                FROM `".getTableForItemType(__CLASS__)."`";
       $results = $DB->query($query);
       if ($DB->numrows($results)) {
-	      return ($DB->result($results, 0 , 'index') + 1);
+         return ($DB->result($results, 0 , 'index') + 1);
       } else {
-	      return 0;
+         return 0;
       }
    }
 
@@ -164,33 +164,33 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       $table = getTableForItemType(__CLASS__);
       if (TableExists("glpi_plugin_generateinventorynumber_config")) {
          $fields = ['template_computer', 'template_monitor', 'template_printer',
-      	            'template_peripheral', 'template_phone' , 'template_networking',
-      	            'generate_ocs', 'generate_data_injection', 'generate_internal',
-      	            'computer_gen_enabled', 'monitor_gen_enabled', 'printer_gen_enabled',
-      	            'peripheral_gen_enabled', 'phone_gen_enabled', 'networking_gen_enabled',
-      	            'computer_global_index', 'monitor_global_index', 'printer_global_index',
-      	            'peripheral_global_index', 'phone_global_index',
-      	            'networking_global_index'];
-      	foreach ($fields as $field) {
-      	   $migration->dropField("glpi_plugin_generateinventorynumber_config", $field);
-      	}
-      	$migration->renameTable("glpi_plugin_generateinventorynumber_config", $table);
+                     'template_peripheral', 'template_phone' , 'template_networking',
+                     'generate_ocs', 'generate_data_injection', 'generate_internal',
+                     'computer_gen_enabled', 'monitor_gen_enabled', 'printer_gen_enabled',
+                     'peripheral_gen_enabled', 'phone_gen_enabled', 'networking_gen_enabled',
+                     'computer_global_index', 'monitor_global_index', 'printer_global_index',
+                     'peripheral_global_index', 'phone_global_index',
+                     'networking_global_index'];
+         foreach ($fields as $field) {
+            $migration->dropField("glpi_plugin_generateinventorynumber_config", $field);
+         }
+         $migration->renameTable("glpi_plugin_generateinventorynumber_config", $table);
       }
 
       if (TableExists("glpi_plugin_geninventorynumber_config")) {
-	      $migration->renameTable("glpi_plugin_geninventorynumber_config", $table);
+         $migration->renameTable("glpi_plugin_geninventorynumber_config", $table);
       }
 
       if (!TableExists($table)) {
-      	$sql = "CREATE TABLE IF NOT EXISTS `$table` (
-      	    `id` int(11) NOT NULL auto_increment,
-      	    `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-      	    `entities_id` int(11)  NOT NULL default '-1',
-      	    `is_active` tinyint(1)  NOT NULL default 0,
-      	    `index` int(11)  NOT NULL default 0,
-      	    `comment` text COLLATE utf8_unicode_ci,
-      	    PRIMARY KEY  (`id`)
-      	    ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+         $sql = "CREATE TABLE IF NOT EXISTS `$table` (
+             `id` int(11) NOT NULL auto_increment,
+             `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
+             `entities_id` int(11)  NOT NULL default '-1',
+             `is_active` tinyint(1)  NOT NULL default 0,
+             `index` int(11)  NOT NULL default 0,
+             `comment` text COLLATE utf8_unicode_ci,
+             PRIMARY KEY  (`id`)
+             ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
          $tmp['id']           = 1;
@@ -206,17 +206,17 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
          $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
          $migration->changeField($table, 'active', 'is_active', 'bool');
-	      if (!$migration->addField($table, 'comment', 'text')) {
-	        $migration->changeField($table, 'comments', 'comment', 'text');
-	      }
-	      $migration->changeField($table, 'is_active', 'is_active', 'bool');
-	      $migration->changeField($table, 'next_number', 'index', 'integer');
-	      $migration->dropField($table, 'field');
+         if (!$migration->addField($table, 'comment', 'text')) {
+           $migration->changeField($table, 'comments', 'comment', 'text');
+         }
+         $migration->changeField($table, 'is_active', 'is_active', 'bool');
+         $migration->changeField($table, 'next_number', 'index', 'integer');
+         $migration->dropField($table, 'field');
       }
 
       //Remove unused table
       if (TableExists('glpi_plugin_geninventorynumber_indexes')) {
-	      $migration->dropTable('glpi_plugin_geninventorynumber_indexes');
+         $migration->dropTable('glpi_plugin_geninventorynumber_indexes');
       }
       $migration->migrationOneTable($table);
    }
@@ -229,7 +229,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       global $DB;
 
       $query = "UPDATE `".getTableForItemType(__CLASS__)."`
-	             SET `index`=`index`+1";
+                SET `index`=`index`+1";
       $DB->query($query);
    }
 
