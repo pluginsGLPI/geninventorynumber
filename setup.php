@@ -33,36 +33,39 @@ function plugin_init_geninventorynumber() {
 
    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
    $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
-       
-   $GENINVENTORYNUMBER_TYPES = array ('Computer', 'Monitor', 'Printer', 'NetworkEquipment',
-                                       'Peripheral', 'Phone', 'SoftwareLicense');
-   
+
+   $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
+                                 'Peripheral', 'Phone', 'SoftwareLicense'];
+
    $plugin = new Plugin();
-   if ($plugin->isInstalled('geninventorynumber') && $plugin->isActivated('geninventorynumber')
+   if ($plugin->isInstalled('geninventorynumber')
+      && $plugin->isActivated('geninventorynumber')
       && (Session::haveRight("config", CREATE))) {
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
-                            array('addtabon' => array('Profile')));
+                            ['addtabon' => ['Profile']]);
       Plugin::registerClass('PluginGeninventorynumberConfig');
       Plugin::registerClass('PluginGeninventorynumberConfigField');
-      
+
       if (Session::haveRight('config', UPDATE)) {
-         $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber'] = array ('tools' => 'PluginGeninventorynumberConfig');        
+         $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']
+            = ['tools' => 'PluginGeninventorynumberConfig'];
       }
    }
 }
 
 function plugin_version_geninventorynumber() {
-   return array ('name'           => __('geninventorynumber', 'geninventorynumber'),
-                   'minGlpiVersion' => '0.85',
-                   'version'        => '9.1+1.0',
-                   'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-                   'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber');
+   return ['name'            => __('geninventorynumber', 'geninventorynumber'),
+            'minGlpiVersion' => '0.85',
+            'version'        => '9.1+1.0',
+            'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+            'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber'];
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85','lt')
+      || version_compare(GLPI_VERSION,'9.2','ge')) {
       echo "This plugin requires GLPi > 0.85 and < 9.2";
    } else {
       return true;

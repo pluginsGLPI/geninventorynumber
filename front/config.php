@@ -32,12 +32,12 @@
 include ('../../../inc/includes.php');
 
 $config = new PluginGeninventorynumberConfig();
-
-
 $plugin = new Plugin();
 $config->getFromDB(1);
-if ($plugin->isInstalled("geninventorynumber") && $plugin->isActivated("geninventorynumber")) {
-   Html::header(__('geninventorynumber','geninventorynumber'),$_SERVER['PHP_SELF'],"tools","plugins", "geninventorynumber");
+if ($plugin->isInstalled("geninventorynumber")
+   && $plugin->isActivated("geninventorynumber")) {
+   Html::header(__('geninventorynumber','geninventorynumber'),
+                $_SERVER['PHP_SELF'],"tools","plugins", "geninventorynumber");
    if (isset($_GET['glpi_tab'])) {
       $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
       Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
@@ -45,4 +45,3 @@ if ($plugin->isInstalled("geninventorynumber") && $plugin->isActivated("geninven
    $config->addDivForTabs();
    Html::footer();
 }
-

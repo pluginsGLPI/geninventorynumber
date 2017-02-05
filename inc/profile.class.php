@@ -33,7 +33,6 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginGeninventorynumberProfile extends CommonDBTM {
-
    static $rightname = "config";
 
    /**
@@ -72,7 +71,6 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
          }
       }
       ProfileRight::deleteProfileRights(array($right['field']));
-
    }
 
   /**
@@ -83,11 +81,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
     *
     * @return nothing
     **/
-   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
-
+   function showForm($profiles_id=0, $openform=true, $closeform=true) {
       echo "<div class='firstbloc'>";
-      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
-          && $openform) {
+      if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
+         && $openform) {
          $profile = new Profile();
          echo "<form method='post' action='".$profile->getFormURL()."'>";
       }
@@ -96,16 +93,15 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       $profile->getFromDB($profiles_id);
 
       $rights = $this->getAllRights();
-      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2',
-                                                         'title'         => __('General')));
+      $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
+                                                    'default_class' => 'tab_bg_2',
+                                                    'title'         => __('General')]);
 
       if ($canedit
-          && $closeform) {
+         && $closeform) {
          echo "<div class='center'>";
          echo Html::hidden('id', array('value' => $profiles_id));
-         echo Html::submit(_sx('button', 'Save'),
-                           array('name' => 'update'));
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
          echo "</div>\n";
          Html::closeForm();
       }
@@ -113,40 +109,42 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
    }
 
    static function getAllRights() {
-      return array(array('itemtype'  => 'PluginGeninventorynumber',
-                         'label'     => __('GenerateInventoryNumber', 'geninventorynumber'),
-                         'field'     => 'plugin_geninventorynumber',
-			 'rights' => array(CREATE    => __('Create'),UPDATE    => __('Update'))));
+      return [
+               ['itemtype'  => 'PluginGeninventorynumber',
+                'label'     => __('GenerateInventoryNumber', 'geninventorynumber'),
+                'field'     => 'plugin_geninventorynumber',
+			       'rights' => [CREATE    => __('Create'),
+                             UPDATE    => __('Update')]
+                            ]
+               ];
    }
 
    static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
-       
+
       if ( isset( $_SESSION['glpiactiveprofile'] ) ) {
 	       PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
 
       if (TableExists("glpi_plugin_geninventorynumber_profiles")) {
-          foreach (getAllDatasFromTable($table) as $data) {
-             $profile = new self();
-             foreach ($profile->getAllRights() as $right => $rights) {
-
-                if (!countElementsInTable('glpi_profilerights',
-                                          "`profiles_id`='".$data['profiles_id']."' 
+         foreach (getAllDatasFromTable($table) as $data) {
+            $profile = new self();
+            foreach ($profile->getAllRights() as $right => $rights) {
+               if (!countElementsInTable('glpi_profilerights',
+                                          "`profiles_id`='".$data['profiles_id']."'
                                             AND `name`='".$rights['field']."'")) {
 
-                   $profileRight = new ProfileRight();
+                  $profileRight = new ProfileRight();
+                  $myright = array();
+                  $myright['name']        = $rights['field'];
+                  $myright['profiles_id'] = $data['profiles_id'];
 
-                   $myright = array();
-                   $myright['name']        = $rights['field'];
-                   $myright['profiles_id'] = $data['profiles_id'];
+                  if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
+                     $myright['rights'] = CREATE;
 
-                   if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
-                       $myright['rights'] = CREATE;
-
-                   if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
-                      $myright['rights'] += UPDATE;
+                  if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
+                     $myright['rights'] += UPDATE;
 
                   $profileRight->add($myright);
                }
@@ -157,9 +155,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
    }
 
    static function uninstallProfile() {
-
       $pfProfile = new self();
-      $a_rights = $pfProfile->getAllRights();
+      $a_rights  = $pfProfile->getAllRights();
 
       foreach ($a_rights as $data) {
          ProfileRight::deleteProfileRights(array($data['field']));
@@ -167,17 +164,14 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-
       if ($item->fields['interface'] == 'central') {
          return self::createTabEntry(__('geninventorynumber', 'geninventorynumber'));
       }
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-
       $profile = new self();
       $profile->showForm($item->getID());
       return true;
    }
-
 }

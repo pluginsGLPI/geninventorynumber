@@ -37,5 +37,3 @@ if (isset($_POST['update'])) {
    $config->update($_POST);
    Html::back();
 }
-
-

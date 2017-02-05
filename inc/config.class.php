@@ -34,10 +34,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfig extends CommonDBTM {
 
-//   var $dohistory = true;
-
    static $rightname = 'config';
-   public $dohistory = true;   
+   public $dohistory = true;
 
    static function getTypeName($nb=0) {
       return __('geninventorynumber', 'geninventorynumber');
@@ -60,21 +58,20 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       }
       return '';
    }
-    
+
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       switch ($tabnum) {
          case 0:
             $item->showForm(1);
             break;
          case 1:
-          PluginGeninventorynumberConfigField::showForConfig($item->getID());
+            PluginGeninventorynumberConfigField::showForConfig($item->getID());
             break;
       }
-      return TRUE;
-    }
+      return true;
+   }
 
    function getSearchOptions() {
-
       $sopt = array();
       $sopt['common'] = __('geninventorynumber', 'geninventorynumber');
 
@@ -100,13 +97,11 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    }
 
    function showForm($id, $options=array()) {
-
       global $CFG_GLPI;
 
       if ($id > 0) {
 	       $this->getFromDB($id);
       } else {
-	       // Create item
 	       $this->getEmpty();
       }
 
@@ -116,7 +111,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       echo "<td class='tab_bg_1' align='center'>" . __('Field') . "</td>";
       echo "<td class='tab_bg_1'>";
       echo $this->getName();
-      //Html::autocompletionTextField($this, "name");
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -168,16 +162,15 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       global $DB;
 
       $table = getTableForItemType(__CLASS__);
-
       if (TableExists("glpi_plugin_generateinventorynumber_config")) {
-         $fields = array('template_computer', 'template_monitor', 'template_printer',
-      	                'template_peripheral', 'template_phone' , 'template_networking',
-      	                'generate_ocs', 'generate_data_injection', 'generate_internal',
-      	                'computer_gen_enabled', 'monitor_gen_enabled', 'printer_gen_enabled',
-      	                'peripheral_gen_enabled', 'phone_gen_enabled', 'networking_gen_enabled',
-      	                'computer_global_index', 'monitor_global_index', 'printer_global_index',
-      	                'peripheral_global_index', 'phone_global_index',
-      	                'networking_global_index');
+         $fields = ['template_computer', 'template_monitor', 'template_printer',
+      	            'template_peripheral', 'template_phone' , 'template_networking',
+      	            'generate_ocs', 'generate_data_injection', 'generate_internal',
+      	            'computer_gen_enabled', 'monitor_gen_enabled', 'printer_gen_enabled',
+      	            'peripheral_gen_enabled', 'phone_gen_enabled', 'networking_gen_enabled',
+      	            'computer_global_index', 'monitor_global_index', 'printer_global_index',
+      	            'peripheral_global_index', 'phone_global_index',
+      	            'networking_global_index'];
       	foreach ($fields as $field) {
       	   $migration->dropField("glpi_plugin_generateinventorynumber_config", $field);
       	}
@@ -200,25 +193,25 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       	    ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
-        $tmp['id']           = 1;
-        $tmp['name']         = 'otherserial';
-        $tmp['is_active']    = 1;
-        $tmp['entities_id']  = 0;
-        $tmp['index']        = 0;
-        $config = new self();
-        $config->add($tmp);
+         $tmp['id']           = 1;
+         $tmp['name']         = 'otherserial';
+         $tmp['is_active']    = 1;
+         $tmp['entities_id']  = 0;
+         $tmp['index']        = 0;
+         $config = new self();
+         $config->add($tmp);
       } else {
-        $migration->addField($table, 'name', 'string', array('value' => 'otherserial'));
-        $migration->addField($table, 'field', 'string', array('value' => 'otherserial'));
-        $migration->changeField($table, 'ID', 'id', 'autoincrement');
-        $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
-        $migration->changeField($table, 'active', 'is_active', 'bool');
-	     if (!$migration->addField($table, 'comment', 'text')) {
-	       $migration->changeField($table, 'comments', 'comment', 'text');
-	     }
-	     $migration->changeField($table, 'is_active', 'is_active', 'bool');
-	     $migration->changeField($table, 'next_number', 'index', 'integer');
-	     $migration->dropField($table, 'field');
+         $migration->addField($table, 'name', 'string', array('value' => 'otherserial'));
+         $migration->addField($table, 'field', 'string', array('value' => 'otherserial'));
+         $migration->changeField($table, 'ID', 'id', 'autoincrement');
+         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
+         $migration->changeField($table, 'active', 'is_active', 'bool');
+	      if (!$migration->addField($table, 'comment', 'text')) {
+	        $migration->changeField($table, 'comments', 'comment', 'text');
+	      }
+	      $migration->changeField($table, 'is_active', 'is_active', 'bool');
+	      $migration->changeField($table, 'next_number', 'index', 'integer');
+	      $migration->dropField($table, 'field');
       }
 
       //Remove unused table

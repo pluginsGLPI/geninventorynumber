@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfigField extends CommonDBChild {
 
-   var $dohistory = true;
+   var $dohistory          = true;
    static public $itemtype = 'PluginGeninventorynumberConfig';
    static public $items_id = 'plugin_geninventorynumber_configs_id';
 
@@ -43,19 +43,19 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function getConfigFieldByItemType($itemtype) {
-
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'");
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__),
+                                    "`itemtype`='$itemtype'");
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
          return $infos;
       }
    }
-   
+
    static function install(Migration $migration) {
       global $DB, $GENINVENTORYNUMBER_TYPES;
       $table = getTableForItemType(__CLASS__);
-      
+
       if (TableExists("glpi_plugin_geninventorynumber_fields")) {
          //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
          $migration->renameTable("glpi_plugin_geninventorynumber_fields", $table);
@@ -73,7 +73,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             PRIMARY KEY  (`id`)
             ) ENGINE=MyISAM  CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query);
-          
+
       } else {
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
          $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', 'integer');
@@ -95,18 +95,17 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             $input["is_active"]                            = 0;
             $input["index"]                                = 0;
             $field->add($input);
-            
          }
       }
    }
-    
+
    static function uninstall(Migration $migration) {
       $migration->dropTable(getTableForItemType(__CLASS__));
    }
 
    static function showForConfig($id) {
       global $CFG_GLPI, $DB;
-      
+
       $config = new PluginGeninventorynumberConfig();
       $config->getFromDB($id);
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
@@ -115,15 +114,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='5'>" . __('PerDeviceTypeConfiguration', 'geninventorynumber') . "</th></tr>";
-      
+
       echo "<input type='hidden' name='id' value='$id'>";
       echo "<input type='hidden' name='entities_id' value='0'>";
-      
+
       echo "<tr><th colspan='2'>" . __('GenerationModel', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('UseGlobalIndex', 'geninventorynumber') . "</th>";
       echo "<th colspan='2'>" . __('IndexPosition', 'geninventorynumber') . "</th></tr>";
-      
+
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
@@ -146,11 +145,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          echo "</td>";
          echo "</tr>";
       }
-      
+
       echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
       echo "<input type='submit' name='update_fields' value=\"" . _sx('button','Save') . "\" class='submit'>";
       echo "</td></tr>";
-      
+
       echo "</table>";
       Html::closeForm();
    }
@@ -166,7 +165,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       }
       return $types;
    }
-   
+
    static function isActiveForItemType($itemtype) {
       global $DB;
       $query = "SELECT `is_active`
@@ -182,7 +181,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function getNextIndex($itemtype) {
       global $DB;
-   
+
       $query = "SELECT `index`
                 FROM `".getTableForItemType(__CLASS__)."`
                 WHERE `itemtype`='$itemtype'";
@@ -224,5 +223,4 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $config->deleteByCriteria(array('itemtype' => $itemtype));
       }
    }
-
 }
