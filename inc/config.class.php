@@ -159,7 +159,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
                 FROM `".getTableForItemType(__CLASS__)."`";
       $results = $DB->query($query);
       if ($DB->numrows($results)) {
-         return ($DB->result($results, 0 , 'index') + 1);
+         return ($DB->result($results, 0, 'index') + 1);
       } else {
          return 0;
       }
