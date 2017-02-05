@@ -154,7 +154,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       }
 
       echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-      echo "<input type='submit' name='update_fields' value=\"" . _sx('button','Save') . "\" class='submit'>";
+      echo "<input type='submit' name='update_fields' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
       echo "</td></tr>";
 
       echo "</table>";

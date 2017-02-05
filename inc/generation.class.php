@@ -41,7 +41,7 @@ class PluginGeninventorynumberGeneration {
    static function autoName($config, CommonDBTM $item) {
       $template = $config['template'];
       $len      = strlen($template);
-      $suffix = strpos($template,'&lt;');
+      $suffix = strpos($template, '&lt;');
 
       if ($len > 8
          && $suffix !== FALSE
@@ -148,7 +148,7 @@ class PluginGeninventorynumberGeneration {
          case "plugin_geninventorynumber_generate" :
          case "plugin_geninventorynumber_overwrite" :
             echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" .
-               _sx('button','Add') . "\" >";
+               _sx('button', 'Add') . "\" >";
             break;
          default :
             break;
@@ -222,10 +222,8 @@ class PluginGeninventorynumberGeneration {
                      }
                   }
 
-                  if (
-                     //Or is overwrite action is selected
-                     ($ma->action == "plugin_geninventorynumber_overwrite")) {
-
+                  //Or is overwrite action is selected
+                  if (($ma->action == "plugin_geninventorynumber_overwrite")) {
                      if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
                         $results['noright']++;
                      } else {

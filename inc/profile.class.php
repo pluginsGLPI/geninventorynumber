@@ -130,7 +130,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       global $DB;
       $table = getTableForItemType(__CLASS__);
 
-      if ( isset( $_SESSION['glpiactiveprofile'] ) ) {
+      if (isset($_SESSION['glpiactiveprofile'])) {
           PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
 
@@ -147,10 +147,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
                   $myright['name']        = $rights['field'];
                   $myright['profiles_id'] = $data['profiles_id'];
 
-                  if (!strcmp($data['plugin_geninventorynumber_generate'],'w'))
+                  if (!strcmp($data['plugin_geninventorynumber_generate'], 'w'))
                      $myright['rights'] = CREATE;
 
-                  if (!strcmp($data['plugin_geninventorynumber_overwrite'],'w'))
+                  if (!strcmp($data['plugin_geninventorynumber_overwrite'], 'w'))
                      $myright['rights'] += UPDATE;
 
                   $profileRight->add($myright);
