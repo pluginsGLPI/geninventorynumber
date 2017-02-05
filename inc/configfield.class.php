@@ -214,7 +214,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $input["is_active"]                            = 0;
          $input["index"]                                = 0;
          $config->add($input);
-       }
+      }
    }
 
    static function unregisterNewItemType($itemtype) {

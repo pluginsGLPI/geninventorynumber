@@ -207,7 +207,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
          $migration->changeField($table, 'active', 'is_active', 'bool');
          if (!$migration->addField($table, 'comment', 'text')) {
-           $migration->changeField($table, 'comments', 'comment', 'text');
+            $migration->changeField($table, 'comments', 'comment', 'text');
          }
          $migration->changeField($table, 'is_active', 'is_active', 'bool');
          $migration->changeField($table, 'next_number', 'index', 'integer');

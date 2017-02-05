@@ -127,7 +127,7 @@ class PluginGeninventorynumberGeneration {
       }
    }
 
-  /**
+   /**
     * @since version 0.85
     *
     * @see CommonDBTM::showMassiveActionsSubForm()
@@ -200,32 +200,33 @@ class PluginGeninventorynumberGeneration {
                   $item = new $itemtype;
                   $item->getFromDB($item_id);
                   if ($ma->action == "plugin_geninventorynumber_generate") {
-                    //Only generates inventory number for object without it !
-                    if (isset ($item->fields["otherserial"])
-                       && ($item->fields["otherserial"] == "")) {
+                     //Only generates inventory number for object without it !
+                     if (isset ($item->fields["otherserial"])
+                        && ($item->fields["otherserial"] == "")) {
 
-                       if (!Session::haveRight("plugin_geninventorynumber", CREATE)) {
-                          $results['noright']++;
-                       } else {
-                          $myresult = self::doMassiveUpdate($item);
-                          $results[$myresult[0]]++;
-                       }
+                        if (!Session::haveRight("plugin_geninventorynumber", CREATE)) {
+                           $results['noright']++;
+                        } else {
+                           $myresult = self::doMassiveUpdate($item);
+                           $results[$myresult[0]]++;
+                        }
                      } else {
-                     $results['ko']++;
+                        $results['ko']++;
                      }
                   }
 
-                 if (//Or is overwrite action is selected
-                    ($ma->action == "plugin_geninventorynumber_overwrite")) {
+                  if (
+                     //Or is overwrite action is selected
+                     ($ma->action == "plugin_geninventorynumber_overwrite")) {
 
-                    if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
-                  $results['noright']++;
-                    } else {
-                  $myresult = self::doMassiveUpdate($item);
-                  $results[$myresult[0]]++;
-                    }
-                 }
-              }
+                     if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
+                        $results['noright']++;
+                     } else {
+                        $myresult = self::doMassiveUpdate($item);
+                        $results[$myresult[0]]++;
+                     }
+                  }
+               }
             }
             break;
 

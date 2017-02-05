@@ -73,7 +73,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       ProfileRight::deleteProfileRights(array($right['field']));
    }
 
-  /**
+   /**
     * Show profile form
     *
     * @param $items_id integer id of the profile
