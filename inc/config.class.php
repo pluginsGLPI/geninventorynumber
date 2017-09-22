@@ -169,7 +169,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       global $DB;
 
       $table = getTableForItemType(__CLASS__);
-      if (TableExists("glpi_plugin_generateinventorynumber_config")) {
+      if ($DB->tableExists("glpi_plugin_generateinventorynumber_config")) {
          $fields = ['template_computer', 'template_monitor', 'template_printer',
                      'template_peripheral', 'template_phone' , 'template_networking',
                      'generate_ocs', 'generate_data_injection', 'generate_internal',
@@ -184,11 +184,11 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->renameTable("glpi_plugin_generateinventorynumber_config", $table);
       }
 
-      if (TableExists("glpi_plugin_geninventorynumber_config")) {
+      if ($DB->tableExists("glpi_plugin_geninventorynumber_config")) {
          $migration->renameTable("glpi_plugin_geninventorynumber_config", $table);
       }
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $sql = "CREATE TABLE IF NOT EXISTS `$table` (
              `id` int(11) NOT NULL auto_increment,
              `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
@@ -222,7 +222,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       }
 
       //Remove unused table
-      if (TableExists('glpi_plugin_geninventorynumber_indexes')) {
+      if ($DB->tableExists('glpi_plugin_geninventorynumber_indexes')) {
          $migration->dropTable('glpi_plugin_geninventorynumber_indexes');
       }
       $migration->migrationOneTable($table);

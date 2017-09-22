@@ -134,7 +134,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
           PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       }
 
-      if (TableExists("glpi_plugin_geninventorynumber_profiles")) {
+      if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
          foreach (getAllDatasFromTable($table) as $data) {
             $profile = new self();
             foreach ($profile->getAllRights() as $right => $rights) {

@@ -63,12 +63,12 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       global $DB, $GENINVENTORYNUMBER_TYPES;
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists("glpi_plugin_geninventorynumber_fields")) {
+      if ($DB->tableExists("glpi_plugin_geninventorynumber_fields")) {
          //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
          $migration->renameTable("glpi_plugin_geninventorynumber_fields", $table);
       }
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
             `id` int(11) NOT NULL auto_increment,
             `plugin_geninventorynumber_configs_id` int(11) NOT NULL default '0',

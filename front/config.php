@@ -48,6 +48,6 @@ if ($plugin->isInstalled("geninventorynumber")
       $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
       Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
    }
-   $config->addDivForTabs();
+   $config->showTabsContent();
    Html::footer();
 }
