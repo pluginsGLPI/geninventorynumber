@@ -35,6 +35,8 @@
  @since     2008
 ---------------------------------------------------------------------- */
 
+define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.2.0');
+
 function plugin_init_geninventorynumber() {
    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
@@ -63,20 +65,28 @@ function plugin_init_geninventorynumber() {
 }
 
 function plugin_version_geninventorynumber() {
-   return ['name'            => __('geninventorynumber', 'geninventorynumber'),
-            'minGlpiVersion' => '0.85',
-            'version'        => '9.1+1.0',
-            'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-            'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber'];
+   return [
+      'name'            => __('geninventorynumber', 'geninventorynumber'),
+      'version'        => PLUGIN_GENINVENTORYNUMBER_VERSION,
+      'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+      'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber',
+      'requirements'   => [
+         'glpi' => [
+            'min' => '9.2',
+            'dev' => true
+         ]
+      ]
+   ];
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '0.85', 'lt')
-      || version_compare(GLPI_VERSION, '9.2', 'ge')) {
-      echo "This plugin requires GLPi > 0.85 and < 9.2";
-   } else {
-      return true;
+   $version = rtrim(GLPI_VERSION, '-dev');
+   if (version_compare($version, '9.2', 'lt')) {
+      echo "This plugin requires GLPI 9.2";
+      return false;
    }
+
+   return true;
 }
 
 /**
