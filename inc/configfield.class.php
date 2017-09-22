@@ -1,31 +1,38 @@
 <?php
 /*
- * @version $Id: bill.tabs.php 530 2011-06-30 11:30:17Z walid $
-LICENSE
+ * @version $Id: HEADER 15930 2011-10-25 10:47:55Z orthagh $
+ -------------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2003-2011 by the INDEPNET Development Team.
 
-This file is part of the geninventorynumber plugin.
+ http://indepnet.net/   http://glpi-project.org
+ -------------------------------------------------------------------------
 
-geninventorynumber plugin is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+ LICENSE
 
-geninventorynumber plugin is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This file is part of GLPI.
 
-You should have received a copy of the GNU General Public License
-along with GLPI; along with geninventorynumber. If not, see <http://www.gnu.org/licenses/>.
---------------------------------------------------------------------------
-@package   geninventorynumber
-@author    the geninventorynumber plugin team
-@copyright Copyright (c) 2008-2013 geninventorynumber plugin team
-@license   GPLv2+
-http://www.gnu.org/licenses/gpl.txt
-@link      https://forge.indepnet.net/projects/geninventorynumber
-@link      http://www.glpi-project.org/
-@since     2008
+ GLPI is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ GLPI is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ @package   geninventorynumber
+ @author    the geninventorynumber plugin team
+ @copyright Copyright (c) 2008-2017 geninventorynumber plugin team
+ @license   GPLv2+
+            http://www.gnu.org/licenses/gpl.txt
+ @link      https://github.com/pluginsGLPI/geninventorynumber
+ @link      http://www.glpi-project.org/
+ @since     2008
 ---------------------------------------------------------------------- */
 
 if (!defined('GLPI_ROOT')) {
@@ -34,7 +41,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberConfigField extends CommonDBChild {
 
-   var $dohistory = true;
+   var $dohistory          = true;
    static public $itemtype = 'PluginGeninventorynumberConfig';
    static public $items_id = 'plugin_geninventorynumber_configs_id';
 
@@ -43,25 +50,25 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function getConfigFieldByItemType($itemtype) {
-
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'");
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__),
+                                    "`itemtype`='$itemtype'");
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
          return $infos;
       }
    }
-   
+
    static function install(Migration $migration) {
       global $DB, $GENINVENTORYNUMBER_TYPES;
       $table = getTableForItemType(__CLASS__);
-      
-      if (TableExists("glpi_plugin_geninventorynumber_fields")) {
+
+      if ($DB->tableExists("glpi_plugin_geninventorynumber_fields")) {
          //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
          $migration->renameTable("glpi_plugin_geninventorynumber_fields", $table);
       }
 
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
             `id` int(11) NOT NULL auto_increment,
             `plugin_geninventorynumber_configs_id` int(11) NOT NULL default '0',
@@ -73,7 +80,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             PRIMARY KEY  (`id`)
             ) ENGINE=MyISAM  CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query);
-          
+
       } else {
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
          $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', 'integer');
@@ -95,18 +102,17 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             $input["is_active"]                            = 0;
             $input["index"]                                = 0;
             $field->add($input);
-            
          }
       }
    }
-    
+
    static function uninstall(Migration $migration) {
       $migration->dropTable(getTableForItemType(__CLASS__));
    }
 
    static function showForConfig($id) {
       global $CFG_GLPI, $DB;
-      
+
       $config = new PluginGeninventorynumberConfig();
       $config->getFromDB($id);
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
@@ -115,15 +121,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='5'>" . __('PerDeviceTypeConfiguration', 'geninventorynumber') . "</th></tr>";
-      
+
       echo "<input type='hidden' name='id' value='$id'>";
       echo "<input type='hidden' name='entities_id' value='0'>";
-      
+
       echo "<tr><th colspan='2'>" . __('GenerationModel', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('UseGlobalIndex', 'geninventorynumber') . "</th>";
       echo "<th colspan='2'>" . __('IndexPosition', 'geninventorynumber') . "</th></tr>";
-      
+
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
@@ -146,11 +152,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          echo "</td>";
          echo "</tr>";
       }
-      
+
       echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
-      echo "<input type='submit' name='update_fields' value=\"" . _sx('button','Save') . "\" class='submit'>";
+      echo "<input type='submit' name='update_fields' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
       echo "</td></tr>";
-      
+
       echo "</table>";
       Html::closeForm();
    }
@@ -166,7 +172,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       }
       return $types;
    }
-   
+
    static function isActiveForItemType($itemtype) {
       global $DB;
       $query = "SELECT `is_active`
@@ -182,7 +188,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function getNextIndex($itemtype) {
       global $DB;
-   
+
       $query = "SELECT `index`
                 FROM `".getTableForItemType(__CLASS__)."`
                 WHERE `itemtype`='$itemtype'";
@@ -215,7 +221,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $input["is_active"]                            = 0;
          $input["index"]                                = 0;
          $config->add($input);
-       }
+      }
    }
 
    static function unregisterNewItemType($itemtype) {
@@ -224,5 +230,4 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $config->deleteByCriteria(array('itemtype' => $itemtype));
       }
    }
-
 }
