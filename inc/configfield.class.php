@@ -49,9 +49,17 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       return __('PerDeviceTypeConfiguration', 'geninventorynumber');
    }
 
-   static function getConfigFieldByItemType($itemtype) {
+   static function getConfigFieldByItemType($itemtype, $entities_id=-1) {
+      global $DB;
+
+      $query = "SELECT `id`
+                FROM `glpi_plugin_geninventorynumber_configs`
+                WHERE `entities_id`='$entities_id'";
+      $result = $DB->query($query);
+      $configs_id = $DB->result($result, 0, "id");
+
       $infos = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                    "`itemtype`='$itemtype'");
+                                    "`itemtype`='$itemtype' AND `plugin_geninventorynumber_configs_id`='$configs_id'");
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
@@ -111,10 +119,20 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function showForConfig($id) {
-      global $CFG_GLPI, $DB;
+      global $CFG_GLPI, $DB, $GENINVENTORYNUMBER_TYPES;
 
-      $config = new PluginGeninventorynumberConfig();
-      $config->getFromDB($id);
+      if (!countElementsInTable(getTableForItemType(__CLASS__), "plugin_geninventorynumber_configs_id='" . $id . "'")) {
+         $field = new self();
+         foreach ($GENINVENTORYNUMBER_TYPES as $type) {
+            $input["plugin_geninventorynumber_configs_id"] = $id;
+            $input["itemtype"]                             = $type;
+            $input["template"]                             = "&lt;#######&gt;";
+            $input["is_active"]                            = 0;
+            $input["index"]                                = 0;
+            $field->add($input);
+         }
+      }
+
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
 
       echo "<form name='form_core_config' method='post' action=\"$target\">";
@@ -130,7 +148,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<th>" . __('UseGlobalIndex', 'geninventorynumber') . "</th>";
       echo "<th colspan='2'>" . __('IndexPosition', 'geninventorynumber') . "</th></tr>";
 
-      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
+      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__), "plugin_geninventorynumber_configs_id='" . $id . "'", false, 'id ASC') as $value) {
          $itemtype = $value['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
          echo "<td class='tab_bg_1'>";

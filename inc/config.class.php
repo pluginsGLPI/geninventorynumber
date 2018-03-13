@@ -67,9 +67,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    }
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      $session = $_SESSION['glpiactive_entity'];
       switch ($tabnum) {
          case 0:
-            $item->showForm(1);
+            $item->showForm($session);
             break;
          case 1:
             PluginGeninventorynumberConfigField::showForConfig($item->getID());
@@ -105,13 +106,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    function showForm($id, $options=array()) {
       global $CFG_GLPI;
-
-      if ($id > 0) {
-          $this->getFromDB($id);
-      } else {
-          $this->getEmpty();
-      }
-
+      
+      $this->getFromDBByQuery("WHERE entities_id='" . $id . "'");
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
@@ -167,6 +163,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    static function install(Migration $migration) {
       global $DB;
+      $session = $_SESSION['glpiactive_entity'];
 
       $table = getTableForItemType(__CLASS__);
       if ($DB->tableExists("glpi_plugin_generateinventorynumber_config")) {
@@ -196,14 +193,14 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
              `is_active` tinyint(1)  NOT NULL default 0,
              `index` int(11)  NOT NULL default 0,
              `comment` text COLLATE utf8_unicode_ci,
-             PRIMARY KEY  (`id`)
+             PRIMARY KEY  (`id`, `entities_id`)
              ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
          $tmp['id']           = 1;
          $tmp['name']         = 'otherserial';
          $tmp['is_active']    = 1;
-         $tmp['entities_id']  = 0;
+         $tmp['entities_id']  = $session;
          $tmp['index']        = 0;
          $config = new self();
          $config->add($tmp);
@@ -241,8 +238,17 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    }
 
    static function isGenerationActive() {
-      $config = new self();
-      $config->getFromDB(1);
-      return $config->fields['is_active'];
+      global $DB;
+      $session = $_SESSION['glpiactive_entity'];
+
+      $query = "SELECT `is_active`
+                FROM `".getTableForItemType(__CLASS__)."`
+                WHERE `entities_id`='$session'";
+      $results = $DB->query($query);
+      if ($DB->numrows($results)) {
+         return $DB->result($results, 0, 'is_active');
+      } else {
+         return false;
+      }
    }
 }
