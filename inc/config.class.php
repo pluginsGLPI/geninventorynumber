@@ -106,7 +106,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    function showForm($id, $options=array()) {
       global $CFG_GLPI;
-      
+
       $this->getFromDBByQuery("WHERE entities_id='" . $id . "'");
       $this->showFormHeader($options);
 

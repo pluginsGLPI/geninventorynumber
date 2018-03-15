@@ -44,13 +44,13 @@ $config->getFromDBByQuery("WHERE entities_id='" . $session . "'");
 if ($plugin->isInstalled("geninventorynumber")
    && $plugin->isActivated("geninventorynumber")) {
 
-      if (!$config->getFromDBByQuery("WHERE entities_id='" . $session . "'")) {
-         $newconfig['name']         = 'otherserial';
-         $newconfig['is_active']    = 1;
-         $newconfig['entities_id']  = $session;
-         $newconfig['index']        = 0;
-         $config->add($newconfig);
-      }
+   if (!$config->getFromDBByQuery("WHERE entities_id='" . $session . "'")) {
+      $newconfig['name']         = 'otherserial';
+      $newconfig['is_active']    = 1;
+      $newconfig['entities_id']  = $session;
+      $newconfig['index']        = 0;
+      $config->add($newconfig);
+   }
 
    Html::header(__('geninventorynumber', 'geninventorynumber'),
                 $_SERVER['PHP_SELF'], "tools", "plugins", "geninventorynumber");
