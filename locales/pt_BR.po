@@ -19,12 +19,7 @@ msgstr ""
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/profile.class.php:175 inc/config.class.php:48 inc/config.class.php:84
-#: setup.php:69
-msgid "geninventorynumber"
-msgstr "Geração de número de inventário"
-
-#: inc/profile.class.php:121 hook.php:60
+#: hook.php:60 inc/profile.class.php:121
 msgid "GenerateInventoryNumber"
 msgstr "Gerar número de inventário"
 
@@ -32,35 +27,41 @@ msgstr "Gerar número de inventário"
 msgid "RegenerateInventoryNumber"
 msgstr "Regerar número de inventário (sobrescrever)"
 
-#: inc/generation.class.php:100
-msgid "InventoryNumberGenerated"
-msgstr "Um número de inventário foi gerado"
+#: setup.php:69 front/config.php:55 inc/config.class.php:48
+#: inc/config.class.php:84 inc/profile.class.php:175
+msgid "geninventorynumber"
+msgstr "Geração de número de inventário"
 
-#: inc/generation.class.php:90 inc/generation.class.php:131
-msgid "GenerateInventoryNumberDenied"
-msgstr "Você não pode modificar o número de inventário"
+#: inc/config.class.php:63 inc/configfield.class.php:49
+#: inc/configfield.class.php:141
+msgid "PerDeviceTypeConfiguration"
+msgstr "Configuração por tipo de item"
+
+#: inc/config.class.php:93
+msgid "Active"
+msgstr "Ativo"
+
+#: inc/config.class.php:102 inc/config.class.php:129
+#: inc/configfield.class.php:149
+msgid "IndexPosition"
+msgstr "Posição do índice global"
+
+#: inc/config.class.php:121
+msgid "GenerationEnabled"
+msgstr "Habilitado"
 
 #: inc/configfield.class.php:146
 msgid "GenerationModel"
 msgstr "Modelos de geração"
 
-#: inc/configfield.class.php:116
-msgid "GlobalParameters"
-msgstr "Parâmetros Globais"
-
 #: inc/configfield.class.php:148
 msgid "UseGlobalIndex"
 msgstr "Usar índice global"
 
-#: inc/configfield.class.php:149 inc/config.class.php:129
-#: inc/config.class.php:102
-msgid "IndexPosition"
-msgstr "Posição do índice global"
+#: inc/generation.class.php:90 inc/generation.class.php:131
+msgid "GenerateInventoryNumberDenied"
+msgstr "Você não pode modificar o número de inventário"
 
-#: inc/config.class.php:121 
-msgid "GenerationEnabled"
-msgstr "Ativo"
-
-#: inc/configfield.class.php:141
-msgid "PerDeviceTypeConfiguration"
-msgstr "Configuração de itens de inventário do GLPI"
+#: inc/generation.class.php:100
+msgid "InventoryNumberGenerated"
+msgstr "Um número de inventário foi gerado"

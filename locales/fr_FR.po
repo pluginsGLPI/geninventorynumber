@@ -18,49 +18,49 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/profile.class.php:175 inc/config.class.php:58 inc/config.class.php:64
-#: setup.php:34 setup.php:35 setup.php:37 setup.php:43 setup.php:44
-#: setup.php:50 setup.php:54 setup.php:60 hook.php:34 hook.php:36
-msgid "geninventorynumber"
-msgstr "Génération de numéros d'inventaire"
-
-#: inc/profile.class.php:103 hook.php:51
+#: hook.php:60 inc/profile.class.php:121
 msgid "GenerateInventoryNumber"
 msgstr "Générer un numéro d'inventaire"
 
-#: inc/profile.class.php:108 hook.php:55
+#: hook.php:65
 msgid "RegenerateInventoryNumber"
 msgstr "Regénérer un numéro d'inventaire (à écraser)"
 
-#: inc/generation.class.php:82
-msgid "InventoryNumberGenerated"
-msgstr "Un numéro d'inventaire a été généré"
+#: setup.php:69 front/config.php:55 inc/config.class.php:48
+#: inc/config.class.php:84 inc/profile.class.php:175
+msgid "geninventorynumber"
+msgstr "Génération de numéros d'inventaire"
 
-#: inc/generation.class.php:107
-msgid "GenerateInventoryNumberDenied"
-msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"
+#: inc/config.class.php:63 inc/configfield.class.php:49
+#: inc/configfield.class.php:141
+msgid "PerDeviceTypeConfiguration"
+msgstr "Configuration spécifique à un type d'objet d'inventaire"
 
-#: inc/configfield.class.php:111
-msgid "GenerationModel"
-msgstr "Modèle de génération : "
+#: inc/config.class.php:93
+msgid "Active"
+msgstr "Ativo"
 
-#: inc/configfield.class.php:116
-msgid "GlobalParameters"
-msgstr "GlobalParameters"
-
-#: inc/configfield.class.php:118
-msgid "UseGlobalIndex"
-msgstr "Utiliser l'index global"
-
-#: inc/configfield.class.php:119 inc/config.class.php:82
-#: inc/config.class.php:115
+#: inc/config.class.php:102 inc/config.class.php:129
+#: inc/configfield.class.php:149
 msgid "IndexPosition"
 msgstr "Position de l'index"
 
-#: inc/config.class.php:108
+#: inc/config.class.php:121
 msgid "GenerationEnabled"
 msgstr "Génération activée"
 
-#: inc/configfield.class.php:38
-msgid "PerDeviceTypeConfiguration"
-msgstr "Configuration spécifique à un type d'objet d'inventaire"
+#: inc/configfield.class.php:146
+msgid "GenerationModel"
+msgstr "Modèle de génération : "
+
+#: inc/configfield.class.php:148
+msgid "UseGlobalIndex"
+msgstr "Utiliser l'index global"
+
+#: inc/generation.class.php:90 inc/generation.class.php:131
+msgid "GenerateInventoryNumberDenied"
+msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"
+
+#: inc/generation.class.php:100
+msgid "InventoryNumberGenerated"
+msgstr "Un numéro d'inventaire a été généré"
