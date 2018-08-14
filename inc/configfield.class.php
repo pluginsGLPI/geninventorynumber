@@ -78,7 +78,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             `use_index` tinyint(1) NOT NULL default '0',
             `index` bigint(20) NOT NULL default '0',
             PRIMARY KEY  (`id`)
-            ) ENGINE=MyISAM  CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            ) ENGINE=InnoDB  CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query);
 
       } else {
