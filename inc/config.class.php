@@ -78,27 +78,35 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       return true;
    }
 
-   function getSearchOptions() {
+   function rawSearchOptions() {
       $sopt = array();
-      $sopt['common'] = __('geninventorynumber', 'geninventorynumber');
 
+      $sopt[0] = [
+        'id' => 'common',
+        'name' => __('geninventorynumber', 'geninventorynumber')
+      ];
+
+      $sopt[1]['id'] = 1;
       $sopt[1]['table'] = $this->getTable();
       $sopt[1]['field'] = 'name';
       $sopt[1]['name'] = __('Field');
       $sopt[1]['datatype'] = 'itemlink';
 
+      $sopt[2]['id'] = 2;
       $sopt[2]['table'] = $this->getTable();
       $sopt[2]['field'] = 'is_active';
       $sopt[2]['name'] = __('Active', 'geninventorynumber');
       $sopt[2]['datatype'] = 'bool';
 
+      $sopt[3]['id'] = 3;
       $sopt[3]['table'] = $this->getTable();
       $sopt[3]['field'] = 'comment';
       $sopt[3]['name'] = __('Comments');
 
-      $sopt[3]['table'] = $this->getTable();
-      $sopt[3]['field'] = 'index';
-      $sopt[3]['name'] = __('IndexPosition', 'geninventorynumber');
+      $sopt[4]['id'] = 4;
+      $sopt[4]['table'] = $this->getTable();
+      $sopt[4]['field'] = 'index';
+      $sopt[4]['name'] = __('IndexPosition', 'geninventorynumber');
 
       return $sopt;
    }
@@ -197,7 +205,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
              `index` int(11)  NOT NULL default 0,
              `comment` text COLLATE utf8_unicode_ci,
              PRIMARY KEY  (`id`)
-             ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+             ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
          $tmp['id']           = 1;
