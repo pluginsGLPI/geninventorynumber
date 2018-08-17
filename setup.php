@@ -37,6 +37,11 @@
 
 define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.2.0');
 
+// Minimal GLPI version, inclusive
+define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "9.3");
+// Maximum GLPI version, exclusive
+define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "9.4");
+
 function plugin_init_geninventorynumber() {
    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
@@ -66,24 +71,38 @@ function plugin_init_geninventorynumber() {
 
 function plugin_version_geninventorynumber() {
    return [
-      'name'            => __('geninventorynumber', 'geninventorynumber'),
-      'version'        => PLUGIN_GENINVENTORYNUMBER_VERSION,
-      'author'         => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-      'homepage'       => 'https://github.com/pluginsGLPI/geninventorynumber',
-      'requirements'   => [
+      'name'         => __('geninventorynumber', 'geninventorynumber'),
+      'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
+      'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+      'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',
+      'license'      => 'GPLv2+',
+      'requirements' => [
          'glpi' => [
-            'min' => '9.2',
-            'dev' => true
-         ]
-      ]
+            'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
+            'max' => PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
+          ]
+       ]
    ];
 }
 
 function plugin_geninventorynumber_check_prerequisites() {
-   $version = rtrim(GLPI_VERSION, '-dev');
-   if (version_compare($version, '9.2', 'lt')) {
-      echo "This plugin requires GLPI 9.2";
-      return false;
+
+   //Version check is not done by core in GLPI < 9.2 but has to be delegated to core in GLPI >= 9.2.
+   if (!method_exists('Plugin', 'checkGlpiVersion')) {
+      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $matchMinGlpiReq = version_compare($version, PLUGIN_GENINVENTORYNUMBER_MIN_GLPI, '>=');
+      $matchMaxGlpiReq = version_compare($version, PLUGIN_GENINVENTORYNUMBER_MAX_GLPI, '<');
+
+      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
+         echo vsprintf(
+            'This plugin requires GLPI >= %1$s and < %2$s.',
+            [
+               PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
+               PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
+            ]
+         );
+         return false;
+      }
    }
 
    return true;

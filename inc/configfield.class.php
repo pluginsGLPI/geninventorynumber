@@ -45,13 +45,12 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    static public $itemtype = 'PluginGeninventorynumberConfig';
    static public $items_id = 'plugin_geninventorynumber_configs_id';
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return __('PerDeviceTypeConfiguration', 'geninventorynumber');
    }
 
    static function getConfigFieldByItemType($itemtype) {
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                    "`itemtype`='$itemtype'");
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype]);
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
@@ -86,7 +85,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', 'integer');
          if ($migration->changeField($table, 'device_type', 'itemtype', 'string')) {
             $migration->migrationOneTable($table);
-            Plugin::migrateItemType(array(), array("glpi_displaypreferences"), array($table));
+            Plugin::migrateItemType([], ["glpi_displaypreferences"], [$table]);
          }
          $migration->changeField($table, 'enabled', 'is_active', 'boolean');
          $migration->changeField($table, 'use_index', 'use_index', 'boolean');
@@ -95,7 +94,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
       $field = new self();
       foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-         if (!countElementsInTable($table, "`itemtype`='$type'")) {
+         if (!countElementsInTable($table, ['itemtype' => $type])) {
             $input["plugin_geninventorynumber_configs_id"] = 1;
             $input["itemtype"]                             = $type;
             $input["template"]                             = "&lt;#######&gt;";
@@ -132,7 +131,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
-         echo "<td class='tab_bg_1' align='center'>" . call_user_func(array($itemtype, 'getTypeName')). "</td>";
+         echo "<td class='tab_bg_1' align='center'>" . call_user_func([$itemtype, 'getTypeName']). "</td>";
          echo "<td class='tab_bg_1'>";
          echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
          echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
@@ -166,7 +165,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       $query = "SELECT DISTINCT `itemtype`
                 FROM `".getTableForItemType(__CLASS__)."`
                 ORDER BY `itemtype` ASC";
-      $types = array();
+      $types = [];
       foreach ($DB->request($query) as $data) {
          $types[] = $data['itemtype'];
       }
@@ -213,7 +212,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          return;
       }
 
-      if (!countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+      if (!countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
          $config = new self();
          $input["plugin_geninventorynumber_configs_id"] = 1;
          $input["itemtype"]                             = $itemtype;
@@ -225,9 +224,9 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function unregisterNewItemType($itemtype) {
-      if (countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+      if (countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
          $config = new self();
-         $config->deleteByCriteria(array('itemtype' => $itemtype));
+         $config->deleteByCriteria(['itemtype' => $itemtype]);
       }
    }
 }
