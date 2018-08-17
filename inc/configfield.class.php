@@ -50,8 +50,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function getConfigFieldByItemType($itemtype) {
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                    "`itemtype`='$itemtype'");
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype]);
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
@@ -95,7 +94,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
       $field = new self();
       foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-         if (!countElementsInTable($table, "`itemtype`='$type'")) {
+         if (!countElementsInTable($table, ['itemtype' => $type])) {
             $input["plugin_geninventorynumber_configs_id"] = 1;
             $input["itemtype"]                             = $type;
             $input["template"]                             = "&lt;#######&gt;";
@@ -213,7 +212,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          return;
       }
 
-      if (!countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+      if (!countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
          $config = new self();
          $input["plugin_geninventorynumber_configs_id"] = 1;
          $input["itemtype"]                             = $itemtype;
@@ -225,7 +224,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function unregisterNewItemType($itemtype) {
-      if (countElementsInTable(getTableForItemType(__CLASS__), "`itemtype`='$itemtype'")) {
+      if (countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
          $config = new self();
          $config->deleteByCriteria(array('itemtype' => $itemtype));
       }

@@ -58,7 +58,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
          if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+                                   ['profiles_id' => $profiles_id, 'name' => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;
@@ -139,8 +139,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
             $profile = new self();
             foreach ($profile->getAllRights() as $right => $rights) {
                if (!countElementsInTable('glpi_profilerights',
-                                          "`profiles_id`='".$data['profiles_id']."'
-                                            AND `name`='".$rights['field']."'")) {
+                                         ['profiles_id' => $data['profiles_id'],
+                                          'name' => $rights['field']])) {
 
                   $profileRight = new ProfileRight();
                   $myright = array();
