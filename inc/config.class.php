@@ -78,27 +78,36 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       return true;
    }
 
-   function getSearchOptions() {
-      $sopt = array();
-      $sopt['common'] = __('geninventorynumber', 'geninventorynumber');
+   function rawSearchOptions() {
+      $sopt = [];
 
-      $sopt[1]['table'] = $this->getTable();
-      $sopt[1]['field'] = 'name';
-      $sopt[1]['name'] = __('Field');
-      $sopt[1]['datatype'] = 'itemlink';
+      $sopt[] = [
+         'id'                 => 'common',
+         'name'               => __('geninventorynumber', 'geninventorynumber'),
+      ];
 
-      $sopt[2]['table'] = $this->getTable();
-      $sopt[2]['field'] = 'is_active';
-      $sopt[2]['name'] = __('Active', 'geninventorynumber');
-      $sopt[2]['datatype'] = 'bool';
+      $sopt[] = [
+         'id'                 => '1',
+         'table'              => $this->getTable(),
+         'field'              => 'name',
+         'name'               => __('Field'),
+         'datatype'           => 'itemlink',
+      ];
 
-      $sopt[3]['table'] = $this->getTable();
-      $sopt[3]['field'] = 'comment';
-      $sopt[3]['name'] = __('Comments');
+      $sopt[] = [
+         'id'                 => '2',
+         'table'              => $this->getTable(),
+         'field'              => 'is_active',
+         'name'               => __('Active', 'geninventorynumber'),
+         'datatype'           => 'bool',
+      ];
 
-      $sopt[3]['table'] = $this->getTable();
-      $sopt[3]['field'] = 'index';
-      $sopt[3]['name'] = __('IndexPosition', 'geninventorynumber');
+      $sopt[] = [
+         'id'                 => '3',
+         'table'              => $this->getTable(),
+         'field'              => 'index',
+         'name'               => __('IndexPosition', 'geninventorynumber'),
+      ];
 
       return $sopt;
    }
