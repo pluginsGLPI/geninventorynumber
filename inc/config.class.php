@@ -44,21 +44,21 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    static $rightname = 'config';
    public $dohistory = true;
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return __('geninventorynumber', 'geninventorynumber');
    }
 
-   function defineTabs($options=array()) {
-      $ong = array();
+   function defineTabs($options = []) {
+      $ong = [];
       $this->addStandardTab(__CLASS__, $ong, $options);
       $this->addStandardTab("PluginGeninventorynumberConfigField", $ong, $options);
       $this->addStandardTab("Log", $ong, $options);
       return $ong;
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (get_class($item) == __CLASS__) {
-         $array_ret = array();
+         $array_ret = [];
          $array_ret[0] = __('General setup');
          $array_ret[1] = __('PerDeviceTypeConfiguration', 'geninventorynumber');
          return $array_ret;
@@ -66,7 +66,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       switch ($tabnum) {
          case 0:
             $item->showForm(1);
@@ -112,7 +112,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       return $sopt;
    }
 
-   function showForm($id, $options=array()) {
+   function showForm($id, $options = []) {
       global $CFG_GLPI;
 
       if ($id > 0) {
@@ -217,10 +217,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $config = new self();
          $config->add($tmp);
       } else {
-         $migration->addField($table, 'name', 'string', array('value' => 'otherserial'));
-         $migration->addField($table, 'field', 'string', array('value' => 'otherserial'));
+         $migration->addField($table, 'name', 'string', ['value' => 'otherserial']);
+         $migration->addField($table, 'field', 'string', ['value' => 'otherserial']);
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
-         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
+         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', ['value' => -1]);
          $migration->changeField($table, 'active', 'is_active', 'bool');
          if (!$migration->addField($table, 'comment', 'text')) {
             $migration->changeField($table, 'comments', 'comment', 'text');
