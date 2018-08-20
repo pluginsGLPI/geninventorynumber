@@ -118,7 +118,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
    static function getAllRights() {
       return [
                ['itemtype'  => 'PluginGeninventorynumber',
-                'label'     => __('GenerateInventoryNumber', 'geninventorynumber'),
+                'label'     => __('Generate inventory number', 'geninventorynumber'),
                 'field'     => 'plugin_geninventorynumber',
                 'rights' => [CREATE    => __('Create'),
                              UPDATE    => __('Update')]
@@ -172,7 +172,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if ($item->fields['interface'] == 'central') {
-         return self::createTabEntry(__('geninventorynumber', 'geninventorynumber'));
+         return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
       }
    }
 

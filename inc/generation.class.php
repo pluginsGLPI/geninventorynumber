@@ -87,7 +87,7 @@ class PluginGeninventorynumberGeneration {
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
          if ((!Session::haveRight("plugin_geninventorynumber", CREATE))) {
             if (!isCommandLine()) {
-               Session::addMessageAfterRedirect(__('GenerateInventoryNumberDenied',
+               Session::addMessageAfterRedirect(__('You can\'t modify inventory number',
                                                 'geninventorynumber'), true, ERROR);
             }
             return;
@@ -97,7 +97,7 @@ class PluginGeninventorynumberGeneration {
             && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
             $item->input['otherserial'] = self::autoName($config, $item);
             if (!isCommandLine()) {
-               Session::addMessageAfterRedirect(__('InventoryNumberGenerated', 'geninventorynumber'), true);
+               Session::addMessageAfterRedirect(__('An inventory number have been generated', 'geninventorynumber'), true);
             }
 
             if ($config['use_index']) {
@@ -127,7 +127,7 @@ class PluginGeninventorynumberGeneration {
             $item->input['otherserial'] = $item->fields['otherserial'];
             if (!isCommandLine()) {
                Session::addMessageAfterRedirect(
-                  __('GenerateInventoryNumberDenied', 'geninventorynumber'),
+                  __('You can\'t modify inventory number', 'geninventorynumber'),
                   true, ERROR);
             }
          }
