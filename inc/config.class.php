@@ -206,7 +206,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
              `index` int(11)  NOT NULL default 0,
              `comment` text COLLATE utf8_unicode_ci,
              PRIMARY KEY  (`id`)
-             ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+             ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
          $tmp['id']           = 1;
