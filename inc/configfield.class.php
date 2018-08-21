@@ -46,7 +46,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    static public $items_id = 'plugin_geninventorynumber_configs_id';
 
    static function getTypeName($nb = 0) {
-      return __('PerDeviceTypeConfiguration', 'geninventorynumber');
+      return __('GLPI\'s inventory items configuration', 'geninventorynumber');
    }
 
    static function getConfigFieldByItemType($itemtype) {
@@ -119,15 +119,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='5'>" . __('PerDeviceTypeConfiguration', 'geninventorynumber') . "</th></tr>";
+      echo "<tr><th colspan='5'>" . __('GLPI\'s inventory items configuration', 'geninventorynumber') . "</th></tr>";
 
       echo "<input type='hidden' name='id' value='$id'>";
       echo "<input type='hidden' name='entities_id' value='0'>";
 
-      echo "<tr><th colspan='2'>" . __('GenerationModel', 'geninventorynumber');
+      echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
-      echo "<th>" . __('UseGlobalIndex', 'geninventorynumber') . "</th>";
-      echo "<th colspan='2'>" . __('IndexPosition', 'geninventorynumber') . "</th></tr>";
+      echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
+      echo "<th colspan='2'>" . __('Global index position', 'geninventorynumber') . "</th></tr>";
 
       foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];

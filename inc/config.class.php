@@ -45,7 +45,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    public $dohistory = true;
 
    static function getTypeName($nb = 0) {
-      return __('geninventorynumber', 'geninventorynumber');
+      return __('Inventory number generation', 'geninventorynumber');
    }
 
    function defineTabs($options = []) {
@@ -60,7 +60,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       if (get_class($item) == __CLASS__) {
          $array_ret = [];
          $array_ret[0] = __('General setup');
-         $array_ret[1] = __('PerDeviceTypeConfiguration', 'geninventorynumber');
+         $array_ret[1] = __('GLPI\'s inventory items configuration', 'geninventorynumber');
          return $array_ret;
       }
       return '';
@@ -83,7 +83,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       $sopt[] = [
          'id'                 => 'common',
-         'name'               => __('geninventorynumber', 'geninventorynumber'),
+         'name'               => __('Inventory number generation', 'geninventorynumber'),
       ];
 
       $sopt[] = [
@@ -106,7 +106,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          'id'                 => '3',
          'table'              => $this->getTable(),
          'field'              => 'index',
-         'name'               => __('IndexPosition', 'geninventorynumber'),
+         'name'               => __('Global index position', 'geninventorynumber'),
       ];
 
       return $sopt;
@@ -131,7 +131,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td class='tab_bg_1' align='center'>" .
-         __('GenerationEnabled', 'geninventorynumber') . "</td>";
+         __('Active', 'geninventorynumber') . "</td>";
       echo "<td class='tab_bg_1'>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
@@ -139,7 +139,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr>";
       echo "<td class='tab_bg_1' align='center'>" .
-          __('IndexPosition', 'geninventorynumber') . " " . __('Global') . "</td>";
+          __('Global index position', 'geninventorynumber') . " " . __('Global') . "</td>";
       echo "<td class='tab_bg_1'>";
       echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
       echo "</td><td colspan='2'></td>";
