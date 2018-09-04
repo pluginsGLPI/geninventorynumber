@@ -44,29 +44,29 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    static $rightname = 'config';
    public $dohistory = true;
 
-   static function getTypeName($nb=0) {
-      return __('geninventorynumber', 'geninventorynumber');
+   static function getTypeName($nb = 0) {
+      return __('Inventory number generation', 'geninventorynumber');
    }
 
-   function defineTabs($options=array()) {
-      $ong = array();
+   function defineTabs($options = []) {
+      $ong = [];
       $this->addStandardTab(__CLASS__, $ong, $options);
       $this->addStandardTab("PluginGeninventorynumberConfigField", $ong, $options);
       $this->addStandardTab("Log", $ong, $options);
       return $ong;
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (get_class($item) == __CLASS__) {
-         $array_ret = array();
+         $array_ret = [];
          $array_ret[0] = __('General setup');
-         $array_ret[1] = __('PerDeviceTypeConfiguration', 'geninventorynumber');
+         $array_ret[1] = __('GLPI\'s inventory items configuration', 'geninventorynumber');
          return $array_ret;
       }
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       switch ($tabnum) {
          case 0:
             $item->showForm(1);
@@ -78,32 +78,41 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       return true;
    }
 
-   function getSearchOptions() {
-      $sopt = array();
-      $sopt['common'] = __('geninventorynumber', 'geninventorynumber');
+   function rawSearchOptions() {
+      $sopt = [];
 
-      $sopt[1]['table'] = $this->getTable();
-      $sopt[1]['field'] = 'name';
-      $sopt[1]['name'] = __('Field');
-      $sopt[1]['datatype'] = 'itemlink';
+      $sopt[] = [
+         'id'                 => 'common',
+         'name'               => __('Inventory number generation', 'geninventorynumber'),
+      ];
 
-      $sopt[2]['table'] = $this->getTable();
-      $sopt[2]['field'] = 'is_active';
-      $sopt[2]['name'] = __('Active', 'geninventorynumber');
-      $sopt[2]['datatype'] = 'bool';
+      $sopt[] = [
+         'id'                 => '1',
+         'table'              => $this->getTable(),
+         'field'              => 'name',
+         'name'               => __('Field'),
+         'datatype'           => 'itemlink',
+      ];
 
-      $sopt[3]['table'] = $this->getTable();
-      $sopt[3]['field'] = 'comment';
-      $sopt[3]['name'] = __('Comments');
+      $sopt[] = [
+         'id'                 => '2',
+         'table'              => $this->getTable(),
+         'field'              => 'is_active',
+         'name'               => __('Active', 'geninventorynumber'),
+         'datatype'           => 'bool',
+      ];
 
-      $sopt[3]['table'] = $this->getTable();
-      $sopt[3]['field'] = 'index';
-      $sopt[3]['name'] = __('IndexPosition', 'geninventorynumber');
+      $sopt[] = [
+         'id'                 => '3',
+         'table'              => $this->getTable(),
+         'field'              => 'index',
+         'name'               => __('Global index position', 'geninventorynumber'),
+      ];
 
       return $sopt;
    }
 
-   function showForm($id, $options=array()) {
+   function showForm($id, $options = []) {
       global $CFG_GLPI;
 
       if ($id > 0) {
@@ -122,7 +131,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td class='tab_bg_1' align='center'>" .
-         __('GenerationEnabled', 'geninventorynumber') . "</td>";
+         __('Active', 'geninventorynumber') . "</td>";
       echo "<td class='tab_bg_1'>";
       Dropdown::showYesNo("is_active", $this->fields["is_active"]);
       echo "</td>";
@@ -130,7 +139,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
       echo "<tr>";
       echo "<td class='tab_bg_1' align='center'>" .
-          __('IndexPosition', 'geninventorynumber') . " " . __('Global') . "</td>";
+          __('Global index position', 'geninventorynumber') . " " . __('Global') . "</td>";
       echo "<td class='tab_bg_1'>";
       echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
       echo "</td><td colspan='2'></td>";
@@ -197,7 +206,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
              `index` int(11)  NOT NULL default 0,
              `comment` text COLLATE utf8_unicode_ci,
              PRIMARY KEY  (`id`)
-             ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+             ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($sql) or die($DB->error());
 
          $tmp['id']           = 1;
@@ -208,10 +217,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $config = new self();
          $config->add($tmp);
       } else {
-         $migration->addField($table, 'name', 'string', array('value' => 'otherserial'));
-         $migration->addField($table, 'field', 'string', array('value' => 'otherserial'));
+         $migration->addField($table, 'name', 'string', ['value' => 'otherserial']);
+         $migration->addField($table, 'field', 'string', ['value' => 'otherserial']);
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
-         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', array('value' => -1));
+         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', ['value' => -1]);
          $migration->changeField($table, 'active', 'is_active', 'bool');
          if (!$migration->addField($table, 'comment', 'text')) {
             $migration->changeField($table, 'comments', 'comment', 'text');

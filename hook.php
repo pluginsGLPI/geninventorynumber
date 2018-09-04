@@ -40,16 +40,16 @@ function plugin_geninventorynumber_postinit() {
 
    foreach ($GENINVENTORYNUMBER_TYPES as $type) {
       $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
-        = array('PluginGeninventorynumberGeneration', 'preItemAdd');
+        = ['PluginGeninventorynumberGeneration', 'preItemAdd'];
       $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
-        = array('PluginGeninventorynumberGeneration', 'preItemUpdate');
+        = ['PluginGeninventorynumberGeneration', 'preItemUpdate'];
    }
 }
 
 function plugin_geninventorynumber_MassiveActions($type) {
    global $GENINVENTORYNUMBER_TYPES;
 
-   $actions = array ();
+   $actions = [];
    if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
       $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
 
@@ -57,12 +57,12 @@ function plugin_geninventorynumber_MassiveActions($type) {
          if (Session::haveRight("plugin_geninventorynumber", CREATE)) {
             $actions['PluginGeninventorynumberGeneration'.
                MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_generate']
-               = __('GenerateInventoryNumber', 'geninventorynumber');
+               = __('Generate inventory number', 'geninventorynumber');
          }
          if (Session::haveRight("plugin_geninventorynumber", UPDATE)) {
             $actions['PluginGeninventorynumberGeneration'.
                MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_overwrite']
-              = __('RegenerateInventoryNumber', 'geninventorynumber');
+              = __('Regenerate inventory number (overwrite)', 'geninventorynumber');
          }
       }
    }

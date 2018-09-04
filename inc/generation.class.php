@@ -44,7 +44,7 @@ class PluginGeninventorynumberGeneration {
       $suffix = strpos($template, '&lt;');
 
       if ($len > 8
-         && $suffix !== FALSE
+         && $suffix !== false
             && substr($template, $len - 4, 4) === '&gt;') {
 
          $autoNum = substr($template, $suffix+4, $len-(4+$suffix+4));
@@ -55,9 +55,9 @@ class PluginGeninventorynumberGeneration {
             $name   = (isset ($item->fields['name']) ? $item->fields['name'] : '');
 
             $global  = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
-            $autoNum = str_replace(array ('\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s', '\\n'),
-                                   array (date('y'), date('Y'), date('m'), date('d'), '\\_',
-                                           '\\%', '', $serial, $name), $autoNum);
+            $autoNum = str_replace( ['\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s', '\\n'],
+                                    [date('y'), date('Y'), date('m'), date('d'), '\\_',
+                                           '\\%', '', $serial, $name], $autoNum);
             $mask    = $mask[0];
             $pos     = strpos($autoNum, $mask) + 1;
             $len     = strlen($mask);
@@ -71,8 +71,8 @@ class PluginGeninventorynumberGeneration {
 
             $next_number = str_pad($index, $len, '0', STR_PAD_LEFT);
             $prefix      = substr($template, 0, $suffix);
-            $template    = $prefix . str_replace(array ($mask, '\\_', '\\%'),
-                           array ($next_number,  '_',  '%'), $autoNum);
+            $template    = $prefix . str_replace( [$mask, '\\_', '\\%'],
+                            [$next_number,  '_',  '%'], $autoNum);
          }
       }
       return $template;
@@ -87,7 +87,7 @@ class PluginGeninventorynumberGeneration {
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
          if ((!Session::haveRight("plugin_geninventorynumber", CREATE))) {
             if (!isCommandLine()) {
-               Session::addMessageAfterRedirect(__('GenerateInventoryNumberDenied',
+               Session::addMessageAfterRedirect(__('You can\'t modify inventory number',
                                                 'geninventorynumber'), true, ERROR);
             }
             return;
@@ -97,7 +97,7 @@ class PluginGeninventorynumberGeneration {
             && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
             $item->input['otherserial'] = self::autoName($config, $item);
             if (!isCommandLine()) {
-               Session::addMessageAfterRedirect(__('InventoryNumberGenerated', 'geninventorynumber'), true);
+               Session::addMessageAfterRedirect(__('An inventory number have been generated', 'geninventorynumber'), true);
             }
 
             if ($config['use_index']) {
@@ -127,7 +127,7 @@ class PluginGeninventorynumberGeneration {
             $item->input['otherserial'] = $item->fields['otherserial'];
             if (!isCommandLine()) {
                Session::addMessageAfterRedirect(
-                  __('GenerateInventoryNumberDenied', 'geninventorynumber'),
+                  __('You can\'t modify inventory number', 'geninventorynumber'),
                   true, ERROR);
             }
          }
@@ -181,7 +181,7 @@ class PluginGeninventorynumberGeneration {
             } else {
                PluginGeninventorynumberConfigField::updateIndex(get_class($item));
             }
-            return array('ok');
+            return ['ok'];
          } else {
             $values['otherserial'] = '';
             $tmp->update($values);
