@@ -52,7 +52,7 @@ if ($plugin->isInstalled("geninventorynumber")
       $config->add($newconfig);
    }
 
-   Html::header(__('geninventorynumber', 'geninventorynumber'),
+   Html::header(__('Inventory number generation', 'geninventorynumber'),
                 $_SERVER['PHP_SELF'], "tools", "plugins", "geninventorynumber");
    if (isset($_GET['glpi_tab'])) {
       $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];

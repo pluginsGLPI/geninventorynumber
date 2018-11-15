@@ -6,10 +6,12 @@
    <logo>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/master/geninventorynumber.png</logo>
    <description>
       <short>
+         <cs><![CDATA[Vytváření inventárních čísel]]></cs>
          <fr><![CDATA[Génération de numéros d'inventaire]]></fr>
          <en><![CDATA[Inventory numbers generation]]></en>
       </short>
       <long>
+         <cs><![CDATA[Tento zásuvný modul umožňuje vytvářet inventární čísla. Nastavení umožňuje určit:<br /> - Typy pro které je automatické vytváření zapnuté<br /> - Šablony inventárních čísel<br /> - Zda jsou čítače globální nebo jen pro určitý typ]]></cs>
          <fr><![CDATA[Cette extention vous permet de générer automatiquement un numéro d’inventaire. La configuration donne la possibilité de définir :<br /> - Les types qui nécessitent cette automatisation<br /> - Les modèles de numéros à générer<br /> - Si les compteurs sont globaux ou spécifiques pour chaque type]]></fr>
          <en><![CDATA[This plugin enables inventory numbers automatic generation. The configuration allows you to define :<br /> - The types for which automatic generation is enabled<br /> - Inventory number templates<br /> - If counters are globals or type specific]]></en>
       </long>
@@ -22,6 +24,10 @@
       <author>Walid Nouh</author>
    </authors>
    <versions>
+      <version>
+         <num>2.3.0</num>
+         <compatibility>9.3</compatibility>
+      </version>
       <version>
          <num>2.2.0</num>
          <compatibility>9.2</compatibility>
@@ -59,12 +65,18 @@
       </version>
    </versions>
    <langs>
+      <lang>cs_CZ</lang>
       <lang>fr_FR</lang>
       <lang>en_GB</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>
    <category></category>
    <tags>
+         <cs>
+            <tag>inventura</tag>
+            <tag>inventární číslo</tag>
+            <tag>vytváření</tag>
+         </cs>
          <fr>
             <tag>inventaire</tag>
             <tag>numéro d'inventaire</tag>
