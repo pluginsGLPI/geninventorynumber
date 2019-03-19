@@ -164,7 +164,6 @@ class PluginGeninventorynumberGeneration {
     * @param CommonDBTM $item Existing item to update
     */
    static function doMassiveUpdate(CommonDBTM $item) {
-      global $CFG_GLPI;
       $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item), $item->getEntityID());
 
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {

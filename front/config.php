@@ -40,11 +40,12 @@ include ('../../../inc/includes.php');
 $config = new PluginGeninventorynumberConfig();
 $plugin = new Plugin();
 $session = $_SESSION['glpiactive_entity'];
-$config->getFromDBByQuery("WHERE entities_id='" . $session . "'");
+$config->getFromDBByCrit(['entities_id' => $session,]);
+
 if ($plugin->isInstalled("geninventorynumber")
    && $plugin->isActivated("geninventorynumber")) {
 
-   if (!$config->getFromDBByQuery("WHERE entities_id='" . $session . "'")) {
+   if (!$config->getFromDBByCrit(['entities_id' => $session,])) {
       $newconfig['name']         = 'otherserial';
       $newconfig['is_active']    = 1;
       $newconfig['entities_id']  = $session;

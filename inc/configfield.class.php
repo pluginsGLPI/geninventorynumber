@@ -57,10 +57,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       $result = $DB->query($query);
       $configs_id = $DB->result($result, 0, "id");
 
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), [
-         'itemtype' => $itemtype,
-         'plugin_geninventorynumber_configs_id' => $configs_id
-         ]);
+      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype, 'plugin_geninventorynumber_configs_id' => $configs_id]);
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
@@ -121,8 +118,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function showForConfig($id) {
       global $CFG_GLPI, $DB, $GENINVENTORYNUMBER_TYPES;
-
-       if (!countElementsInTable(getTableForItemType(__CLASS__), "plugin_geninventorynumber_configs_id='" . $id . "'")) {
+       if (!countElementsInTable(getTableForItemType(__CLASS__), ['plugin_geninventorynumber_configs_id' =>  $id])) {
          $field = new self();
          foreach ($GENINVENTORYNUMBER_TYPES as $type) {
             $input["plugin_geninventorynumber_configs_id"] = $id;
@@ -134,8 +130,6 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          }
       }
 
-      //$config = new PluginGeninventorynumberConfig();
-      //$config->getFromDB($id);
       $target = Toolbox::getItemTypeFormUrl(__CLASS__);
 
       echo "<form name='form_core_config' method='post' action=\"$target\">";
@@ -151,7 +145,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
       echo "<th colspan='2'>" . __('Global index position', 'geninventorynumber') . "</th></tr>";
 
-      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__), "plugin_geninventorynumber_configs_id='" . $id . "'", false, 'id ASC') as $value) {
+      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__),['plugin_geninventorynumber_configs_id' => $id]) as $value) {
          $itemtype = $value['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func([$itemtype, 'getTypeName']). "</td>";
          echo "<td class='tab_bg_1'>";

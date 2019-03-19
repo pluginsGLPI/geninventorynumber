@@ -115,9 +115,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    function showForm($id, $options = []) {
       global $CFG_GLPI;
+      $session = $_SESSION['glpiactive_entity'];
 
       if ($id > 0) {
-          $this->getFromDBByQuery("WHERE entities_id='" . $id . "'");
+          $this->getFromDBByCrit(['entities_id' => $session]);
       } else {
           $this->getEmpty();
       }
@@ -164,6 +165,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    static function getNextIndex() {
       global $DB;
+      $session = $_SESSION['glpiactive_entity'];
 
       $query = "SELECT `index`
                 FROM `".getTableForItemType(__CLASS__)."`";
@@ -177,7 +179,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
 
    static function install(Migration $migration) {
       global $DB;
-      $session = $_SESSION['glpiactive_entity'];
 
       $table = getTableForItemType(__CLASS__);
       if ($DB->tableExists("glpi_plugin_generateinventorynumber_config")) {
@@ -254,7 +255,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    static function isGenerationActive() {
       global $DB;
       $session = $_SESSION['glpiactive_entity'];
-       $query = "SELECT `is_active`
+
+      $query = "SELECT `is_active`
                 FROM `".getTableForItemType(__CLASS__)."`
                 WHERE `entities_id`='$session'";
       $results = $DB->query($query);
