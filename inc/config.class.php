@@ -254,4 +254,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
       $config->getFromDB(1);
       return $config->fields['is_active'];
    }
+
+   static function getIcon() {
+      return "fas fa-random";
+   }
 }
