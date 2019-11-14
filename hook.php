@@ -70,10 +70,12 @@ function plugin_geninventorynumber_MassiveActions($type) {
 }
 
 function plugin_geninventorynumber_install() {
+   $php_dir = Plugin::getPhpDir('geninventorynumber');
+
    $migration = new Migration("0.85+1.0");
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+   include_once($php_dir . '/inc/config.class.php');
+   include_once($php_dir . '/inc/profile.class.php');
+   include_once($php_dir . '/inc/configfield.class.php');
    PluginGeninventorynumberConfig::install($migration);
    PluginGeninventorynumberProfile::install($migration);
    PluginGeninventorynumberConfigField::install($migration);
@@ -81,10 +83,12 @@ function plugin_geninventorynumber_install() {
 }
 
 function plugin_geninventorynumber_uninstall() {
+   $php_dir = Plugin::getPhpDir('geninventorynumber');
+
    $migration = new Migration("0.85+1.0");
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/config.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/profile.class.php');
-   include_once(GLPI_ROOT.'/plugins/geninventorynumber/inc/configfield.class.php');
+   include_once($php_dir . '/inc/config.class.php');
+   include_once($php_dir . '/inc/profile.class.php');
+   include_once($php_dir . '/inc/configfield.class.php');
    PluginGeninventorynumberConfig::uninstall($migration);
    PluginGeninventorynumberProfile::removeRightsFromSession();
    PluginGeninventorynumberProfile::uninstallProfile();
