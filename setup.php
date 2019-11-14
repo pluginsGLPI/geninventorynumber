@@ -40,7 +40,7 @@ define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.4.1');
 // Minimal GLPI version, inclusive
 define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "9.3");
 // Maximum GLPI version, exclusive
-define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "9.5");
+define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "9.6");
 
 function plugin_init_geninventorynumber() {
    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
