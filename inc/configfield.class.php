@@ -50,7 +50,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    }
 
    static function getConfigFieldByItemType($itemtype) {
-      $infos = getAllDatasFromTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype]);
+      $getAllFct = function_exists('getAllDataFromTable') ? 'getAllDataFromTable' : 'getAllDatasFromTable';
+      $infos = $getAllFct(getTableForItemType(__CLASS__), ['itemtype' => $itemtype]);
       if (!empty($infos)) {
          return array_pop($infos);
       } else {
@@ -129,7 +130,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
       echo "<th colspan='2'>" . __('Global index position', 'geninventorynumber') . "</th></tr>";
 
-      foreach (getAllDatasFromTable(getTableForItemType(__CLASS__)) as $value) {
+      $getAllFct = function_exists('getAllDataFromTable') ? 'getAllDataFromTable' : 'getAllDatasFromTable';
+      foreach ($getAllFct(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func([$itemtype, 'getTypeName']). "</td>";
          echo "<td class='tab_bg_1'>";

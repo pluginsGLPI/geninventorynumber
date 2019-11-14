@@ -135,7 +135,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       }
 
       if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
-         foreach (getAllDatasFromTable($table) as $data) {
+         $getAllFct = function_exists('getAllDataFromTable') ? 'getAllDataFromTable' : 'getAllDatasFromTable';
+         foreach ($getAllFct($table) as $data) {
             $profile = new self();
             foreach ($profile->getAllRights() as $right => $rights) {
                if (!countElementsInTable('glpi_profilerights',
