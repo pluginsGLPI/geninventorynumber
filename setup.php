@@ -35,7 +35,7 @@
  @since     2008
 ---------------------------------------------------------------------- */
 
-define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.4.0');
+define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.4.1');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "9.3");
@@ -52,9 +52,7 @@ function plugin_init_geninventorynumber() {
                                  'Peripheral', 'Phone', 'SoftwareLicense'];
 
    $plugin = new Plugin();
-   if ($plugin->isInstalled('geninventorynumber')
-      && $plugin->isActivated('geninventorynumber')
-      && (Session::haveRight("config", CREATE))) {
+   if ($plugin->isActivated('geninventorynumber')) {
       $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 
       Plugin::registerClass('PluginGeninventorynumberProfile',
