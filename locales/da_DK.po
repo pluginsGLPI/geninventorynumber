@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 12:44+0000\n"
+"POT-Creation-Date: 2020-07-03 19:01+0000\n"
 "PO-Revision-Date: 2018-08-21 09:16+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/da_DK/)\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Language: da_DK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
-#: inc/config.class.php:86 setup.php:74
-msgid "Inventory number generation"
-msgstr "Inventar nummer generator"
-
 #: hook.php:60 inc/profile.class.php:121
 msgid "Generate inventory number"
 msgstr "Generer inventar nummer"
@@ -29,6 +24,19 @@ msgstr "Generer inventar nummer"
 #: hook.php:65
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerer inventar nummer (overskriv)"
+
+#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
+#: inc/config.class.php:86 setup.php:72
+msgid "Inventory number generation"
+msgstr "Inventar nummer generator"
+
+#: inc/generation.class.php:90 inc/generation.class.php:130
+msgid "You can't modify inventory number"
+msgstr "Du kan ikke ændre inventar nummeret"
+
+#: inc/generation.class.php:100
+msgid "An inventory number have been generated"
+msgstr "Et inventar nummer blev genereret"
 
 #: inc/config.class.php:63 inc/configfield.class.php:49
 #: inc/configfield.class.php:122
@@ -51,11 +59,3 @@ msgstr "Generator skabelon"
 #: inc/configfield.class.php:129
 msgid "Use global index"
 msgstr "Brug globalt indeks"
-
-#: inc/generation.class.php:90 inc/generation.class.php:130
-msgid "You can't modify inventory number"
-msgstr "Du kan ikke ændre inventar nummeret"
-
-#: inc/generation.class.php:100
-msgid "An inventory number have been generated"
-msgstr "Et inventar nummer blev genereret"

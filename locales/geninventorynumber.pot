@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 12:44+0000\n"
+"POT-Creation-Date: 2020-07-03 19:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
-#: inc/config.class.php:86 setup.php:74
-msgid "Inventory number generation"
-msgstr ""
-
 #: hook.php:60 inc/profile.class.php:121
 msgid "Generate inventory number"
 msgstr ""
 
 #: hook.php:65
 msgid "Regenerate inventory number (overwrite)"
+msgstr ""
+
+#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
+#: inc/config.class.php:86 setup.php:72
+msgid "Inventory number generation"
+msgstr ""
+
+#: inc/generation.class.php:90 inc/generation.class.php:130
+msgid "You can't modify inventory number"
+msgstr ""
+
+#: inc/generation.class.php:100
+msgid "An inventory number have been generated"
 msgstr ""
 
 #: inc/config.class.php:63 inc/configfield.class.php:49
@@ -50,12 +58,4 @@ msgstr ""
 
 #: inc/configfield.class.php:129
 msgid "Use global index"
-msgstr ""
-
-#: inc/generation.class.php:90 inc/generation.class.php:130
-msgid "You can't modify inventory number"
-msgstr ""
-
-#: inc/generation.class.php:100
-msgid "An inventory number have been generated"
 msgstr ""

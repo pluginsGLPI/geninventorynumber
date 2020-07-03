@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 12:44+0000\n"
+"POT-Creation-Date: 2020-07-03 19:01+0000\n"
 "PO-Revision-Date: 2018-08-21 09:16+0000\n"
 "Last-Translator: Cédric Anne\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/zh_CN/)\n"
@@ -19,11 +19,6 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
-#: inc/config.class.php:86 setup.php:74
-msgid "Inventory number generation"
-msgstr "生成资产盘点数量"
-
 #: hook.php:60 inc/profile.class.php:121
 msgid "Generate inventory number"
 msgstr "生成资产盘点数量"
@@ -31,6 +26,19 @@ msgstr "生成资产盘点数量"
 #: hook.php:65
 msgid "Regenerate inventory number (overwrite)"
 msgstr "重新生成资产盘点数量"
+
+#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
+#: inc/config.class.php:86 setup.php:72
+msgid "Inventory number generation"
+msgstr "生成资产盘点数量"
+
+#: inc/generation.class.php:90 inc/generation.class.php:130
+msgid "You can't modify inventory number"
+msgstr "生成资产盘点数量被拒绝"
+
+#: inc/generation.class.php:100
+msgid "An inventory number have been generated"
+msgstr "资产盘点数量已生成"
 
 #: inc/config.class.php:63 inc/configfield.class.php:49
 #: inc/configfield.class.php:122
@@ -53,11 +61,3 @@ msgstr "生成模型"
 #: inc/configfield.class.php:129
 msgid "Use global index"
 msgstr "使用全局索引"
-
-#: inc/generation.class.php:90 inc/generation.class.php:130
-msgid "You can't modify inventory number"
-msgstr "生成资产盘点数量被拒绝"
-
-#: inc/generation.class.php:100
-msgid "An inventory number have been generated"
-msgstr "资产盘点数量已生成"

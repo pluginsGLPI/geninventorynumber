@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-14 12:44+0000\n"
+"POT-Creation-Date: 2020-07-03 19:01+0000\n"
 "PO-Revision-Date: 2019-02-27 14:56+0000\n"
 "Last-Translator: Rui Melo <viper5000pt@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/pt_PT/)\n"
@@ -20,11 +20,6 @@ msgstr ""
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
-#: inc/config.class.php:86 setup.php:74
-msgid "Inventory number generation"
-msgstr "Gerar Número de inventário"
-
 #: hook.php:60 inc/profile.class.php:121
 msgid "Generate inventory number"
 msgstr "Gerar Número de inventário"
@@ -32,6 +27,19 @@ msgstr "Gerar Número de inventário"
 #: hook.php:65
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Gerar Número de inventário (re definir)"
+
+#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
+#: inc/config.class.php:86 setup.php:72
+msgid "Inventory number generation"
+msgstr "Gerar Número de inventário"
+
+#: inc/generation.class.php:90 inc/generation.class.php:130
+msgid "You can't modify inventory number"
+msgstr "Não é possível modificar o número do inventário"
+
+#: inc/generation.class.php:100
+msgid "An inventory number have been generated"
+msgstr "Um número de inventário foi gerado"
 
 #: inc/config.class.php:63 inc/configfield.class.php:49
 #: inc/configfield.class.php:122
@@ -54,11 +62,3 @@ msgstr "Modelos de geração"
 #: inc/configfield.class.php:129
 msgid "Use global index"
 msgstr "Usar índice global"
-
-#: inc/generation.class.php:90 inc/generation.class.php:130
-msgid "You can't modify inventory number"
-msgstr "Não é possível modificar o número do inventário"
-
-#: inc/generation.class.php:100
-msgid "An inventory number have been generated"
-msgstr "Um número de inventário foi gerado"
