@@ -46,7 +46,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
     * @param $ID  integer
     */
    static function createFirstAccess($profiles_id) {
-      include_once(GLPI_ROOT."/plugins/geninventorynumber/inc/profile.class.php");
+      include_once(Plugin::getPhpDir('geninventorynumber')."/inc/profile.class.php");
       $profile = new self();
       foreach ($profile->getAllRights() as $right) {
          self::addDefaultProfileInfos($profiles_id,
@@ -135,7 +135,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM {
       }
 
       if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
-         foreach (getAllDatasFromTable($table) as $data) {
+         foreach (getAllDataFromTable($table) as $data) {
             $profile = new self();
             foreach ($profile->getAllRights() as $right => $rights) {
                if (!countElementsInTable('glpi_profilerights',

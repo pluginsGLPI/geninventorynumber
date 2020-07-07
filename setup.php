@@ -35,12 +35,12 @@
  @since     2008
 ---------------------------------------------------------------------- */
 
-define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.4.1');
+define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.5.0');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "9.3");
+define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "9.5");
 // Maximum GLPI version, exclusive
-define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "9.5");
+define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "9.6");
 
 function plugin_init_geninventorynumber() {
    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
@@ -81,36 +81,4 @@ function plugin_version_geninventorynumber() {
           ]
        ]
    ];
-}
-
-function plugin_geninventorynumber_check_prerequisites() {
-
-   //Version check is not done by core in GLPI < 9.2 but has to be delegated to core in GLPI >= 9.2.
-   if (!method_exists('Plugin', 'checkGlpiVersion')) {
-      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
-      $matchMinGlpiReq = version_compare($version, PLUGIN_GENINVENTORYNUMBER_MIN_GLPI, '>=');
-      $matchMaxGlpiReq = version_compare($version, PLUGIN_GENINVENTORYNUMBER_MAX_GLPI, '<');
-
-      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
-         echo vsprintf(
-            'This plugin requires GLPI >= %1$s and < %2$s.',
-            [
-               PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
-               PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
-            ]
-         );
-         return false;
-      }
-   }
-
-   return true;
-}
-
-/**
- * Compatibility check
- *
- * @return   bool   True if plugin compatible with configuration
- */
-function plugin_geninventorynumber_check_config() {
-   return true;
 }
