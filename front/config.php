@@ -40,7 +40,7 @@ $config = new PluginGeninventorynumberConfig();
 $plugin = new Plugin();
 $config->getFromDBByRequest(['entities_id' => $_SESSION['glpiactive_entity']]);
 if ($plugin->isInstalled("geninventorynumber")
-   && $plugin->isActivated("geninventorynumber")) { 
+   && $plugin->isActivated("geninventorynumber")) {
    if (!$config->getFromDBByRequest(['entities_id' => $_SESSION['glpiactive_entity']])) {
       $newconfig['name']         = 'otherserial';
       $newconfig['is_active']    = 1;

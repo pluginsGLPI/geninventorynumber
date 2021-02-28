@@ -49,7 +49,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       return __('GLPI\'s inventory items configuration', 'geninventorynumber');
    }
 
-   static function getConfigFieldByItemType($itemtype, $entities_id=-1) {
+   static function getConfigFieldByItemType($itemtype, $entities_id = -1) {
       global $DB;
 
       $query = "SELECT `id`
@@ -135,7 +135,6 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             $field->add($input);
          }
       }
-
 
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
