@@ -36,12 +36,18 @@
  ---------------------------------------------------------------------- */
 
 include ('../../../inc/includes.php');
-
 $config = new PluginGeninventorynumberConfig();
 $plugin = new Plugin();
-$config->getFromDB(1);
+$config->getFromDBByRequest(['entities_id' => $_SESSION['glpiactive_entity']]);
 if ($plugin->isInstalled("geninventorynumber")
-   && $plugin->isActivated("geninventorynumber")) {
+   && $plugin->isActivated("geninventorynumber")) { 
+   if (!$config->getFromDBByRequest(['entities_id' => $_SESSION['glpiactive_entity']])) {
+      $newconfig['name']         = 'otherserial';
+      $newconfig['is_active']    = 1;
+      $newconfig['entities_id']  = $_SESSION['glpiactive_entity'];
+      $newconfig['index']        = 0;
+      $config->add($newconfig);
+   }
    Html::header(__('Inventory number generation', 'geninventorynumber'),
                 $_SERVER['PHP_SELF'], "tools", "plugins", "geninventorynumber");
    if (isset($_GET['glpi_tab'])) {
