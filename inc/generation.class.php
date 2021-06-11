@@ -39,7 +39,7 @@
 class PluginGeninventorynumberGeneration {
 
    static function autoName($config, CommonDBTM $item) {
-      $template = $config['template'];
+      $template = htmlentities(html_entity_decode($config['template']));
       $len      = strlen($template);
       $suffix = strpos($template, '&lt;');
 
