@@ -49,7 +49,7 @@ function plugin_init_geninventorynumber() {
    $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
 
    $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
-                                 'Peripheral', 'Phone', 'SoftwareLicense'];
+                                 'Peripheral', 'Phone', 'SoftwareLicense', 'Cable'];
 
    $plugin = new Plugin();
    if ($plugin->isActivated('geninventorynumber')) {
