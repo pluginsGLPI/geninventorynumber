@@ -82,7 +82,7 @@ class PluginGeninventorynumberGeneration {
     * @override CommonDBTM::preItemAdd
     */
    static function preItemAdd(CommonDBTM $item) {
-      $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item));
+      $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item), $item->getEntityID());
 
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
          if ((!Session::haveRight("plugin_geninventorynumber", CREATE))) {
@@ -164,7 +164,8 @@ class PluginGeninventorynumberGeneration {
     * @param CommonDBTM $item Existing item to update
     */
    static function doMassiveUpdate(CommonDBTM $item) {
-      $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item));
+      global $CFG_GLPI;
+      $config = PluginGeninventorynumberConfigField::getConfigFieldByItemType(get_class($item), $item->getEntityID());
 
       if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
          $tmp    = clone $item;
