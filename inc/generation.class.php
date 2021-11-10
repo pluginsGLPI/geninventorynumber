@@ -28,46 +28,50 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\Sanitizer;
+
 class PluginGeninventorynumberGeneration {
 
    static function autoName($config, CommonDBTM $item) {
-      $template = htmlentities(Toolbox::unclean_cross_side_scripting_deep($config['template']));
-      $len      = strlen($template);
-      $suffix = strpos($template, '&lt;');
 
-      if ($len > 8
-         && $suffix !== false
-            && substr($template, $len - 4, 4) === '&gt;') {
+      $template = Sanitizer::unsanitize($config['template']);
 
-         $autoNum = substr($template, $suffix+4, $len-(4+$suffix+4));
-         $mask    = '';
-
-         if (preg_match("/\\#{1,10}/", $autoNum, $mask)) {
-            $serial = (isset ($item->fields['serial']) ? $item->fields['serial'] : '');
-            $name   = (isset ($item->fields['name']) ? $item->fields['name'] : '');
-
-            $global  = strpos($autoNum, '\\g') !== false && $type != INFOCOM_TYPE ? 1 : 0;
-            $autoNum = str_replace( ['\\y', '\\Y', '\\m', '\\d', '_', '%', '\\g', '\\s', '\\n'],
-                                    [date('y'), date('Y'), date('m'), date('d'), '\\_',
-                                           '\\%', '', $serial, $name], $autoNum);
-            $mask    = $mask[0];
-            $pos     = strpos($autoNum, $mask) + 1;
-            $len     = strlen($mask);
-            $like    = str_replace('#', '_', $autoNum);
-
-            if ($config['use_index']) {
-               $index = PluginGeninventorynumberConfig::getNextIndex();
-            } else {
-               $index = PluginGeninventorynumberConfigField::getNextIndex($config['itemtype']);
-            }
-
-            $next_number = str_pad($index, $len, '0', STR_PAD_LEFT);
-            $prefix      = substr($template, 0, $suffix);
-            $template    = $prefix . str_replace( [$mask, '\\_', '\\%'],
-                            [$next_number,  '_',  '%'], $autoNum);
-         }
+      $matches = [];
+      if (mb_ereg('^<[^#]*(#{1,10})[^#]*>$', $template, $matches) === false) {
+         return $template;
       }
-      return $template;
+
+      $autoNum = Toolbox::substr($template, 1, Toolbox::strlen($template) - 2);
+      $mask    = $matches[1];
+
+      $autoNum = str_replace(
+         [
+            '\\y',
+            '\\Y',
+            '\\m',
+            '\\d',
+            '\\g'
+         ], [
+            date('y'),
+            date('Y'),
+            date('m'),
+            date('d'),
+            ''
+         ],
+         $autoNum
+      );
+
+      $len  = Toolbox::strlen($mask);
+
+      if ($config['use_index']) {
+         $newNo = PluginGeninventorynumberConfig::getNextIndex();
+      } else {
+         $newNo = PluginGeninventorynumberConfigField::getNextIndex($config['itemtype']);
+      }
+
+      $template = str_replace($mask, Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT), $autoNum);
+
+      return Sanitizer::sanitize($template);
    }
 
    /**
@@ -136,7 +140,7 @@ class PluginGeninventorynumberGeneration {
 
       // KK TODO: check if MassiveAction itemtypes are concerned
       //if (in_array ($options['itemtype'], $GENINVENTORYNUMBER_TYPES)) {
-      switch ($ma->action) {
+      switch ($ma->getAction()) {
          case "plugin_geninventorynumber_generate" :
          case "plugin_geninventorynumber_overwrite" :
             echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"" .
@@ -190,7 +194,7 @@ class PluginGeninventorynumberGeneration {
                                                        array $ids) {
       $results = ['ok' => 0, 'ko' => 0, 'noright' => 0, 'messages' => []];
 
-      switch ($ma->action) {
+      switch ($ma->getAction()) {
          case "plugin_geninventorynumber_generate" :
          case "plugin_geninventorynumber_overwrite" :
             //KK Not sure we could have multiple itemtimes
@@ -198,7 +202,7 @@ class PluginGeninventorynumberGeneration {
                foreach ($val as $key => $item_id) {
                   $item = new $itemtype;
                   $item->getFromDB($item_id);
-                  if ($ma->action == "plugin_geninventorynumber_generate") {
+                  if ($ma->getAction() == "plugin_geninventorynumber_generate") {
                      //Only generates inventory number for object without it !
                      if (isset ($item->fields["otherserial"])
                         && ($item->fields["otherserial"] == "")) {
@@ -215,7 +219,7 @@ class PluginGeninventorynumberGeneration {
                   }
 
                   //Or is overwrite action is selected
-                  if (($ma->action == "plugin_geninventorynumber_overwrite")) {
+                  if (($ma->getAction() == "plugin_geninventorynumber_overwrite")) {
                      if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
                         $results['noright']++;
                      } else {
