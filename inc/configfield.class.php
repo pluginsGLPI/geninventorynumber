@@ -53,6 +53,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function install(Migration $migration) {
       global $DB, $GENINVENTORYNUMBER_TYPES;
+
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $table = getTableForItemType(__CLASS__);
 
       if ($DB->tableExists("glpi_plugin_geninventorynumber_fields")) {
@@ -62,20 +67,20 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-            `id` int(11) NOT NULL auto_increment,
-            `plugin_geninventorynumber_configs_id` int(11) NOT NULL default '0',
-            `itemtype` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-            `template` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-            `is_active` tinyint(1) NOT NULL default '0',
-            `use_index` tinyint(1) NOT NULL default '0',
-            `index` bigint(20) NOT NULL default '0',
+            `id` int {$default_key_sign} NOT NULL auto_increment,
+            `plugin_geninventorynumber_configs_id` int {$default_key_sign} NOT NULL default '0',
+            `itemtype` varchar(255) DEFAULT '',
+            `template` varchar(255) DEFAULT '',
+            `is_active` tinyint NOT NULL default '0',
+            `use_index` tinyint NOT NULL default '0',
+            `index` bigint NOT NULL default '0',
             PRIMARY KEY  (`id`)
-            ) ENGINE=InnoDB  CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query);
 
       } else {
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
-         $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', 'integer');
+         $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', "int {$default_key_sign} NOT NULL default '0'");
          if ($migration->changeField($table, 'device_type', 'itemtype', 'string')) {
             $migration->migrationOneTable($table);
             Plugin::migrateItemType([], ["glpi_displaypreferences"], [$table]);
