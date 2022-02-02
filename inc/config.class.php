@@ -194,7 +194,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $sql = "CREATE TABLE IF NOT EXISTS `$table` (
              `id` int(11) NOT NULL auto_increment,
              `name`  varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-             `entities_id` int(11)  NOT NULL default '-1',
              `is_active` tinyint(1)  NOT NULL default 0,
              `index` int(11)  NOT NULL default 0,
              `comment` text COLLATE utf8_unicode_ci,
@@ -205,7 +204,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $tmp['id']           = 1;
          $tmp['name']         = 'otherserial';
          $tmp['is_active']    = 1;
-         $tmp['entities_id']  = 0;
          $tmp['index']        = 0;
          $config = new self();
          $config->add($tmp);
@@ -213,7 +211,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->addField($table, 'name', 'string', ['value' => 'otherserial']);
          $migration->addField($table, 'field', 'string', ['value' => 'otherserial']);
          $migration->changeField($table, 'ID', 'id', 'autoincrement');
-         $migration->changeField($table, 'FK_entities', 'entities_id', 'integer', ['value' => -1]);
          $migration->changeField($table, 'active', 'is_active', 'bool');
          if (!$migration->addField($table, 'comment', 'text')) {
             $migration->changeField($table, 'comments', 'comment', 'text');
@@ -221,6 +218,9 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->changeField($table, 'is_active', 'is_active', 'bool');
          $migration->changeField($table, 'next_number', 'index', 'integer');
          $migration->dropField($table, 'field');
+
+         $migration->dropField($table, 'FK_entities');
+         $migration->dropField($table, 'entities_id');
       }
 
       //Remove unused table

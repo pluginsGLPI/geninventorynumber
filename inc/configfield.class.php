@@ -115,7 +115,6 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<tr><th colspan='5'>" . __('GLPI\'s inventory items configuration', 'geninventorynumber') . "</th></tr>";
 
       echo "<input type='hidden' name='id' value='$id'>";
-      echo "<input type='hidden' name='entities_id' value='0'>";
 
       echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
