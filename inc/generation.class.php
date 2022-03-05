@@ -109,17 +109,12 @@ class PluginGeninventorynumberGeneration {
     * @override CommonDBTM::preItemUpdate
     */
    static function preItemUpdate(CommonDBTM $item) {
-      if (!Session::haveRight("plugin_geninventorynumber", UPDATE)) {
-         return;
-      }
-
-      if (PluginGeninventorynumberConfig::isGenerationActive()
-         && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))
-            && !isset($item->input['massiveaction'])) {
-
-         if (isset($item->fields['otherserial'])
-            && isset($item->input['otherserial'])
-               && $item->fields['otherserial'] != $item->input['otherserial']) {
+      $active = PluginGeninventorynumberConfig::isGenerationActive() &&
+          PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item));
+      if ($active && !isset($item->input['massiveaction'])) {
+         if (isset($item->fields['otherserial'], $item->input['otherserial']) &&
+             $item->fields['otherserial'] != $item->input['otherserial']) {
+            // Revert otherserial to previous value
             $item->input['otherserial'] = $item->fields['otherserial'];
             if (!isCommandLine()) {
                Session::addMessageAfterRedirect(
