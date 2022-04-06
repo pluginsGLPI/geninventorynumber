@@ -74,6 +74,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             `is_active` tinyint NOT NULL default '0',
             `use_index` tinyint NOT NULL default '0',
             `index` bigint NOT NULL default '0',
+            `date_last_generated` timestamp NULL DEFAULT NULL,
+            `auto_reset_method` int unsigned NOT NULL default '0',
             PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query);
@@ -87,6 +89,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          }
          $migration->changeField($table, 'enabled', 'is_active', 'boolean');
          $migration->changeField($table, 'use_index', 'use_index', 'boolean');
+          $migration->addField($table, 'date_last_generated', 'timestamp');
+         $migration->addField($table, 'auto_reset_method', 'integer', [
+             'value' => PluginGeninventorynumberConfig::AUTO_RESET_NONE
+         ]);
          $migration->migrationOneTable($table);
       }
 
@@ -116,34 +122,44 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
       echo "<form name='form_core_config' method='post' action=\"$target\">";
       echo "<div align='center'>";
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='5'>" . __('GLPI\'s inventory items configuration', 'geninventorynumber') . "</th></tr>";
+      echo "<table class='tab_cadre_fixe'><thead>";
+      echo "<tr><th colspan='6'>" . __('GLPI\'s inventory items configuration', 'geninventorynumber') . "</th></tr>";
 
       echo "<input type='hidden' name='id' value='$id'>";
 
       echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
-      echo "<th colspan='2'>" . __('Index position', 'geninventorynumber') . "</th></tr>";
+      echo "<th colspan='2'>" . __('Index position', 'geninventorynumber') . "</th>";
+      echo "<th colspan='2'>" . __('Auto-reset method', 'geninventorynumber') . "</th></tr></thead>";
 
-      foreach (getAllDataFromTable(getTableForItemType(__CLASS__)) as $value) {
-         $itemtype = $value['itemtype'];
+      echo "<tbody>";
+      $rows = getAllDataFromTable(getTableForItemType(__CLASS__));
+      foreach ($rows as $data) {
+         $itemtype = $data['itemtype'];
          echo "<td class='tab_bg_1' align='center'>" . call_user_func([$itemtype, 'getTypeName']). "</td>";
          echo "<td class='tab_bg_1'>";
-         echo "<input type='hidden' name='ids[$itemtype][id]' value='".$value["id"]."'>";
+         echo "<input type='hidden' name='ids[$itemtype][id]' value='".$data["id"]."'>";
          echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
-         echo "<input type='text' name='ids[$itemtype][template]' value=\"" . $value["template"] . "\">";
+         echo "<input type='text' name='ids[$itemtype][template]' value=\"" . $data["template"] . "\">";
          echo "</td>";
          echo "<td class='tab_bg_1' align='center'>";
-         Dropdown::showYesNo("ids[$itemtype][is_active]", $value["is_active"]);
+         Dropdown::showYesNo("ids[$itemtype][is_active]", $data["is_active"]);
          echo "</td>";
          echo "<td class='tab_bg_1' align='center'>";
-         Dropdown::showYesNo("ids[$itemtype][use_index]", $value["use_index"]);
+         Dropdown::showYesNo("ids[$itemtype][use_index]", $data["use_index"]);
          echo "</td>";
-         echo "<td class='tab_bg_1' align='center'>";
-         if ($value["is_active"] && !$value["use_index"]) {
+         echo "<td class='tab_bg_1' colspan='2' align='center'>";
+         if ($data["is_active"] && !$data["use_index"]) {
             echo "<input type='text' name='ids[$itemtype][index]' value='" .
-            $value['index'] . "' size='12'>";
+                $data['index'] . "' size='12'>";
+         }
+         echo "</td>";
+         echo "<td class='tab_bg_1' colspan='2' align='center'>";
+         if ($data["is_active"] && !$data["use_index"]) {
+             Dropdown::showFromArray("ids[$itemtype][auto_reset_method]", PluginGeninventorynumberConfig::getAutoResetOptions(), [
+                 'value' => $data['auto_reset_method'] ?? 0
+             ]);
          }
          echo "</td>";
          echo "</tr>";
@@ -153,11 +169,29 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<input type='submit' name='update_fields' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
       echo "</td></tr>";
 
-      echo "</table>";
+      echo "</tbody></table>";
       Html::closeForm();
    }
 
-   static function getEnabledItemTypes() {
+   public function prepareInputForAdd($input)
+   {
+       $input = parent::prepareInputForAdd($input);
+       if (!$input["is_active"] || $input["use_index"]) {
+           $input['auto_reset_method'] = 0;
+       }
+       return $input;
+   }
+
+   public function prepareInputForUpdate($input)
+   {
+       $input = parent::prepareInputForUpdate($input);
+       if (!$input["is_active"] || $input["use_index"]) {
+           $input['auto_reset_method'] = 0;
+       }
+       return $input;
+   }
+
+    static function getEnabledItemTypes() {
       global $DB;
       $query = "SELECT DISTINCT `itemtype`
                 FROM `".getTableForItemType(__CLASS__)."`
@@ -182,8 +216,64 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       }
    }
 
+   /**
+    * Check if the index needs to be reset based on the configured auto-reset method
+    * @param string $itemtype
+    * @return bool
+    */
+   static function needIndexReset($itemtype): bool {
+       global $DB;
+
+       $iterator = $DB->request([
+           'SELECT' => ['date_last_generated', 'auto_reset_method'],
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+               'itemtype' => $itemtype
+           ]
+       ]);
+       if ($iterator->count() > 0) {
+           $data = $iterator->current();
+           if ($data['auto_reset_method'] === PluginGeninventorynumberConfig::AUTO_RESET_NONE) {
+               return false;
+           }
+           $current_date = strtotime($_SESSION['glpi_currenttime']);
+           if ($data['date_last_generated'] === null) {
+               return false;
+           }
+           $last_gen_date = strtotime($data['date_last_generated']);
+
+           switch ($data['auto_reset_method']) {
+               case PluginGeninventorynumberConfig::AUTO_RESET_DAILY:
+                   return date('Y-m-d', $last_gen_date) !== date('Y-m-d', $current_date);
+               case PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY:
+                   return date('Y-m', $last_gen_date) !== date('Y-m', $current_date);
+               case PluginGeninventorynumberConfig::AUTO_RESET_YEARLY:
+                   return date('Y', $last_gen_date) !== date('Y', $current_date);
+           }
+       }
+       return false;
+   }
+
+   /**
+    * Reset the index for the given itemtype to 0 and reset the last generated date
+    */
+   public static function resetIndex(string $itemtype): void {
+       global $DB;
+
+       $DB->update(self::getTable(), [
+           'index' => 0,
+           'date_last_generated' => $_SESSION['glpi_currenttime']
+       ], [
+           'itemtype' => $itemtype
+       ]);
+   }
+
    static function getNextIndex($itemtype) {
       global $DB;
+
+      if (self::needIndexReset($itemtype)) {
+         self::resetIndex($itemtype);
+      }
 
       $query = "SELECT `index`
                 FROM `".getTableForItemType(__CLASS__)."`
@@ -198,8 +288,9 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function updateIndex($itemtype) {
       global $DB;
+
       $query = "UPDATE `".getTableForItemType(__CLASS__)."`
-                SET `index`=`index`+1
+                SET `index`=`index`+1,`date_last_generated`='{$_SESSION['glpi_currenttime']}'
                 WHERE `itemtype`='$itemtype'";
       $DB->query($query);
    }
