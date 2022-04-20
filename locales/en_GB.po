@@ -1,14 +1,14 @@
 # English translations for PACKAGE package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Automatically generated, 2020.
+# Automatically generated, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-03 19:01+0000\n"
-"PO-Revision-Date: 2020-07-03 19:01+0000\n"
+"POT-Creation-Date: 2022-04-20 12:30+0000\n"
+"PO-Revision-Date: 2022-04-20 12:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -17,45 +17,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:60 inc/profile.class.php:121
-msgid "Generate inventory number"
-msgstr "Generate inventory number"
-
-#: hook.php:65
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Regenerate inventory number (overwrite)"
-
-#: front/config.php:45 inc/profile.class.php:175 inc/config.class.php:48
-#: inc/config.class.php:86 setup.php:72
-msgid "Inventory number generation"
-msgstr "Inventory number generation"
-
-#: inc/generation.class.php:90 inc/generation.class.php:130
-msgid "You can't modify inventory number"
-msgstr "You can't modify inventory number"
-
-#: inc/generation.class.php:100
-msgid "An inventory number have been generated"
-msgstr "An inventory number have been generated"
-
-#: inc/config.class.php:63 inc/configfield.class.php:49
-#: inc/configfield.class.php:122
-msgid "GLPI's inventory items configuration"
-msgstr "GLPI's inventory items configuration"
-
-#: inc/config.class.php:101 inc/config.class.php:134
+#: inc/config.class.php:94 inc/config.class.php:127
 msgid "Active"
 msgstr "Active"
 
-#: inc/config.class.php:109 inc/config.class.php:142
-#: inc/configfield.class.php:130
-msgid "Global index position"
-msgstr "Global index position"
+#: inc/generation.class.php:96
+msgid "An inventory number have been generated"
+msgstr "An inventory number have been generated"
 
-#: inc/configfield.class.php:127
+#: inc/config.class.php:56 inc/configfield.class.php:42
+#: inc/configfield.class.php:120
+msgid "GLPI's inventory items configuration"
+msgstr "GLPI's inventory items configuration"
+
+#: hook.php:53 inc/profile.class.php:104
+msgid "Generate inventory number"
+msgstr "Generate inventory number"
+
+#: inc/configfield.class.php:124
 msgid "Generation templates"
 msgstr "Generation templates"
 
-#: inc/configfield.class.php:129
+#: inc/config.class.php:102 inc/config.class.php:135
+#: inc/configfield.class.php:127
+msgid "Global index position"
+msgstr "Global index position"
+
+#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:41
+#: inc/config.class.php:79 setup.php:65
+msgid "Inventory number generation"
+msgstr "Inventory number generation"
+
+#: hook.php:58
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Regenerate inventory number (overwrite)"
+
+#: inc/configfield.class.php:126
 msgid "Use global index"
 msgstr "Use global index"
+
+#: inc/generation.class.php:86 inc/generation.class.php:126
+msgid "You can't modify inventory number"
+msgstr "You can't modify inventory number"
