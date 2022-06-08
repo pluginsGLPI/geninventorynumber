@@ -124,7 +124,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
-      echo "<th colspan='2'>" . __('Global index position', 'geninventorynumber') . "</th></tr>";
+      echo "<th colspan='2'>" . __('Index position', 'geninventorynumber') . "</th></tr>";
 
       foreach (getAllDataFromTable(getTableForItemType(__CLASS__)) as $value) {
          $itemtype = $value['itemtype'];

@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
@@ -106,51 +108,19 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    }
 
    function showForm($id, $options = []) {
-      global $CFG_GLPI;
-
       if ($id > 0) {
           $this->getFromDB($id);
       } else {
           $this->getEmpty();
       }
 
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='tab_bg_1' align='center'>" . __('Field') . "</td>";
-      echo "<td class='tab_bg_1'>";
-      echo $this->getName();
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='tab_bg_1' align='center'>" .
-         __('Active', 'geninventorynumber') . "</td>";
-      echo "<td class='tab_bg_1'>";
-      Dropdown::showYesNo("is_active", $this->fields["is_active"]);
-      echo "</td>";
-      echo "</tr>";
-
-      echo "<tr>";
-      echo "<td class='tab_bg_1' align='center'>" .
-          __('Global index position', 'geninventorynumber') . " " . __('Global') . "</td>";
-      echo "<td class='tab_bg_1'>";
-      echo "<input type='text' name='index' value='" . $this->fields["index"] . "' size='12'>&nbsp;";
-      echo "</td><td colspan='2'></td>";
-      echo "</tr>";
-
-      echo "<tr>";
-      echo "<td class='tab_bg_1' colspan='4'>";
-      echo "<table>";
-      echo "<tr>";
-      echo "<td class='tab_bg_1'>" . __('Comments') . "</td><td>";
-      echo "<textarea cols='60' rows='4' name='comment' >" . $this->fields["comment"] . "</textarea>";
-      echo "</td>";
-      echo "</tr>";
-      echo "</table>";
-      echo "</td>";
-      echo "</tr>";
       $options['candel'] = false;
-      $this->showFormButtons($options);
+
+      $twig = TemplateRenderer::getInstance();
+      $twig->display('@geninventorynumber/config.html.twig', [
+         'item'   => $this,
+         'params' => $options,
+      ]);
       return true;
    }
 
