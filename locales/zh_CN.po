@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-20 12:30+0000\n"
+"POT-Creation-Date: 2022-06-16 12:41+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/zh_CN/)\n"
@@ -19,16 +19,20 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: inc/config.class.php:94 inc/config.class.php:127
+#: inc/config.class.php:117
 msgid "Active"
 msgstr "启用代理"
 
-#: inc/generation.class.php:96
+#: inc/generation.class.php:104
 msgid "An inventory number have been generated"
 msgstr "资产盘点数量已生成"
 
-#: inc/config.class.php:56 inc/configfield.class.php:42
-#: inc/configfield.class.php:120
+#: inc/config.class.php:138
+msgid "Daily"
+msgstr ""
+
+#: inc/config.class.php:79 inc/configfield.class.php:42
+#: inc/configfield.class.php:124
 msgid "GLPI's inventory items configuration"
 msgstr "各设备类型配置"
 
@@ -36,28 +40,47 @@ msgstr "各设备类型配置"
 msgid "Generate inventory number"
 msgstr "生成资产盘点数量"
 
-#: inc/configfield.class.php:124
+#: inc/configfield.class.php:128
 msgid "Generation templates"
 msgstr "生成模型"
 
-#: inc/config.class.php:102 inc/config.class.php:135
-#: inc/configfield.class.php:127
+#: templates/config.html.twig inc/config.class.php:125
 msgid "Global index position"
 msgstr "索引位置"
 
-#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:41
-#: inc/config.class.php:79 setup.php:65
+#: templates/config.html.twig inc/configfield.class.php:132
+msgid "Index auto-reset method"
+msgstr ""
+
+#: inc/configfield.class.php:131
+msgid "Index position"
+msgstr ""
+
+#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
+#: inc/config.class.php:102 setup.php:65
 msgid "Inventory number generation"
 msgstr "生成资产盘点数量"
+
+#: inc/config.class.php:139
+msgid "Monthly"
+msgstr ""
+
+#: inc/config.class.php:137
+msgid "Never"
+msgstr ""
 
 #: hook.php:58
 msgid "Regenerate inventory number (overwrite)"
 msgstr "重新生成资产盘点数量"
 
-#: inc/configfield.class.php:126
+#: inc/configfield.class.php:130
 msgid "Use global index"
 msgstr "使用全局索引"
 
-#: inc/generation.class.php:86 inc/generation.class.php:126
+#: inc/config.class.php:140
+msgid "Yearly"
+msgstr ""
+
+#: inc/generation.class.php:94 inc/generation.class.php:129
 msgid "You can't modify inventory number"
 msgstr "生成资产盘点数量被拒绝"

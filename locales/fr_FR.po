@@ -3,31 +3,36 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Cédric Anne, 2022
 # Jérémy MOREAU <jmoreau.dev@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-20 12:30+0000\n"
+"POT-Creation-Date: 2022-06-16 12:41+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
-"Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>, 2015\n"
+"Last-Translator: Cédric Anne, 2022\n"
 "Language-Team: French (France) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: inc/config.class.php:94 inc/config.class.php:127
+#: inc/config.class.php:117
 msgid "Active"
 msgstr "Génération activée"
 
-#: inc/generation.class.php:96
+#: inc/generation.class.php:104
 msgid "An inventory number have been generated"
 msgstr "Un numéro d'inventaire a été généré"
 
-#: inc/config.class.php:56 inc/configfield.class.php:42
-#: inc/configfield.class.php:120
+#: inc/config.class.php:138
+msgid "Daily"
+msgstr "Quotidien"
+
+#: inc/config.class.php:79 inc/configfield.class.php:42
+#: inc/configfield.class.php:124
 msgid "GLPI's inventory items configuration"
 msgstr "Configuration spécifique à un type d'objet d'inventaire"
 
@@ -35,28 +40,47 @@ msgstr "Configuration spécifique à un type d'objet d'inventaire"
 msgid "Generate inventory number"
 msgstr "Générer un numéro d'inventaire"
 
-#: inc/configfield.class.php:124
+#: inc/configfield.class.php:128
 msgid "Generation templates"
 msgstr "Modèle de génération : "
 
-#: inc/config.class.php:102 inc/config.class.php:135
-#: inc/configfield.class.php:127
+#: templates/config.html.twig inc/config.class.php:125
 msgid "Global index position"
+msgstr "Position de l'index global"
+
+#: templates/config.html.twig inc/configfield.class.php:132
+msgid "Index auto-reset method"
+msgstr "Mode de réinitialisation de l'index"
+
+#: inc/configfield.class.php:131
+msgid "Index position"
 msgstr "Position de l'index"
 
-#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:41
-#: inc/config.class.php:79 setup.php:65
+#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
+#: inc/config.class.php:102 setup.php:65
 msgid "Inventory number generation"
 msgstr "Génération de numéros d'inventaire"
+
+#: inc/config.class.php:139
+msgid "Monthly"
+msgstr "Mensuel"
+
+#: inc/config.class.php:137
+msgid "Never"
+msgstr "Jamais"
 
 #: hook.php:58
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regénérer un numéro d'inventaire (à écraser)"
 
-#: inc/configfield.class.php:126
+#: inc/configfield.class.php:130
 msgid "Use global index"
 msgstr "Utiliser l'index global"
 
-#: inc/generation.class.php:86 inc/generation.class.php:126
+#: inc/config.class.php:140
+msgid "Yearly"
+msgstr "Annuel"
+
+#: inc/generation.class.php:94 inc/generation.class.php:129
 msgid "You can't modify inventory number"
 msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-20 12:30+0000\n"
+"POT-Creation-Date: 2022-06-16 12:41+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/cs_CZ/)\n"
@@ -19,16 +19,20 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: inc/config.class.php:94 inc/config.class.php:127
+#: inc/config.class.php:117
 msgid "Active"
 msgstr "Vytváření zapnuto"
 
-#: inc/generation.class.php:96
+#: inc/generation.class.php:104
 msgid "An inventory number have been generated"
 msgstr "Vytvořené  inventární číslo"
 
-#: inc/config.class.php:56 inc/configfield.class.php:42
-#: inc/configfield.class.php:120
+#: inc/config.class.php:138
+msgid "Daily"
+msgstr ""
+
+#: inc/config.class.php:79 inc/configfield.class.php:42
+#: inc/configfield.class.php:124
 msgid "GLPI's inventory items configuration"
 msgstr "Nastavení pro jednotlivé typy zařízení"
 
@@ -36,28 +40,47 @@ msgstr "Nastavení pro jednotlivé typy zařízení"
 msgid "Generate inventory number"
 msgstr "Vytvořit inventární číslo"
 
-#: inc/configfield.class.php:124
+#: inc/configfield.class.php:128
 msgid "Generation templates"
 msgstr "Model vytváření"
 
-#: inc/config.class.php:102 inc/config.class.php:135
-#: inc/configfield.class.php:127
+#: templates/config.html.twig inc/config.class.php:125
 msgid "Global index position"
 msgstr "Pozice rejstříku"
 
-#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:41
-#: inc/config.class.php:79 setup.php:65
+#: templates/config.html.twig inc/configfield.class.php:132
+msgid "Index auto-reset method"
+msgstr ""
+
+#: inc/configfield.class.php:131
+msgid "Index position"
+msgstr ""
+
+#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
+#: inc/config.class.php:102 setup.php:65
 msgid "Inventory number generation"
 msgstr "vytvořit inventární číslo"
+
+#: inc/config.class.php:139
+msgid "Monthly"
+msgstr ""
+
+#: inc/config.class.php:137
+msgid "Never"
+msgstr ""
 
 #: hook.php:58
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Znovu vytvořit inventární číslo"
 
-#: inc/configfield.class.php:126
+#: inc/configfield.class.php:130
 msgid "Use global index"
 msgstr "Použít globální rejstřík"
 
-#: inc/generation.class.php:86 inc/generation.class.php:126
+#: inc/config.class.php:140
+msgid "Yearly"
+msgstr ""
+
+#: inc/generation.class.php:94 inc/generation.class.php:129
 msgid "You can't modify inventory number"
 msgstr "Vytvoření inventárního čísla odepřeno"

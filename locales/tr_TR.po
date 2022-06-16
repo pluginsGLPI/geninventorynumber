@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-20 12:30+0000\n"
+"POT-Creation-Date: 2022-06-16 12:41+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/tr_TR/)\n"
@@ -18,16 +18,20 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: inc/config.class.php:94 inc/config.class.php:127
+#: inc/config.class.php:117
 msgid "Active"
 msgstr "Etkin"
 
-#: inc/generation.class.php:96
+#: inc/generation.class.php:104
 msgid "An inventory number have been generated"
 msgstr "Bir stok numarası üretildi"
 
-#: inc/config.class.php:56 inc/configfield.class.php:42
-#: inc/configfield.class.php:120
+#: inc/config.class.php:138
+msgid "Daily"
+msgstr ""
+
+#: inc/config.class.php:79 inc/configfield.class.php:42
+#: inc/configfield.class.php:124
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI stok ögeleri yapılandırması"
 
@@ -35,28 +39,47 @@ msgstr "GLPI stok ögeleri yapılandırması"
 msgid "Generate inventory number"
 msgstr "Stok numarası üret"
 
-#: inc/configfield.class.php:124
+#: inc/configfield.class.php:128
 msgid "Generation templates"
 msgstr "Üretme kalıpları"
 
-#: inc/config.class.php:102 inc/config.class.php:135
-#: inc/configfield.class.php:127
+#: templates/config.html.twig inc/config.class.php:125
 msgid "Global index position"
 msgstr "Genel dizin konumu"
 
-#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:41
-#: inc/config.class.php:79 setup.php:65
+#: templates/config.html.twig inc/configfield.class.php:132
+msgid "Index auto-reset method"
+msgstr ""
+
+#: inc/configfield.class.php:131
+msgid "Index position"
+msgstr ""
+
+#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
+#: inc/config.class.php:102 setup.php:65
 msgid "Inventory number generation"
 msgstr "Stok numarası üretme"
+
+#: inc/config.class.php:139
+msgid "Monthly"
+msgstr ""
+
+#: inc/config.class.php:137
+msgid "Never"
+msgstr ""
 
 #: hook.php:58
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Stok numarasını yeniden üret (üzerine yaz)"
 
-#: inc/configfield.class.php:126
+#: inc/configfield.class.php:130
 msgid "Use global index"
 msgstr "Genel dizin kullanılsın"
 
-#: inc/generation.class.php:86 inc/generation.class.php:126
+#: inc/config.class.php:140
+msgid "Yearly"
+msgstr ""
+
+#: inc/generation.class.php:94 inc/generation.class.php:129
 msgid "You can't modify inventory number"
 msgstr "Stok numarasını değiştiremezsiniz"
