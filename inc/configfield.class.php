@@ -90,9 +90,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          $migration->changeField($table, 'enabled', 'is_active', 'boolean');
          $migration->changeField($table, 'use_index', 'use_index', 'boolean');
           $migration->addField($table, 'date_last_generated', 'timestamp');
-         $migration->addField($table, 'auto_reset_method', 'integer', [
-             'value' => PluginGeninventorynumberConfig::AUTO_RESET_NONE
-         ]);
+         $migration->addField($table, 'auto_reset_method', "int unsigned NOT NULL default '0'");
          $migration->migrationOneTable($table);
       }
 

@@ -280,9 +280,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
          $migration->dropField($table, 'FK_entities');
          $migration->dropField($table, 'entities_id');
          $migration->addField($table, 'date_last_generated', 'timestamp');
-         $migration->addField($table, 'auto_reset_method', 'integer', [
-             'value' => self::AUTO_RESET_NONE
-         ]);
+         $migration->addField($table, 'auto_reset_method', "int unsigned NOT NULL default '0'");
       }
 
       //Remove unused table
