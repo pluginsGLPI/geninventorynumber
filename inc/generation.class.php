@@ -105,9 +105,9 @@ class PluginGeninventorynumberGeneration {
             }
 
             if ($config['use_index']) {
-               PluginGeninventorynumberConfig::updateIndex($item->input['otherserial']);
+               PluginGeninventorynumberConfig::updateIndex();
             } else {
-               PluginGeninventorynumberConfigField::updateIndex(get_class($item), $item->input['otherserial']);
+               PluginGeninventorynumberConfigField::updateIndex(get_class($item));
             }
          }
       }
