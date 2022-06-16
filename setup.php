@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.6.0');
+define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.7.0');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "10.0.0");
