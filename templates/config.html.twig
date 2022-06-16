@@ -52,6 +52,14 @@
     ) }}
     {{ fields.nullField() }}
 
+    {{ fields.dropdownArrayField(
+        'auto_reset_method',
+        item.fields['auto_reset_method'] ?? 0,
+        auto_reset_methods,
+        __('Index auto-reset method', 'geninventorynumber')
+    ) }}
+    {{ fields.nullField() }}
+
     {{ fields.textareaField(
         'comment',
         item.fields['comment'],
