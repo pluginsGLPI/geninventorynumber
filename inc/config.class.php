@@ -164,18 +164,17 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
     * @return bool
     */
    static function needIndexReset(): bool {
-       global $DB;
-
        $config = new self();
        $config->getFromDB(1);
 
-       if ($config->fields['auto_reset_method'] === self::AUTO_RESET_NONE) {
+       if (
+           $config->fields['auto_reset_method'] === self::AUTO_RESET_NONE
+           || $config->fields['date_last_generated'] === null
+       ) {
            return false;
        }
+
        $current_date = strtotime($_SESSION['glpi_currenttime']);
-       if ($config->fields['date_last_generated']) {
-           return false;
-       }
        $last_gen_date = strtotime($config->fields['date_last_generated']);
 
        switch ($config->fields['auto_reset_method']) {

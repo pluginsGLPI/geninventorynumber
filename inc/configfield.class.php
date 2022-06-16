@@ -233,13 +233,14 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
        ]);
        if ($iterator->count() > 0) {
            $data = $iterator->current();
-           if ($data['auto_reset_method'] === PluginGeninventorynumberConfig::AUTO_RESET_NONE) {
+           if (
+               $data['auto_reset_method'] === PluginGeninventorynumberConfig::AUTO_RESET_NONE
+               || $data['date_last_generated'] === null
+           ) {
                return false;
            }
+
            $current_date = strtotime($_SESSION['glpi_currenttime']);
-           if ($data['date_last_generated'] === null) {
-               return false;
-           }
            $last_gen_date = strtotime($data['date_last_generated']);
 
            switch ($data['auto_reset_method']) {
