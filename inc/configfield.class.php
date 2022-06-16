@@ -128,8 +128,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
-      echo "<th colspan='2'>" . __('Index position', 'geninventorynumber') . "</th>";
-      echo "<th colspan='2'>" . __('Auto-reset method', 'geninventorynumber') . "</th></tr></thead>";
+      echo "<th>" . __('Index position', 'geninventorynumber') . "</th>";
+      echo "<th>" . __('Auto-reset method', 'geninventorynumber') . "</th></tr></thead>";
 
       echo "<tbody>";
       $rows = getAllDataFromTable(getTableForItemType(__CLASS__));
@@ -147,13 +147,13 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          echo "<td class='tab_bg_1' align='center'>";
          Dropdown::showYesNo("ids[$itemtype][use_index]", $data["use_index"]);
          echo "</td>";
-         echo "<td class='tab_bg_1' colspan='2' align='center'>";
+         echo "<td class='tab_bg_1' align='center'>";
          if ($data["is_active"] && !$data["use_index"]) {
             echo "<input type='text' name='ids[$itemtype][index]' value='" .
                 $data['index'] . "' size='12'>";
          }
          echo "</td>";
-         echo "<td class='tab_bg_1' colspan='2' align='center'>";
+         echo "<td class='tab_bg_1' align='center'>";
          if ($data["is_active"] && !$data["use_index"]) {
              Dropdown::showFromArray("ids[$itemtype][auto_reset_method]", PluginGeninventorynumberConfig::getAutoResetOptions(), [
                  'value' => $data['auto_reset_method'] ?? 0
@@ -163,7 +163,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          echo "</tr>";
       }
 
-      echo "<tr class='tab_bg_1'><td align='center' colspan='5'>";
+      echo "<tr class='tab_bg_1'><td align='center' colspan='6'>";
       echo "<input type='submit' name='update_fields' value=\"" . _sx('button', 'Save') . "\" class='submit'>";
       echo "</td></tr>";
 
