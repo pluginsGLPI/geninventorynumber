@@ -32,6 +32,14 @@ use Glpi\Toolbox\Sanitizer;
 
 class PluginGeninventorynumberGeneration {
 
+   /**
+    * Flag that indicates whether serial update is allowed.
+    * Flag is set to true during massive plugin_geninventorynumber_generate/plugin_geninventorynumber_overwrite
+    * massive actions process, as this is the only place that should be used to update serial numbers when plugin is active.
+    * @var boolean
+    */
+   private static $serial_update_allowed = false;
+
    static function autoName($config, CommonDBTM $item) {
 
       $template = Sanitizer::unsanitize($config['template']);
@@ -111,7 +119,7 @@ class PluginGeninventorynumberGeneration {
    static function preItemUpdate(CommonDBTM $item) {
       $active = PluginGeninventorynumberConfig::isGenerationActive() &&
           PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item));
-      if ($active && !isset($item->input['massiveaction'])) {
+      if ($active && !self::$serial_update_allowed) {
          if (isset($item->fields['otherserial'], $item->input['otherserial']) &&
              $item->fields['otherserial'] != $item->input['otherserial']) {
             // Revert otherserial to previous value
@@ -165,7 +173,10 @@ class PluginGeninventorynumberGeneration {
             && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
             $values['otherserial']   = self::autoName($config, $item);
             $values['massiveaction'] = true;
+
+            self::$serial_update_allowed = true;
             $tmp->update($values);
+            self::$serial_update_allowed = false;
 
             if ($config['use_index']) {
                PluginGeninventorynumberConfig::updateIndex();
