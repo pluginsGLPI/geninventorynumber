@@ -129,7 +129,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       echo "</th><th>" . __('Active') . "</th>";
       echo "<th>" . __('Use global index', 'geninventorynumber') . "</th>";
       echo "<th>" . __('Index position', 'geninventorynumber') . "</th>";
-      echo "<th>" . __('Auto-reset method', 'geninventorynumber') . "</th></tr></thead>";
+      echo "<th>" . __('Index auto-reset method', 'geninventorynumber') . "</th></tr></thead>";
 
       echo "<tbody>";
       $rows = getAllDataFromTable(getTableForItemType(__CLASS__));
