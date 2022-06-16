@@ -37,7 +37,7 @@ class PluginGeninventorynumberGeneration {
       $template = Sanitizer::unsanitize($config['template']);
 
       $matches = [];
-      if (mb_ereg('^<[^#]*(#{1,10})[^#]*>$', $template, $matches) === false) {
+      if (preg_match('/^<[^#]*(#{1,10})[^#]*>$/', $template, $matches) !== 1) {
          return $template;
       }
 
