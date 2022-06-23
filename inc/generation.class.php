@@ -45,11 +45,13 @@ class PluginGeninventorynumberGeneration {
       $template = Sanitizer::unsanitize($config['template']);
 
       $matches = [];
-      if (preg_match('/^<[^#]*(#{1,10})[^#]*>$/', $template, $matches) !== 1) {
+      if (preg_match('/[^<]*<[^#]*(#{1,10})[^#]*>$/', $template, $matches) !== 1) {
          return $template;
       }
 
-      $autoNum = Toolbox::substr($template, 1, Toolbox::strlen($template) - 2);
+      $suffixPosition = strpos($template, '<');
+      $prefix = substr($template, 0, $suffixPosition);
+      $autoNum = Toolbox::substr($template, $suffixPosition + 1, Toolbox::strlen($template) - $suffixPosition - 2);
       $mask    = $matches[1];
 
       $autoNum = str_replace(
@@ -78,7 +80,8 @@ class PluginGeninventorynumberGeneration {
       }
 
       $template = str_replace($mask, Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT), $autoNum);
-
+      $template = $prefix . $template;
+      
       return Sanitizer::sanitize($template);
    }
 
