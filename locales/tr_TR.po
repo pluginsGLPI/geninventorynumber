@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015,2018
+# Kaya Zeren <kayazeren@gmail.com>, 2015,2018,2022
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-16 12:41+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018,2022\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,7 @@ msgstr "Bir stok numarası üretildi"
 
 #: inc/config.class.php:138
 msgid "Daily"
-msgstr ""
+msgstr "Günlük"
 
 #: inc/config.class.php:79 inc/configfield.class.php:42
 #: inc/configfield.class.php:124
@@ -49,11 +49,11 @@ msgstr "Genel dizin konumu"
 
 #: templates/config.html.twig inc/configfield.class.php:132
 msgid "Index auto-reset method"
-msgstr ""
+msgstr "Dizin otomatik sıfırlama yöntemi"
 
 #: inc/configfield.class.php:131
 msgid "Index position"
-msgstr ""
+msgstr "Dizin konumu"
 
 #: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
 #: inc/config.class.php:102 setup.php:65
@@ -62,11 +62,11 @@ msgstr "Stok numarası üretme"
 
 #: inc/config.class.php:139
 msgid "Monthly"
-msgstr ""
+msgstr "Aylık"
 
 #: inc/config.class.php:137
 msgid "Never"
-msgstr ""
+msgstr "Asla"
 
 #: hook.php:58
 msgid "Regenerate inventory number (overwrite)"
@@ -78,7 +78,7 @@ msgstr "Genel dizin kullanılsın"
 
 #: inc/config.class.php:140
 msgid "Yearly"
-msgstr ""
+msgstr "Yıllık"
 
 #: inc/generation.class.php:94 inc/generation.class.php:129
 msgid "You can't modify inventory number"
