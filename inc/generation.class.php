@@ -49,9 +49,9 @@ class PluginGeninventorynumberGeneration {
          return $template;
       }
 
-      $suffixPosition = strpos($template, '<');
-      $prefix = substr($template, 0, $suffixPosition);
-      $autoNum = Toolbox::substr($template, $suffixPosition + 1, Toolbox::strlen($template) - $suffixPosition - 2);
+      $maskPosition = strpos($template, '<');
+      $prefix = substr($template, 0, $maskPosition);
+      $autoNum = Toolbox::substr($template, $maskPosition + 1, Toolbox::strlen($template) - $maskPosition - 2);
       $mask    = $matches[1];
 
       $autoNum = str_replace(
