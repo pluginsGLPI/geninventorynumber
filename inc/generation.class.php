@@ -45,7 +45,7 @@ class PluginGeninventorynumberGeneration {
       $template = Sanitizer::unsanitize($config['template']);
 
       $matches = [];
-      if (preg_match('/^(?<prefix>.*)<(?<autonum>[^<#]*(?<mask>#{1,10})[^#>]*)>(?<suffix>.*)$/', $template, $matches) !== 1) {
+      if (preg_match('/^(?<prefix>.*)<(?<autonum>[^<#>]*(?<mask>#{1,10})[^<#>]*)>(?<suffix>.*)$/', $template, $matches) !== 1) {
          return $template;
       }
 
