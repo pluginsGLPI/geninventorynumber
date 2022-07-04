@@ -57,7 +57,7 @@ class PluginGeninventorynumberGeneration {
           . '/';
       $matches = [];
       if (preg_match($pattern, $template, $matches) !== 1) {
-         return $template;
+         return $config['template']; // Return verbatim value
       }
 
       $prefix  = $matches['prefix'];
