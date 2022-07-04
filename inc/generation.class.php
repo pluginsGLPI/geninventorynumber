@@ -44,8 +44,19 @@ class PluginGeninventorynumberGeneration {
 
       $template = Sanitizer::unsanitize($config['template']);
 
+      $pattern = '/'
+          . '^(?<prefix>.*)'    // capture every char located before the "autonum" part
+          . '<'                 // "<" char that indicates beginning of the "autonum" part
+          . '(?<autonum>'
+          . '.*?'               // capture chars located before the # mask part (lazy ? quantifier prevent inclusion of < in "autonum" part)
+          . '#{1,10}'           // # mask part
+          . '.*?'               // capture chars located after the # mask part (lazy ? quantifier prevent inclusion of > in "autonum" part)
+          . ')'
+          . '>'                 // ">" char that indicates ending the "autonum" part
+          . '(?<suffix>.*)$'    // capture every char located after the "autonum" part
+          . '/';
       $matches = [];
-      if (preg_match('/^(?<prefix>.*)<(?<autonum>.*?#{1,10}.*?)>(?<suffix>.*)$/', $template, $matches) !== 1) {
+      if (preg_match($pattern, $template, $matches) !== 1) {
          return $template;
       }
 
