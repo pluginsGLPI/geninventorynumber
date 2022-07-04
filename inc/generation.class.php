@@ -45,14 +45,24 @@ class PluginGeninventorynumberGeneration {
       $template = Sanitizer::unsanitize($config['template']);
 
       $matches = [];
-      if (preg_match('/^(?<prefix>.*)<(?<autonum>[^<#>]*(?<mask>#{1,10})[^<#>]*)>(?<suffix>.*)$/', $template, $matches) !== 1) {
+      if (preg_match('/^(?<prefix>.*)<(?<autonum>.*?#{1,10}.*?)>(?<suffix>.*)$/', $template, $matches) !== 1) {
          return $template;
       }
 
       $prefix  = $matches['prefix'];
       $autonum = $matches['autonum'];
-      $mask    = $matches['mask'];
       $suffix  = $matches['suffix'];
+
+      // Find # mask length.
+      // autonum par may contains # at multiple places, for instance <#\Y-\m-\d_######>, so we try to find
+      // the longer "#" suite.
+      $mask = null;
+      for ($i = 10; $i > 0; $i--) {
+          $mask = str_repeat('#', $i);
+          if (str_contains($autonum, str_repeat('#', $i))) {
+              break;
+          }
+      }
 
       $numero = $config['use_index']
          ? PluginGeninventorynumberConfig::getNextIndex()
