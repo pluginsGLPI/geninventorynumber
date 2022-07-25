@@ -31,10 +31,8 @@
 include ('../../../inc/includes.php');
 
 $config = new PluginGeninventorynumberConfig();
-$plugin = new Plugin();
 $config->getFromDB(1);
-if ($plugin->isInstalled("geninventorynumber")
-   && $plugin->isActivated("geninventorynumber")) {
+if (Plugin::isPluginActive("geninventorynumber")) {
    Html::header(__('Inventory number generation', 'geninventorynumber'),
                 $_SERVER['PHP_SELF'], "tools", "plugins", "geninventorynumber");
    if (isset($_GET['glpi_tab'])) {
