@@ -135,7 +135,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
       $rows = getAllDataFromTable(getTableForItemType(__CLASS__));
       foreach ($rows as $data) {
          $itemtype = $data['itemtype'];
-         echo "<td class='tab_bg_1' align='center'>" . call_user_func([$itemtype, 'getTypeName']). "</td>";
+         $typename = is_a($itemtype, CommonDBTM::class, true) ? $itemtype::getTypeName() : $itemtype;
+         echo "<td class='tab_bg_1' align='center'>" . $typename . "</td>";
          echo "<td class='tab_bg_1'>";
          echo "<input type='hidden' name='ids[$itemtype][id]' value='".$data["id"]."'>";
          echo "<input type='hidden' name='ids[$itemtype][itemtype]' value='$itemtype'>";
