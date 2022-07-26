@@ -44,42 +44,63 @@ class PluginGeninventorynumberGeneration {
 
       $template = Sanitizer::unsanitize($config['template']);
 
+      $pattern = '/'
+          . '^(?<prefix>.*)'    // capture every char located before the "autonum" part
+          . '<'                 // "<" char that indicates beginning of the "autonum" part
+          . '(?<autonum>'
+          . '.*?'               // capture chars located before the # mask part (lazy ? quantifier prevent inclusion of < in "autonum" part)
+          . '#{1,10}'           // # mask part
+          . '.*?'               // capture chars located after the # mask part (lazy ? quantifier prevent inclusion of > in "autonum" part)
+          . ')'
+          . '>'                 // ">" char that indicates ending the "autonum" part
+          . '(?<suffix>.*)$'    // capture every char located after the "autonum" part
+          . '/';
       $matches = [];
-      if (preg_match('/^<[^#]*(#{1,10})[^#]*>$/', $template, $matches) !== 1) {
-         return $template;
+      if (preg_match($pattern, $template, $matches) !== 1) {
+         return $config['template']; // Return verbatim value
       }
 
-      $autoNum = Toolbox::substr($template, 1, Toolbox::strlen($template) - 2);
-      $mask    = $matches[1];
+      $prefix  = $matches['prefix'];
+      $autonum = $matches['autonum'];
+      $suffix  = $matches['suffix'];
 
-      $autoNum = str_replace(
+      // Find # mask length.
+      // autonum par may contains # at multiple places, for instance <#\Y-\m-\d_######>, so we try to find
+      // the longer "#" suite.
+      $mask = null;
+      for ($i = 10; $i > 0; $i--) {
+          $mask = str_repeat('#', $i);
+          if (str_contains($autonum, str_repeat('#', $i))) {
+              break;
+          }
+      }
+
+      $numero = $config['use_index']
+         ? PluginGeninventorynumberConfig::getNextIndex()
+         : PluginGeninventorynumberConfigField::getNextIndex($config['itemtype']);
+
+      $autonum = str_replace(
          [
+             $mask,
             '\\y',
             '\\Y',
             '\\m',
             '\\d',
-            '\\g'
+            '\\g',
          ], [
+            Toolbox::str_pad($numero, strlen($mask), '0', STR_PAD_LEFT),
             date('y'),
             date('Y'),
             date('m'),
             date('d'),
-            ''
+            '',
          ],
-         $autoNum
+         $autonum
       );
 
-      $len  = Toolbox::strlen($mask);
+      $result = $prefix . $autonum . $suffix;
 
-      if ($config['use_index']) {
-         $newNo = PluginGeninventorynumberConfig::getNextIndex();
-      } else {
-         $newNo = PluginGeninventorynumberConfigField::getNextIndex($config['itemtype']);
-      }
-
-      $template = str_replace($mask, Toolbox::str_pad($newNo, $len, '0', STR_PAD_LEFT), $autoNum);
-
-      return Sanitizer::sanitize($template);
+      return Sanitizer::sanitize($result);
    }
 
    /**
