@@ -89,7 +89,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          }
          $migration->changeField($table, 'enabled', 'is_active', 'boolean');
          $migration->changeField($table, 'use_index', 'use_index', 'boolean');
-          $migration->addField($table, 'date_last_generated', 'timestamp');
+         $migration->addField($table, 'date_last_generated', 'timestamp');
          $migration->addField($table, 'auto_reset_method', "int unsigned NOT NULL default '0'");
          $migration->migrationOneTable($table);
       }
@@ -103,6 +103,24 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
             $input["is_active"]                            = 0;
             $input["index"]                                = 0;
             $field->add($input);
+         }
+
+         // Init date_last_generated
+         $cfield = new self();
+         if (
+             $cfield->getFromDBByCrit(['itemtype' => $type])
+             && $cfield->fields['date_last_generated'] === null
+             && countElementsInTable($type::getTable())
+         ) {
+            $max = $DB->request([
+               'SELECT' => ['MAX' => 'date_creation as date'],
+               'FROM' => $type::getTable()
+            ])->current()['date'];
+
+            $cfield->update([
+               'id' => $cfield->getID(),
+               'date_last_generated' => $max
+            ]);
          }
       }
    }
