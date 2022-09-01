@@ -106,14 +106,17 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          }
 
          // Init date_last_generated
-         if (countElementsInTable($type::getTable())) {
+         $cfield = new self();
+         if (
+             $cfield->getFromDBByCrit(['itemtype' => $type])
+             && $cfield->fields['date_last_generated'] === null
+             && countElementsInTable($type::getTable())
+         ) {
             $max = $DB->request([
                'SELECT' => ['MAX' => 'date_creation as date'],
                'FROM' => $type::getTable()
             ])->current()['date'];
 
-            $cfield = new self();
-            $cfield->getFromDBByCrit(['itemtype' => $type]);
             $cfield->update([
                'id' => $cfield->getID(),
                'date_last_generated' => $max
