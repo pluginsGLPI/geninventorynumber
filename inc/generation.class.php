@@ -86,6 +86,8 @@ class PluginGeninventorynumberGeneration {
             '\\Y',
             '\\m',
             '\\d',
+            '\\s',
+            '\\n',
             '\\g',
          ], [
             Toolbox::str_pad($numero, strlen($mask), '0', STR_PAD_LEFT),
@@ -93,6 +95,8 @@ class PluginGeninventorynumberGeneration {
             date('Y'),
             date('m'),
             date('d'),
+            $item->fields['serial'] ?? '',
+            $item->fields['name'] ?? '',
             '',
          ],
          $autonum
