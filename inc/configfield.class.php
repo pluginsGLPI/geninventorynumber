@@ -117,7 +117,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
                'FROM' => $type::getTable()
             ])->current()['date'];
 
-            $cfield->update([
+            $DB->update($cfield::getTable(), [
                'id' => $cfield->getID(),
                'date_last_generated' => $max
             ]);
