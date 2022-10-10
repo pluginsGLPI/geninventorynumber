@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 12:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:31+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: cbc5204086c375034e77848ef6290ebe, 2015\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/teclib/glpi-plugin-geninventorynumber/language/es_ES/)\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Active"
 msgstr "GenerationEnabled"
 
-#: inc/generation.class.php:104
+#: inc/generation.class.php:129
 msgid "An inventory number have been generated"
 msgstr "InventoryNumberGenerated"
 
@@ -33,7 +33,7 @@ msgid "Daily"
 msgstr ""
 
 #: inc/config.class.php:79 inc/configfield.class.php:42
-#: inc/configfield.class.php:124
+#: inc/configfield.class.php:142
 msgid "GLPI's inventory items configuration"
 msgstr "PerDeviceTypeConfiguration"
 
@@ -41,7 +41,7 @@ msgstr "PerDeviceTypeConfiguration"
 msgid "Generate inventory number"
 msgstr "GenerateInventoryNumber"
 
-#: inc/configfield.class.php:128
+#: inc/configfield.class.php:146
 msgid "Generation templates"
 msgstr "GenerationModel"
 
@@ -49,16 +49,16 @@ msgstr "GenerationModel"
 msgid "Global index position"
 msgstr "IndexPosition"
 
-#: templates/config.html.twig inc/configfield.class.php:132
+#: templates/config.html.twig inc/configfield.class.php:150
 msgid "Index auto-reset method"
 msgstr ""
 
-#: inc/configfield.class.php:131
+#: inc/configfield.class.php:149
 msgid "Index position"
 msgstr ""
 
-#: front/config.php:38 inc/profile.class.php:158 inc/config.class.php:64
-#: inc/config.class.php:102 setup.php:65
+#: front/config.php:36 inc/profile.class.php:158 inc/config.class.php:64
+#: inc/config.class.php:102 setup.php:67
 msgid "Inventory number generation"
 msgstr "geninventorynumber"
 
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Regenerate inventory number (overwrite)"
 msgstr "RegenerateInventoryNumber"
 
-#: inc/configfield.class.php:130
+#: inc/configfield.class.php:148
 msgid "Use global index"
 msgstr "UseGlobalIndex"
 
@@ -82,6 +82,6 @@ msgstr "UseGlobalIndex"
 msgid "Yearly"
 msgstr ""
 
-#: inc/generation.class.php:94 inc/generation.class.php:129
+#: inc/generation.class.php:119 inc/generation.class.php:154
 msgid "You can't modify inventory number"
 msgstr "GenerateInventoryNumberDenied"
