@@ -95,8 +95,8 @@ class PluginGeninventorynumberGeneration {
             date('Y'),
             date('m'),
             date('d'),
-            $item->fields['serial'] ?? '',
-            $item->fields['name'] ?? '',
+            $item->input['serial'] ?? '',
+            $item->input['name'] ?? '',
             '',
          ],
          $autonum
