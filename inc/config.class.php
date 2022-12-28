@@ -209,14 +209,15 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
           self::resetIndex();
       }
 
-      $query = "SELECT `index`
-                FROM `".getTableForItemType(__CLASS__)."`";
-      $results = $DB->query($query);
-      if ($DB->numrows($results)) {
-         return ($DB->result($results, 0, 'index') + 1);
-      } else {
-         return 0;
+      $it = $DB->request([
+         'SELECT'=> ['index'],
+         'FROM'  => getTableForItemType(__CLASS__),
+      ]);
+      if (count($it)) {
+         return $it->current()['index'] + 1;
       }
+
+       return 0;
    }
 
    static function install(Migration $migration) {
@@ -297,10 +298,12 @@ class PluginGeninventorynumberConfig extends CommonDBTM {
    static function updateIndex() {
       global $DB;
 
-      $query = "UPDATE `".getTableForItemType(__CLASS__)."`
-                SET `index`=`index`+1,`date_last_generated`='{$_SESSION['glpi_currenttime']}'
-                WHERE `is_active`='1'";
-      $DB->query($query);
+      $DB->update(getTableForItemType(__CLASS__), [
+         'index' => new QueryExpression($DB::quoteName('index') . ' + 1'),
+         'date_last_generated' => $_SESSION['glpi_currenttime']
+      ], [
+         'is_active' => 1
+      ]);
    }
 
    static function isGenerationActive() {

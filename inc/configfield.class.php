@@ -210,11 +210,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
     static function getEnabledItemTypes() {
       global $DB;
-      $query = "SELECT DISTINCT `itemtype`
-                FROM `".getTableForItemType(__CLASS__)."`
-                ORDER BY `itemtype` ASC";
+
+      $it = $DB->request([
+         'SELECT' => ['itemtype'],
+         'DISTINCT' => true,
+         'FROM' => getTableForItemType(__CLASS__),
+         'ORDER' => ['itemtype']
+      ]);
       $types = [];
-      foreach ($DB->request($query) as $data) {
+      foreach ($it as $data) {
          $types[] = $data['itemtype'];
       }
       return $types;
@@ -222,15 +226,17 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
 
    static function isActiveForItemType($itemtype) {
       global $DB;
-      $query = "SELECT `is_active`
-                FROM `".getTableForItemType(__CLASS__)."`
-                WHERE `itemtype`='$itemtype'";
-      $results = $DB->query($query);
-      if ($DB->numrows($results)) {
-         return $DB->result($results, 0, 'is_active');
-      } else {
-         return false;
+
+      $it = $DB->request([
+         'SELECT' => ['is_active'],
+         'FROM' => getTableForItemType(__CLASS__),
+         'WHERE' => ['itemtype' => $itemtype]
+      ]);
+      if (count($it)) {
+         return $it->current()['is_active'];
       }
+
+       return false;
    }
 
    /**
@@ -293,24 +299,26 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
          self::resetIndex($itemtype);
       }
 
-      $query = "SELECT `index`
-                FROM `".getTableForItemType(__CLASS__)."`
-                WHERE `itemtype`='$itemtype'";
-      $result = $DB->query($query);
-      if (!$DB->numrows($result)) {
-         return 0;
-      } else {
-         return ($DB->result($result, 0, "index") + 1);
+      $it = $DB->request([
+         'SELECT' => ['index'],
+         'FROM' => getTableForItemType(__CLASS__),
+         'WHERE' => ['itemtype' => $itemtype]
+      ]);
+      if (count($it)) {
+          return $it->current()['index'] + 1;
       }
+      return 0;
    }
 
    static function updateIndex($itemtype) {
       global $DB;
 
-      $query = "UPDATE `".getTableForItemType(__CLASS__)."`
-                SET `index`=`index`+1,`date_last_generated`='{$_SESSION['glpi_currenttime']}'
-                WHERE `itemtype`='$itemtype'";
-      $DB->query($query);
+      $DB->update(getTableForItemType(__CLASS__), [
+         'index' => new QueryExpression($DB::quoteName('index') . ' + 1'),
+         'date_last_generated' => $_SESSION['glpi_currenttime']
+      ], [
+         'itemtype' => $itemtype
+      ]);
    }
 
    static function registerNewItemType($itemtype) {
