@@ -3,7 +3,7 @@
    <name>Inventory Number Generation</name>
    <key>geninventorynumber</key>
    <state>stable</state>
-   <logo>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/master/geninventorynumber.png</logo>
+   <logo>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/main/geninventorynumber.png</logo>
    <description>
       <short>
          <cs><![CDATA[Vytváření inventárních čísel]]></cs>
@@ -19,7 +19,7 @@
    <homepage>https://github.com/pluginsGLPI/geninventorynumber</homepage>
    <download>https://github.com/pluginsGLPI/geninventorynumber/releases</download>
    <issues>https://github.com/pluginsGLPI/geninventorynumber/issues</issues>
-   <readme>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/master/README.md</readme>
+   <readme>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/main/README.md</readme>
    <authors>
       <author>Walid Nouh</author>
    </authors>
