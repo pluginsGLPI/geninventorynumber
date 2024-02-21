@@ -117,7 +117,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
                'FROM' => $type::getTable()
             ])->current()['date'];
 
-            $cfield->update([
+            $DB->update($cfield::getTable(), [
                'id' => $cfield->getID(),
                'date_last_generated' => $max
             ]);
@@ -193,7 +193,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    public function prepareInputForAdd($input)
    {
        $input = parent::prepareInputForAdd($input);
-       if (!$input["is_active"] || $input["use_index"]) {
+       $check_auto_reset = isset($input['is_active']) && isset($input['use_index']);
+       if ($check_auto_reset && (!$input["is_active"] || $input["use_index"]) {
            $input['auto_reset_method'] = 0;
        }
        return $input;
@@ -202,7 +203,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild {
    public function prepareInputForUpdate($input)
    {
        $input = parent::prepareInputForUpdate($input);
-       if (!$input["is_active"] || $input["use_index"]) {
+       $check_auto_reset = isset($input['is_active']) && isset($input['use_index']);
+       if ($check_auto_reset && (!$input["is_active"] || $input["use_index"])) {
            $input['auto_reset_method'] = 0;
        }
        return $input;
