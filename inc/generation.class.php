@@ -126,7 +126,7 @@ class PluginGeninventorynumberGeneration {
             && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item))) {
             $item->input['otherserial'] = self::autoName($config, $item);
             if (!isCommandLine()) {
-               Session::addMessageAfterRedirect(__('An inventory number have been generated', 'geninventorynumber'), true);
+               Session::addMessageAfterRedirect(__('An inventory number have been generated', 'geninventorynumber') . " " . $item->input['otherserial'], true);
             }
 
             if ($config['use_index']) {
