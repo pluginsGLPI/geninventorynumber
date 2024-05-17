@@ -24,7 +24,7 @@ msgid "Active"
 msgstr "启用代理"
 
 #: inc/generation.class.php:129
-msgid "An inventory number have been generated"
+msgid "An inventory number have been generated (%1$s)"
 msgstr "资产盘点数量已生成"
 
 #: inc/config.class.php:138

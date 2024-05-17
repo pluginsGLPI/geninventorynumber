@@ -25,7 +25,7 @@ msgid "Active"
 msgstr "Aktiv"
 
 #: inc/generation.class.php:129
-msgid "An inventory number have been generated"
+msgid "An inventory number have been generated (%1$s)"
 msgstr "Eine Inventarnummer wurde generiert"
 
 #: inc/config.class.php:138
