@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:31+0000\n"
+"POT-Creation-Date: 2024-05-17 09:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,68 +17,69 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inc/config.class.php:117
+#: inc/config.class.php:122
 msgid "Active"
 msgstr ""
 
-#: inc/generation.class.php:129
-msgid "An inventory number have been generated"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
 msgstr ""
 
-#: inc/config.class.php:138
+#: inc/config.class.php:144
 msgid "Daily"
 msgstr ""
 
-#: inc/config.class.php:79 inc/configfield.class.php:42
-#: inc/configfield.class.php:142
+#: inc/configfield.class.php:43 inc/configfield.class.php:150
+#: inc/config.class.php:82
 msgid "GLPI's inventory items configuration"
 msgstr ""
 
-#: hook.php:53 inc/profile.class.php:104
+#: hook.php:58 inc/profile.class.php:118
 msgid "Generate inventory number"
 msgstr ""
 
-#: inc/configfield.class.php:146
+#: inc/configfield.class.php:154
 msgid "Generation templates"
 msgstr ""
 
-#: templates/config.html.twig inc/config.class.php:125
+#: templates/config.html.twig inc/config.class.php:130
 msgid "Global index position"
 msgstr ""
 
-#: templates/config.html.twig inc/configfield.class.php:150
+#: templates/config.html.twig inc/configfield.class.php:158
 msgid "Index auto-reset method"
 msgstr ""
 
-#: inc/configfield.class.php:149
+#: inc/configfield.class.php:157
 msgid "Index position"
 msgstr ""
 
-#: front/config.php:36 inc/profile.class.php:158 inc/config.class.php:64
-#: inc/config.class.php:102 setup.php:67
+#: inc/profile.class.php:181 inc/config.class.php:65 inc/config.class.php:107
+#: setup.php:75 front/config.php:37
 msgid "Inventory number generation"
 msgstr ""
 
-#: inc/config.class.php:139
+#: inc/config.class.php:145
 msgid "Monthly"
 msgstr ""
 
-#: inc/config.class.php:137
+#: inc/config.class.php:143
 msgid "Never"
 msgstr ""
 
-#: hook.php:58
+#: hook.php:63
 msgid "Regenerate inventory number (overwrite)"
 msgstr ""
 
-#: inc/configfield.class.php:148
+#: inc/configfield.class.php:156
 msgid "Use global index"
 msgstr ""
 
-#: inc/config.class.php:140
+#: inc/config.class.php:146
 msgid "Yearly"
 msgstr ""
 
-#: inc/generation.class.php:119 inc/generation.class.php:154
+#: inc/generation.class.php:123 inc/generation.class.php:164
 msgid "You can't modify inventory number"
 msgstr ""

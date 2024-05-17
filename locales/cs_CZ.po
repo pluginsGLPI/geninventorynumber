@@ -24,7 +24,7 @@ msgid "Active"
 msgstr "Vytváření zapnuto"
 
 #: inc/generation.class.php:129
-msgid "An inventory number have been generated"
+msgid "An inventory number have been generated (%1$s)"
 msgstr "Vytvořené  inventární číslo"
 
 #: inc/config.class.php:138
