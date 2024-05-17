@@ -28,52 +28,57 @@
  * -------------------------------------------------------------------------
  */
 
-define ('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.8.3');
+define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.8.3');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
 define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "10.0.99");
 
-function plugin_init_geninventorynumber() {
-   global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
+function plugin_init_geninventorynumber()
+{
+    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
-   $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
-   $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
+    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
+    $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
 
-   $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
-                                 'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
-                                 'Appliance', 'Certificate', 'ConsumableItem', 'Enclosure',
-                                 'PassiveDCEquipment', 'PDU', 'Rack'];
+    $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
+        'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
+        'Appliance', 'Certificate', 'ConsumableItem', 'Enclosure',
+        'PassiveDCEquipment', 'PDU', 'Rack'
+    ];
 
-   $plugin = new Plugin();
-   if ($plugin->isActivated('geninventorynumber')) {
-      $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
+    $plugin = new Plugin();
+    if ($plugin->isActivated('geninventorynumber')) {
+        $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
 
-      Plugin::registerClass('PluginGeninventorynumberProfile',
-                            ['addtabon' => ['Profile']]);
-      Plugin::registerClass('PluginGeninventorynumberConfig');
-      Plugin::registerClass('PluginGeninventorynumberConfigField');
+        Plugin::registerClass(
+            'PluginGeninventorynumberProfile',
+            ['addtabon' => ['Profile']]
+        );
+        Plugin::registerClass('PluginGeninventorynumberConfig');
+        Plugin::registerClass('PluginGeninventorynumberConfigField');
 
-      if (Session::haveRight('config', UPDATE)) {
-         $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']
-            = ['tools' => 'PluginGeninventorynumberConfig'];
-      }
-   }
+        if (Session::haveRight('config', UPDATE)) {
+            $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']
+              = ['tools' => 'PluginGeninventorynumberConfig'];
+        }
+    }
 }
 
-function plugin_version_geninventorynumber() {
-   return [
-      'name'         => __('Inventory number generation', 'geninventorynumber'),
-      'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
-      'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-      'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',
-      'license'      => 'GPLv2+',
-      'requirements' => [
-         'glpi' => [
-            'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
-            'max' => PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
-          ]
-       ]
-   ];
+function plugin_version_geninventorynumber()
+{
+    return [
+        'name'         => __('Inventory number generation', 'geninventorynumber'),
+        'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
+        'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+        'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',
+        'license'      => 'GPLv2+',
+        'requirements' => [
+            'glpi' => [
+                'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
+                'max' => PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
+            ]
+        ]
+    ];
 }

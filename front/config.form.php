@@ -28,11 +28,11 @@
  * -------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 $config = new PluginGeninventorynumberConfig();
 
 if (isset($_POST['update'])) {
-   $config->update($_POST);
-   Html::back();
+    $config->update($_POST);
+    Html::back();
 }

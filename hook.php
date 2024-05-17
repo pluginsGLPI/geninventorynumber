@@ -28,63 +28,67 @@
  * -------------------------------------------------------------------------
  */
 
-function plugin_geninventorynumber_postinit() {
-   global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
+function plugin_geninventorynumber_postinit()
+{
+    global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
 
-   foreach ($GENINVENTORYNUMBER_TYPES as $type) {
-      $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
+    foreach ($GENINVENTORYNUMBER_TYPES as $type) {
+        $PLUGIN_HOOKS['pre_item_add']['geninventorynumber'][$type]
         = ['PluginGeninventorynumberGeneration', 'preItemAdd'];
-      $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
+        $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
         = ['PluginGeninventorynumberGeneration', 'preItemUpdate'];
-   }
+    }
 }
 
-function plugin_geninventorynumber_MassiveActions($type) {
-   global $GENINVENTORYNUMBER_TYPES;
+function plugin_geninventorynumber_MassiveActions($type)
+{
+    global $GENINVENTORYNUMBER_TYPES;
 
-   $actions = [];
-   if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
-      $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
+    $actions = [];
+    if (in_array($type, $GENINVENTORYNUMBER_TYPES)) {
+        $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
 
-      if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
-         if (Session::haveRight("plugin_geninventorynumber", CREATE)) {
-            $actions['PluginGeninventorynumberGeneration'.
-               MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_generate']
-               = __('Generate inventory number', 'geninventorynumber');
-         }
-         if (Session::haveRight("plugin_geninventorynumber", UPDATE)) {
-            $actions['PluginGeninventorynumberGeneration'.
-               MassiveAction::CLASS_ACTION_SEPARATOR.'plugin_geninventorynumber_overwrite']
-              = __('Regenerate inventory number (overwrite)', 'geninventorynumber');
-         }
-      }
-   }
-   return $actions;
+        if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
+            if (Session::haveRight("plugin_geninventorynumber", CREATE)) {
+                $actions['PluginGeninventorynumberGeneration' .
+                 MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_generate']
+                 = __('Generate inventory number', 'geninventorynumber');
+            }
+            if (Session::haveRight("plugin_geninventorynumber", UPDATE)) {
+                $actions['PluginGeninventorynumberGeneration' .
+                MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_overwrite']
+                = __('Regenerate inventory number (overwrite)', 'geninventorynumber');
+            }
+        }
+    }
+    return $actions;
 }
 
-function plugin_geninventorynumber_install() {
-   $php_dir = Plugin::getPhpDir('geninventorynumber');
+function plugin_geninventorynumber_install()
+{
+    $php_dir = Plugin::getPhpDir('geninventorynumber');
 
-   $migration = new Migration("0.85+1.0");
-   include_once($php_dir . '/inc/config.class.php');
-   include_once($php_dir . '/inc/profile.class.php');
-   include_once($php_dir . '/inc/configfield.class.php');
-   PluginGeninventorynumberConfig::install($migration);
-   PluginGeninventorynumberProfile::install($migration);
-   PluginGeninventorynumberConfigField::install($migration);
-   return true;
+    $migration = new Migration("0.85+1.0");
+    include_once($php_dir . '/inc/config.class.php');
+    include_once($php_dir . '/inc/profile.class.php');
+    include_once($php_dir . '/inc/configfield.class.php');
+    PluginGeninventorynumberConfig::install($migration);
+    PluginGeninventorynumberProfile::install($migration);
+    PluginGeninventorynumberConfigField::install($migration);
+    return true;
 }
 
-function plugin_geninventorynumber_uninstall() {
-   $php_dir = Plugin::getPhpDir('geninventorynumber');
+function plugin_geninventorynumber_uninstall()
+{
+    $php_dir = Plugin::getPhpDir('geninventorynumber');
 
-   $migration = new Migration("0.85+1.0");
-   include_once($php_dir . '/inc/config.class.php');
-   include_once($php_dir . '/inc/profile.class.php');
-   include_once($php_dir . '/inc/configfield.class.php');
-   PluginGeninventorynumberConfig::uninstall($migration);
-   PluginGeninventorynumberProfile::removeRightsFromSession();
-   PluginGeninventorynumberProfile::uninstallProfile();
-   PluginGeninventorynumberConfigField::uninstall($migration);
-   return true;
+    $migration = new Migration("0.85+1.0");
+    include_once($php_dir . '/inc/config.class.php');
+    include_once($php_dir . '/inc/profile.class.php');
+    include_once($php_dir . '/inc/configfield.class.php');
+    PluginGeninventorynumberConfig::uninstall($migration);
+    PluginGeninventorynumberProfile::removeRightsFromSession();
+    PluginGeninventorynumberProfile::uninstallProfile();
+    PluginGeninventorynumberConfigField::uninstall($migration);
+    return true;
 }
