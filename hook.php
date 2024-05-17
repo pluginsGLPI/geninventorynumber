@@ -30,6 +30,8 @@
 
 function plugin_geninventorynumber_postinit()
 {
+    /** @var array $GENINVENTORYNUMBER_TYPES */
+    /** @var array $PLUGIN_HOOKS */
     global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
 
     foreach ($GENINVENTORYNUMBER_TYPES as $type) {
@@ -42,6 +44,7 @@ function plugin_geninventorynumber_postinit()
 
 function plugin_geninventorynumber_MassiveActions($type)
 {
+    /** @var array $GENINVENTORYNUMBER_TYPES */
     global $GENINVENTORYNUMBER_TYPES;
 
     $actions = [];

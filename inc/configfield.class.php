@@ -55,6 +55,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function install(Migration $migration)
     {
+        /** @var DBmysql $DB */
+        /** @var array $GENINVENTORYNUMBER_TYPES */
         global $DB, $GENINVENTORYNUMBER_TYPES;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -81,7 +83,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             `auto_reset_method` int unsigned NOT NULL default '0',
             PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($query);
+            $DB->doQuery($query);
         } else {
             $migration->changeField($table, 'ID', 'id', 'autoincrement');
             $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', "int {$default_key_sign} NOT NULL default '0'");
@@ -134,6 +136,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function showForConfig($id)
     {
+        /** @var array $CFG_GLPI */
+        /** @var DBmysql $DB */
         global $CFG_GLPI, $DB;
 
         $config = new PluginGeninventorynumberConfig();
@@ -198,7 +202,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     {
         $input = parent::prepareInputForAdd($input);
         $check_auto_reset = isset($input['is_active']) && isset($input['use_index']);
-        if ($check_auto_reset && (!$input["is_active"] || $input["use_index"]) {
+        if ($check_auto_reset && (!$input["is_active"] || $input["use_index"])) {
             $input['auto_reset_method'] = 0;
         }
         return $input;
@@ -216,6 +220,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getEnabledItemTypes()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $it = $DB->request([
@@ -233,6 +238,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function isActiveForItemType($itemtype)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $it = $DB->request([
@@ -254,6 +260,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     */
     public static function needIndexReset($itemtype): bool
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -292,6 +299,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     */
     public static function resetIndex(string $itemtype): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->update(self::getTable(), [
@@ -304,6 +312,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getNextIndex($itemtype)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         if (self::needIndexReset($itemtype)) {
@@ -323,6 +332,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function updateIndex($itemtype)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->update(getTableForItemType(__CLASS__), [

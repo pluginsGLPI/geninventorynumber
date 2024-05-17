@@ -37,6 +37,9 @@ define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "10.0.99");
 
 function plugin_init_geninventorynumber()
 {
+    /** @var array $CFG_GLPI */
+    /** @var array $GENINVENTORYNUMBER_TYPES */
+    /** @var array $PLUGIN_HOOKS */
     global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
     $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;

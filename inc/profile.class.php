@@ -108,6 +108,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             Html::closeForm();
         }
         echo "</div>";
+        return true;
     }
 
     public static function getAllRights()
@@ -125,6 +126,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
 
     public static function install(Migration $migration)
     {
+        /** @var DBmysql $DB */
         global $DB;
         $table = getTableForItemType(__CLASS__);
 
@@ -178,6 +180,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM
         if ($item->fields['interface'] == 'central') {
             return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
         }
+
+        return '';
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)

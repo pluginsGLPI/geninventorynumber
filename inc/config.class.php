@@ -201,6 +201,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
     */
     public static function resetIndex(): void
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->update(self::getTable(), [
@@ -213,6 +214,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function getNextIndex()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         if (self::needIndexReset()) {
@@ -232,6 +234,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function install(Migration $migration)
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $default_charset = DBConnection::getDefaultCharset();
@@ -270,7 +273,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
              `auto_reset_method` int unsigned NOT NULL default '0',
              PRIMARY KEY  (`id`)
              ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->query($sql) or die($DB->error());
+            $DB->doQueryOrDie($sql, $DB->error());
 
             $tmp['id']           = 1;
             $tmp['name']         = 'otherserial';
@@ -310,6 +313,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function updateIndex()
     {
+        /** @var DBmysql $DB */
         global $DB;
 
         $DB->update(getTableForItemType(__CLASS__), [

@@ -177,6 +177,7 @@ class PluginGeninventorynumberGeneration
    **/
     public static function showMassiveActionsSubForm(MassiveAction $ma)
     {
+        /** @var array $GENINVENTORYNUMBER_TYPES */
         global $GENINVENTORYNUMBER_TYPES;
 
            // KK TODO: check if MassiveAction itemtypes are concerned
