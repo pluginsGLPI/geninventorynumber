@@ -28,17 +28,22 @@
  * -------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 $config = new PluginGeninventorynumberConfig();
 $config->getFromDB(1);
 if (Plugin::isPluginActive("geninventorynumber")) {
-   Html::header(__('Inventory number generation', 'geninventorynumber'),
-                $_SERVER['PHP_SELF'], "tools", "plugins", "geninventorynumber");
-   if (isset($_GET['glpi_tab'])) {
-      $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
-      Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
-   }
-   $config->showTabsContent();
-   Html::footer();
+    Html::header(
+        __('Inventory number generation', 'geninventorynumber'),
+        $_SERVER['PHP_SELF'],
+        "tools",
+        "plugins",
+        "geninventorynumber"
+    );
+    if (isset($_GET['glpi_tab'])) {
+        $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
+        Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
+    }
+    $config->showTabsContent();
+    Html::footer();
 }

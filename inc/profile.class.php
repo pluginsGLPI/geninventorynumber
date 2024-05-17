@@ -29,139 +29,165 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
-class PluginGeninventorynumberProfile extends CommonDBTM {
-   static $rightname = "config";
+class PluginGeninventorynumberProfile extends CommonDBTM
+{
+    public static $rightname = "config";
 
    /**
     * @param $ID  integer
     */
-   static function createFirstAccess($profiles_id) {
-      include_once(Plugin::getPhpDir('geninventorynumber')."/inc/profile.class.php");
-      $profile = new self();
-      foreach ($profile->getAllRights() as $right) {
-         self::addDefaultProfileInfos($profiles_id,
-                                      [$right['field'] => ALLSTANDARDRIGHT]);
-      }
-   }
+    public static function createFirstAccess($profiles_id)
+    {
+        include_once(Plugin::getPhpDir('geninventorynumber') . "/inc/profile.class.php");
+        $profile = new self();
+        foreach ($profile->getAllRights() as $right) {
+            self::addDefaultProfileInfos(
+                $profiles_id,
+                [$right['field'] => ALLSTANDARDRIGHT]
+            );
+        }
+    }
 
-   static function addDefaultProfileInfos($profiles_id, $rights) {
-      $profileRight = new ProfileRight();
-      foreach ($rights as $right => $value) {
-         if (!countElementsInTable('glpi_profilerights',
-                                   ['profiles_id' => $profiles_id, 'name' => $right])) {
-            $myright['profiles_id'] = $profiles_id;
-            $myright['name']        = $right;
-            $myright['rights']      = $value;
-            $profileRight->add($myright);
+    public static function addDefaultProfileInfos($profiles_id, $rights)
+    {
+        $profileRight = new ProfileRight();
+        foreach ($rights as $right => $value) {
+            if (
+                !countElementsInTable(
+                    'glpi_profilerights',
+                    ['profiles_id' => $profiles_id, 'name' => $right]
+                )
+            ) {
+                $myright['profiles_id'] = $profiles_id;
+                $myright['name']        = $right;
+                $myright['rights']      = $value;
+                $profileRight->add($myright);
 
-            //Add right to the current session
-            $_SESSION['glpiactiveprofile'][$right] = $value;
-         }
-      }
-   }
+                //Add right to the current session
+                $_SESSION['glpiactiveprofile'][$right] = $value;
+            }
+        }
+    }
 
-   static function removeRightsFromSession() {
-      $profile = new self();
-      foreach ($profile->getAllRights() as $right) {
-         if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
-            unset($_SESSION['glpiactiveprofile'][$right['field']]);
-         }
-      }
-      ProfileRight::deleteProfileRights([$right['field']]);
-   }
+    public static function removeRightsFromSession()
+    {
+        $profile = new self();
+        foreach ($profile->getAllRights() as $right) {
+            if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
+                unset($_SESSION['glpiactiveprofile'][$right['field']]);
+            }
+        }
+        ProfileRight::deleteProfileRights([$right['field']]);
+    }
 
-   function showForm($ID, array $options = []) {
-      echo "<div class='firstbloc'>";
-      if ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE])) {
-         $profile = new Profile();
-         echo "<form method='post' action='".$profile->getFormURL()."'>";
-      }
+    public function showForm($ID, array $options = [])
+    {
+        echo "<div class='firstbloc'>";
+        if ($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE])) {
+            $profile = new Profile();
+            echo "<form method='post' action='" . $profile->getFormURL() . "'>";
+        }
 
-      $profile = new Profile();
-      $profile->getFromDB($ID);
+        $profile = new Profile();
+        $profile->getFromDB($ID);
 
-      $rights = $this->getAllRights();
-      $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
-                                                    'default_class' => 'tab_bg_2',
-                                                    'title'         => __('General')]);
+        $rights = $this->getAllRights();
+        $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
+            'default_class' => 'tab_bg_2',
+            'title'         => __('General')
+        ]);
 
-      if ($canedit) {
-         echo "<div class='center'>";
-         echo Html::hidden('id', ['value' => $ID]);
-         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
-         echo "</div>\n";
-         Html::closeForm();
-      }
-      echo "</div>";
-   }
+        if ($canedit) {
+            echo "<div class='center'>";
+            echo Html::hidden('id', ['value' => $ID]);
+            echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
+            echo "</div>\n";
+            Html::closeForm();
+        }
+        echo "</div>";
+        return true;
+    }
 
-   static function getAllRights() {
-      return [
-               ['itemtype'  => 'PluginGeninventorynumber',
+    public static function getAllRights()
+    {
+        return [
+            ['itemtype'  => 'PluginGeninventorynumber',
                 'label'     => __('Generate inventory number', 'geninventorynumber'),
                 'field'     => 'plugin_geninventorynumber',
                 'rights' => [CREATE    => __('Create'),
-                             UPDATE    => __('Update')]
+                    UPDATE    => __('Update')
+                ]
+            ]
+        ];
+    }
+
+    public static function install(Migration $migration)
+    {
+        /** @var DBmysql $DB */
+        global $DB;
+        $table = getTableForItemType(__CLASS__);
+
+        if (isset($_SESSION['glpiactiveprofile'])) {
+            PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+        }
+
+        if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
+            foreach (getAllDataFromTable($table) as $data) {
+                $profile = new self();
+                foreach ($profile->getAllRights() as $right => $rights) {
+                    if (
+                        !countElementsInTable(
+                            'glpi_profilerights',
+                            ['profiles_id' => $data['profiles_id'],
+                                'name' => $rights['field']
                             ]
-               ];
-   }
+                        )
+                    ) {
+                        $profileRight = new ProfileRight();
+                        $myright = [];
+                        $myright['name']        = $rights['field'];
+                        $myright['profiles_id'] = $data['profiles_id'];
 
-   static function install(Migration $migration) {
-      global $DB;
-      $table = getTableForItemType(__CLASS__);
-
-      if (isset($_SESSION['glpiactiveprofile'])) {
-          PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-      }
-
-      if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
-         foreach (getAllDataFromTable($table) as $data) {
-            $profile = new self();
-            foreach ($profile->getAllRights() as $right => $rights) {
-               if (!countElementsInTable('glpi_profilerights',
-                                         ['profiles_id' => $data['profiles_id'],
-                                          'name' => $rights['field']])) {
-
-                  $profileRight = new ProfileRight();
-                  $myright = [];
-                  $myright['name']        = $rights['field'];
-                  $myright['profiles_id'] = $data['profiles_id'];
-
-                  if (!strcmp($data['plugin_geninventorynumber_generate'], 'w')) {
-                     $myright['rights'] = CREATE;
-                  }
-                  if (!strcmp($data['plugin_geninventorynumber_overwrite'], 'w')) {
-                     $myright['rights'] += UPDATE;
-                  }
-                  $profileRight->add($myright);
-               }
+                        if (!strcmp($data['plugin_geninventorynumber_generate'], 'w')) {
+                            $myright['rights'] = CREATE;
+                        }
+                        if (!strcmp($data['plugin_geninventorynumber_overwrite'], 'w')) {
+                            $myright['rights'] += UPDATE;
+                        }
+                        $profileRight->add($myright);
+                    }
+                }
             }
-         }
-         $migration->dropTable($table);
-      }
-   }
+            $migration->dropTable($table);
+        }
+    }
 
-   static function uninstallProfile() {
-      $pfProfile = new self();
-      $a_rights  = $pfProfile->getAllRights();
+    public static function uninstallProfile()
+    {
+        $pfProfile = new self();
+        $a_rights  = $pfProfile->getAllRights();
 
-      foreach ($a_rights as $data) {
-         ProfileRight::deleteProfileRights([$data['field']]);
-      }
-   }
+        foreach ($a_rights as $data) {
+            ProfileRight::deleteProfileRights([$data['field']]);
+        }
+    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if ($item->fields['interface'] == 'central') {
-         return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
-      }
-   }
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    {
+        if ($item->fields['interface'] == 'central') {
+            return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
+        }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      $profile = new self();
-      $profile->showForm($item->getID());
-      return true;
-   }
+        return '';
+    }
+
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        $profile = new self();
+        $profile->showForm($item->getID());
+        return true;
+    }
 }
