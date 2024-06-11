@@ -66,7 +66,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         $table = getTableForItemType(__CLASS__);
 
         if ($DB->tableExists("glpi_plugin_geninventorynumber_fields")) {
-           //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
+            //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
             $migration->renameTable("glpi_plugin_geninventorynumber_fields", $table);
         }
 
@@ -109,7 +109,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
                 $field->add($input);
             }
 
-           // Init date_last_generated
+            // Init date_last_generated
             $cfield = new self();
             if (
                 $cfield->getFromDBByCrit(['itemtype' => $type])
@@ -121,10 +121,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
                     'FROM' => $type::getTable()
                 ])->current()['date'];
 
-                $DB->update($cfield::getTable(), [
-                    'id' => $cfield->getID(),
-                    'date_last_generated' => $max
-                ]);
+                $DB->update(
+                    $cfield::getTable(),
+                    ['date_last_generated' => $max],
+                    ['id' => $cfield->getID()]
+                );
             }
         }
     }
@@ -253,11 +254,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         return false;
     }
 
-   /**
-    * Check if the index needs to be reset based on the configured auto-reset method
-    * @param string $itemtype
-    * @return bool
-    */
+    /**
+     * Check if the index needs to be reset based on the configured auto-reset method
+     * @param string $itemtype
+     * @return bool
+     */
     public static function needIndexReset($itemtype): bool
     {
         /** @var DBmysql $DB */
@@ -294,9 +295,9 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         return false;
     }
 
-   /**
-    * Reset the index for the given itemtype to 0 and reset the last generated date
-    */
+    /**
+     * Reset the index for the given itemtype to 0 and reset the last generated date
+     */
     public static function resetIndex(string $itemtype): void
     {
         /** @var DBmysql $DB */
