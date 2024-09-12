@@ -3,27 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
-# grazziano <grazziano.do+transifex@gmail.com>, 2018
-# Matheus Rafael, 2023
-# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
+# Soporte Infraestructura Standby, 2023
+# Soporte Infraestructura Standby, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-11 07:30+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
-"Last-Translator: Matheus Rafael, 2023\n"
-"Language-Team: Portuguese (Brazil) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/pt_BR/)\n"
+"Last-Translator: Soporte Infraestructura Standby, 2023\n"
+"Language-Team: Spanish (Ecuador) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/es_EC/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Language: es_EC\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: inc/config.class.php:122
 msgid "Active"
-msgstr "Ativo"
+msgstr "Activo"
 
 #: inc/generation.class.php:136
 #, php-format
@@ -32,41 +30,41 @@ msgstr ""
 
 #: inc/config.class.php:144
 msgid "Daily"
-msgstr "Diário"
+msgstr "Diario"
 
 #: inc/config.class.php:82 inc/configfield.class.php:43
 #: inc/configfield.class.php:151
 msgid "GLPI's inventory items configuration"
-msgstr "Configuração de itens de inventário do GLPI"
+msgstr "Configuración de los elementos del inventario de GLPI"
 
 #: hook.php:58 inc/profile.class.php:118
 msgid "Generate inventory number"
-msgstr "Gerar número de inventário"
+msgstr "Generar número de inventario"
 
 #: inc/configfield.class.php:155
 msgid "Generation templates"
-msgstr "Modelos de geração"
+msgstr "Plantillas de generación"
 
 #: templates/config.html.twig inc/config.class.php:130
 msgid "Global index position"
-msgstr "Posição do índice global"
+msgstr "Posición global en el índice"
 
 #: templates/config.html.twig inc/configfield.class.php:159
 msgid "Index auto-reset method"
-msgstr "Método de reinicialização automática do índice"
+msgstr "Método de restablecimiento automático del índice"
 
 #: inc/configfield.class.php:158
 msgid "Index position"
-msgstr "Posição do índice"
+msgstr "Posición del índice"
 
 #: inc/config.class.php:65 inc/config.class.php:107 inc/profile.class.php:181
 #: setup.php:75 front/config.php:37
 msgid "Inventory number generation"
-msgstr "Geração de número de inventário"
+msgstr "Generación de números de inventario"
 
 #: inc/config.class.php:145
 msgid "Monthly"
-msgstr "Por mês"
+msgstr "Mensual"
 
 #: inc/config.class.php:143
 msgid "Never"
@@ -74,7 +72,7 @@ msgstr "Nunca"
 
 #: hook.php:63
 msgid "Regenerate inventory number (overwrite)"
-msgstr "Regerar número de inventário (sobrescrever)"
+msgstr "Regenerar número de inventario (sobrescribir)"
 
 #: inc/configfield.class.php:157
 msgid "Use global index"
@@ -86,4 +84,4 @@ msgstr "Anual"
 
 #: inc/generation.class.php:123 inc/generation.class.php:164
 msgid "You can't modify inventory number"
-msgstr "Você não pode modificar o número de inventário"
+msgstr "No puedes modificar el número de inventario"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-17 09:04+0200\n"
-"PO-Revision-Date: 2024-05-17 09:04+0200\n"
+"POT-Creation-Date: 2024-09-12 00:56+0000\n"
+"PO-Revision-Date: 2024-09-12 00:56+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -30,8 +30,8 @@ msgstr "An inventory number have been generated (%1$s)"
 msgid "Daily"
 msgstr "Daily"
 
-#: inc/configfield.class.php:43 inc/configfield.class.php:150
-#: inc/config.class.php:82
+#: inc/config.class.php:82 inc/configfield.class.php:43
+#: inc/configfield.class.php:151
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI's inventory items configuration"
 
@@ -39,7 +39,7 @@ msgstr "GLPI's inventory items configuration"
 msgid "Generate inventory number"
 msgstr "Generate inventory number"
 
-#: inc/configfield.class.php:154
+#: inc/configfield.class.php:155
 msgid "Generation templates"
 msgstr "Generation templates"
 
@@ -47,15 +47,15 @@ msgstr "Generation templates"
 msgid "Global index position"
 msgstr "Global index position"
 
-#: templates/config.html.twig inc/configfield.class.php:158
+#: templates/config.html.twig inc/configfield.class.php:159
 msgid "Index auto-reset method"
 msgstr "Index auto-reset method"
 
-#: inc/configfield.class.php:157
+#: inc/configfield.class.php:158
 msgid "Index position"
 msgstr "Index position"
 
-#: inc/profile.class.php:181 inc/config.class.php:65 inc/config.class.php:107
+#: inc/config.class.php:65 inc/config.class.php:107 inc/profile.class.php:181
 #: setup.php:75 front/config.php:37
 msgid "Inventory number generation"
 msgstr "Inventory number generation"
@@ -72,7 +72,7 @@ msgstr "Never"
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerate inventory number (overwrite)"
 
-#: inc/configfield.class.php:156
+#: inc/configfield.class.php:157
 msgid "Use global index"
 msgstr "Use global index"
 
