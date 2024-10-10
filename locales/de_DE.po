@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-11 07:30+0000\n"
+"POT-Creation-Date: 2024-10-10 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Michael Schieferer, 2022\n"
 "Language-Team: German (Germany) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/de_DE/)\n"
@@ -38,7 +38,7 @@ msgstr "Täglich"
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI Inventartypen Konfiguration"
 
-#: hook.php:58 inc/profile.class.php:118
+#: inc/profile.class.php:118 hook.php:58
 msgid "Generate inventory number"
 msgstr "Inventarnummer generieren"
 
@@ -58,8 +58,8 @@ msgstr "Methode für Index-Auto-Reset"
 msgid "Index position"
 msgstr "Indexposition"
 
-#: inc/config.class.php:65 inc/config.class.php:107 inc/profile.class.php:181
-#: setup.php:75 front/config.php:37
+#: setup.php:75 front/config.php:37 inc/profile.class.php:181
+#: inc/config.class.php:65 inc/config.class.php:107
 msgid "Inventory number generation"
 msgstr "Inventarnummern generieren"
 

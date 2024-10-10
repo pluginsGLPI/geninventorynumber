@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 01:00+0000\n"
+"POT-Creation-Date: 2024-10-10 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018,2022-2024\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/tr_TR/)\n"
@@ -36,7 +36,7 @@ msgstr "Günlük"
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI envanter ögeleri yapılandırması"
 
-#: hook.php:58 inc/profile.class.php:118
+#: inc/profile.class.php:118 hook.php:58
 msgid "Generate inventory number"
 msgstr "Envanter numarası üret"
 
@@ -56,8 +56,8 @@ msgstr "Dizin otomatik sıfırlama yöntemi"
 msgid "Index position"
 msgstr "Dizin konumu"
 
-#: inc/config.class.php:65 inc/config.class.php:107 inc/profile.class.php:181
-#: setup.php:75 front/config.php:37
+#: setup.php:75 front/config.php:37 inc/profile.class.php:181
+#: inc/config.class.php:65 inc/config.class.php:107
 msgid "Inventory number generation"
 msgstr "Envanter numarası üretme"
 

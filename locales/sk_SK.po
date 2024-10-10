@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# feonsu <feonsu@gmail.com>, 2023
+# feonsu <feonsu@gmail.com>, 2023-2024
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-11 07:30+0000\n"
+"POT-Creation-Date: 2024-10-10 00:58+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
-"Last-Translator: feonsu <feonsu@gmail.com>, 2023\n"
+"Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr "Aktívne"
 #: inc/generation.class.php:136
 #, php-format
 msgid "An inventory number have been generated (%1$s)"
-msgstr ""
+msgstr "Inventárne číslo bolo vygenerované (%1$s)"
 
 #: inc/config.class.php:144
 msgid "Daily"
@@ -36,7 +36,7 @@ msgstr "Denne"
 msgid "GLPI's inventory items configuration"
 msgstr "Konfigurácia inventárnych položiek"
 
-#: hook.php:58 inc/profile.class.php:118
+#: inc/profile.class.php:118 hook.php:58
 msgid "Generate inventory number"
 msgstr "Generovať inventárne číslo"
 
@@ -56,8 +56,8 @@ msgstr "Metóda automatickej obnovy indexu"
 msgid "Index position"
 msgstr "Pozícia indexu"
 
-#: inc/config.class.php:65 inc/config.class.php:107 inc/profile.class.php:181
-#: setup.php:75 front/config.php:37
+#: setup.php:75 front/config.php:37 inc/profile.class.php:181
+#: inc/config.class.php:65 inc/config.class.php:107
 msgid "Inventory number generation"
 msgstr "Generovanie inventárneho čísla"
 
