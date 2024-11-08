@@ -31,9 +31,9 @@
 define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.8.5');
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_GENINVENTORYNUMBER_MIN_GLPI", "10.0.11");
+define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '10.0.11');
 // Maximum GLPI version, exclusive
-define("PLUGIN_GENINVENTORYNUMBER_MAX_GLPI", "10.0.99");
+define('PLUGIN_GENINVENTORYNUMBER_MAX_GLPI', '10.0.99');
 
 function plugin_init_geninventorynumber()
 {
@@ -43,12 +43,12 @@ function plugin_init_geninventorynumber()
     global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
 
     $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
-    $PLUGIN_HOOKS['post_init']['geninventorynumber'] = 'plugin_geninventorynumber_postinit';
+    $PLUGIN_HOOKS['post_init']['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
 
     $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
         'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
         'Appliance', 'Certificate', 'ConsumableItem', 'Enclosure',
-        'PassiveDCEquipment', 'PDU', 'Rack'
+        'PassiveDCEquipment', 'PDU', 'Rack',
     ];
 
     $plugin = new Plugin();
@@ -57,13 +57,13 @@ function plugin_init_geninventorynumber()
 
         Plugin::registerClass(
             'PluginGeninventorynumberProfile',
-            ['addtabon' => ['Profile']]
+            ['addtabon' => ['Profile']],
         );
         Plugin::registerClass('PluginGeninventorynumberConfig');
         Plugin::registerClass('PluginGeninventorynumberConfigField');
 
         if (Session::haveRight('config', UPDATE)) {
-            $PLUGIN_HOOKS["menu_toadd"]['geninventorynumber']
+            $PLUGIN_HOOKS['menu_toadd']['geninventorynumber']
               = ['tools' => 'PluginGeninventorynumberConfig'];
         }
     }
@@ -81,7 +81,7 @@ function plugin_version_geninventorynumber()
             'glpi' => [
                 'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
                 'max' => PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
-            ]
-        ]
+            ],
+        ],
     ];
 }

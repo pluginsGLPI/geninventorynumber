@@ -31,7 +31,7 @@
 include('../../../inc/includes.php');
 
 $configfield = new PluginGeninventorynumberConfigField();
-if (isset($_POST["update_fields"]) && isset($_POST["ids"])) {
+if (isset($_POST['update_fields']) && isset($_POST['ids'])) {
     foreach ($_POST['ids'] as $itemtype => $data) {
         $configfield->update($data);
     }

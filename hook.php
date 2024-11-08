@@ -52,18 +52,19 @@ function plugin_geninventorynumber_MassiveActions($type)
         $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
 
         if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
-            if (Session::haveRight("plugin_geninventorynumber", CREATE)) {
+            if (Session::haveRight('plugin_geninventorynumber', CREATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                  MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_generate']
                  = __('Generate inventory number', 'geninventorynumber');
             }
-            if (Session::haveRight("plugin_geninventorynumber", UPDATE)) {
+            if (Session::haveRight('plugin_geninventorynumber', UPDATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                 MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_overwrite']
                 = __('Regenerate inventory number (overwrite)', 'geninventorynumber');
             }
         }
     }
+
     return $actions;
 }
 
@@ -71,13 +72,14 @@ function plugin_geninventorynumber_install()
 {
     $php_dir = Plugin::getPhpDir('geninventorynumber');
 
-    $migration = new Migration("0.85+1.0");
+    $migration = new Migration('0.85+1.0');
     include_once($php_dir . '/inc/config.class.php');
     include_once($php_dir . '/inc/profile.class.php');
     include_once($php_dir . '/inc/configfield.class.php');
     PluginGeninventorynumberConfig::install($migration);
     PluginGeninventorynumberProfile::install($migration);
     PluginGeninventorynumberConfigField::install($migration);
+
     return true;
 }
 
@@ -85,7 +87,7 @@ function plugin_geninventorynumber_uninstall()
 {
     $php_dir = Plugin::getPhpDir('geninventorynumber');
 
-    $migration = new Migration("0.85+1.0");
+    $migration = new Migration('0.85+1.0');
     include_once($php_dir . '/inc/config.class.php');
     include_once($php_dir . '/inc/profile.class.php');
     include_once($php_dir . '/inc/configfield.class.php');
@@ -93,5 +95,6 @@ function plugin_geninventorynumber_uninstall()
     PluginGeninventorynumberProfile::removeRightsFromSession();
     PluginGeninventorynumberProfile::uninstallProfile();
     PluginGeninventorynumberConfigField::uninstall($migration);
+
     return true;
 }
