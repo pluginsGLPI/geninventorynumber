@@ -34,19 +34,19 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginGeninventorynumberProfile extends CommonDBTM
 {
-    public static $rightname = "config";
+    public static $rightname = 'config';
 
-   /**
-    * @param $ID  integer
-    */
+    /**
+     * @param $ID  integer
+     */
     public static function createFirstAccess($profiles_id)
     {
-        include_once(Plugin::getPhpDir('geninventorynumber') . "/inc/profile.class.php");
+        include_once(Plugin::getPhpDir('geninventorynumber') . '/inc/profile.class.php');
         $profile = new self();
         foreach ($profile->getAllRights() as $right) {
             self::addDefaultProfileInfos(
                 $profiles_id,
-                [$right['field'] => ALLSTANDARDRIGHT]
+                [$right['field'] => ALLSTANDARDRIGHT],
             );
         }
     }
@@ -58,7 +58,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             if (
                 !countElementsInTable(
                     'glpi_profilerights',
-                    ['profiles_id' => $profiles_id, 'name' => $right]
+                    ['profiles_id' => $profiles_id, 'name' => $right],
                 )
             ) {
                 $myright['profiles_id'] = $profiles_id;
@@ -95,9 +95,9 @@ class PluginGeninventorynumberProfile extends CommonDBTM
         $profile->getFromDB($ID);
 
         $rights = $this->getAllRights();
-        $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
-            'default_class' => 'tab_bg_2',
-            'title'         => __('General')
+        $profile->displayRightsChoiceMatrix($rights, ['canedit' => $canedit,
+            'default_class'                                     => 'tab_bg_2',
+            'title'                                             => __('General'),
         ]);
 
         if ($canedit) {
@@ -107,7 +107,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             echo "</div>\n";
             Html::closeForm();
         }
-        echo "</div>";
+        echo '</div>';
+
         return true;
     }
 
@@ -115,12 +116,12 @@ class PluginGeninventorynumberProfile extends CommonDBTM
     {
         return [
             ['itemtype'  => 'PluginGeninventorynumber',
-                'label'     => __('Generate inventory number', 'geninventorynumber'),
-                'field'     => 'plugin_geninventorynumber',
-                'rights' => [CREATE    => __('Create'),
-                    UPDATE    => __('Update')
-                ]
-            ]
+                'label'  => __('Generate inventory number', 'geninventorynumber'),
+                'field'  => 'plugin_geninventorynumber',
+                'rights' => [CREATE => __('Create'),
+                    UPDATE          => __('Update'),
+                ],
+            ],
         ];
     }
 
@@ -134,7 +135,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
         }
 
-        if ($DB->tableExists("glpi_plugin_geninventorynumber_profiles")) {
+        if ($DB->tableExists('glpi_plugin_geninventorynumber_profiles')) {
             foreach (getAllDataFromTable($table) as $data) {
                 $profile = new self();
                 foreach ($profile->getAllRights() as $right => $rights) {
@@ -142,12 +143,12 @@ class PluginGeninventorynumberProfile extends CommonDBTM
                         !countElementsInTable(
                             'glpi_profilerights',
                             ['profiles_id' => $data['profiles_id'],
-                                'name' => $rights['field']
-                            ]
+                                'name'     => $rights['field'],
+                            ],
                         )
                     ) {
-                        $profileRight = new ProfileRight();
-                        $myright = [];
+                        $profileRight           = new ProfileRight();
+                        $myright                = [];
                         $myright['name']        = $rights['field'];
                         $myright['profiles_id'] = $data['profiles_id'];
 
@@ -188,6 +189,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
     {
         $profile = new self();
         $profile->showForm($item->getID());
+
         return true;
     }
 }
