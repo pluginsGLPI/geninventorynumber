@@ -90,13 +90,15 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        switch ($tabnum) {
-            case 0:
-                $item->showForm(1);
-                break;
-            case 1:
-                PluginGeninventorynumberConfigField::showForConfig($item->getID());
-                break;
+        if ($item instanceof self) {
+            switch ($tabnum) {
+                case 0:
+                    $item->showForm(1);
+                    break;
+                case 1:
+                    PluginGeninventorynumberConfigField::showForConfig($item->getID());
+                    break;
+            }
         }
 
         return true;

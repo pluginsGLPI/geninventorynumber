@@ -80,7 +80,9 @@ class PluginGeninventorynumberProfile extends CommonDBTM
                 unset($_SESSION['glpiactiveprofile'][$right['field']]);
             }
         }
-        ProfileRight::deleteProfileRights([$right['field']]);
+        if (isset($right['field'])) {
+            ProfileRight::deleteProfileRights([$right['field']]);
+        }
     }
 
     public function showForm($ID, array $options = [])
@@ -178,7 +180,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if ($item->fields['interface'] == 'central') {
+        if (
+            $item instanceof CommonDBTM
+            && $item->fields['interface'] == 'central'
+        ) {
             return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
         }
 
@@ -187,8 +192,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        $profile = new self();
-        $profile->showForm($item->getID());
+        if ($item instanceof CommonDBTM) {
+            $profile = new self();
+            $profile->showForm($item->getID());
+        }
 
         return true;
     }
