@@ -29,6 +29,7 @@
  */
 
 include('../../../inc/includes.php');
+Session::checkLoginUser();
 
 $configfield = new PluginGeninventorynumberConfigField();
 if (isset($_POST['update_fields']) && isset($_POST['ids'])) {
