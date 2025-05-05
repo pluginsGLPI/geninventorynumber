@@ -29,7 +29,8 @@
  */
 
 include('../../../inc/includes.php');
-Session::checkLoginUser();
+
+Session::checkRight("config", UPDATE);
 
 $config = new PluginGeninventorynumberConfig();
 
