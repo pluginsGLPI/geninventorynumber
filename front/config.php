@@ -30,6 +30,8 @@
 
 include('../../../inc/includes.php');
 
+Session::checkRight("config", READ);
+
 $config = new PluginGeninventorynumberConfig();
 $config->getFromDB(1);
 if (Plugin::isPluginActive('geninventorynumber')) {

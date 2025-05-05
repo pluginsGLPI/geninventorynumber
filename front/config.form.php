@@ -30,6 +30,8 @@
 
 include('../../../inc/includes.php');
 
+Session::checkRight("config", UPDATE);
+
 $config = new PluginGeninventorynumberConfig();
 
 if (isset($_POST['update'])) {
