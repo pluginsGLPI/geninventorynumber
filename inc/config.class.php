@@ -29,10 +29,7 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
+use Glpi\DBAL\QueryExpression;
 
 class PluginGeninventorynumberConfig extends CommonDBTM
 {
@@ -281,7 +278,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
              `auto_reset_method` int unsigned NOT NULL default '0',
              PRIMARY KEY  (`id`)
              ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQueryOrDie($sql, $DB->error());
+            $DB->doQuery($sql);
 
             $tmp['id']        = 1;
             $tmp['name']      = 'otherserial';
