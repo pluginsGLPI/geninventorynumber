@@ -29,7 +29,6 @@
  */
 
 use Glpi\Plugin\Hooks;
-use GlpiPlugin\Ansible\PluginGeninventorynumberMenu;
 
 define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta1');
 
