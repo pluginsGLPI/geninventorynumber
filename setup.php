@@ -28,22 +28,22 @@
  * -------------------------------------------------------------------------
  */
 
-define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.8.6');
+use Glpi\Plugin\Hooks;
+
+define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta1');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '10.0.11');
+define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '11.0.0');
 // Maximum GLPI version, exclusive
-define('PLUGIN_GENINVENTORYNUMBER_MAX_GLPI', '10.0.99');
+define('PLUGIN_GENINVENTORYNUMBER_MAX_GLPI', '11.0.99');
 
 function plugin_init_geninventorynumber()
 {
-    /** @var array $CFG_GLPI */
     /** @var array $GENINVENTORYNUMBER_TYPES */
     /** @var array $PLUGIN_HOOKS */
-    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
+    global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_TYPES;
 
-    $PLUGIN_HOOKS['csrf_compliant']['geninventorynumber'] = true;
-    $PLUGIN_HOOKS['post_init']['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
+    $PLUGIN_HOOKS[Hooks::POST_INIT]['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
 
     $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
         'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
@@ -53,7 +53,7 @@ function plugin_init_geninventorynumber()
 
     $plugin = new Plugin();
     if ($plugin->isActivated('geninventorynumber')) {
-        $PLUGIN_HOOKS['use_massive_action']['geninventorynumber'] = 1;
+        $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['geninventorynumber'] = 1;
 
         Plugin::registerClass(
             'PluginGeninventorynumberProfile',
@@ -63,7 +63,7 @@ function plugin_init_geninventorynumber()
         Plugin::registerClass('PluginGeninventorynumberConfigField');
 
         if (Session::haveRight('config', UPDATE)) {
-            $PLUGIN_HOOKS['menu_toadd']['geninventorynumber']
+            $PLUGIN_HOOKS[hooks::MENU_TOADD]['geninventorynumber']
               = ['tools' => 'PluginGeninventorynumberConfig'];
         }
     }
@@ -76,7 +76,7 @@ function plugin_version_geninventorynumber()
         'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
         'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
         'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',
-        'license'      => 'GPLv2+',
+        'license'      => 'GPLv3+',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,

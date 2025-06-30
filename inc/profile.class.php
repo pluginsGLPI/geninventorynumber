@@ -28,10 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 class PluginGeninventorynumberProfile extends CommonDBTM
 {
     public static $rightname = 'config';

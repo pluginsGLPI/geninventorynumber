@@ -1,5 +1,7 @@
 <?php
 
+use Glpi\DBAL\QueryExpression;
+
 /**
  * -------------------------------------------------------------------------
  * GenInventoryNumber plugin for GLPI
@@ -27,10 +29,6 @@
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
  */
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
 
 class PluginGeninventorynumberConfigField extends CommonDBChild
 {
@@ -82,6 +80,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             `date_last_generated` timestamp NULL DEFAULT NULL,
             `auto_reset_method` int unsigned NOT NULL default '0',
             PRIMARY KEY  (`id`)
+
             ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->doQuery($query);
         } else {
@@ -89,7 +88,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', "int {$default_key_sign} NOT NULL default '0'");
             if ($migration->changeField($table, 'device_type', 'itemtype', 'string')) {
                 $migration->migrationOneTable($table);
-                Plugin::migrateItemType([], ['glpi_displaypreferences'], [$table]);
+
+                if (method_exists('Plugin', 'migrateItemType')) {
+                    /** @phpstan-ignore-next-line */
+                    Plugin::migrateItemType([], ['glpi_displaypreferences'], [$table]);
+                }
             }
             $migration->changeField($table, 'enabled', 'is_active', 'boolean');
             $migration->changeField($table, 'use_index', 'use_index', 'boolean');
