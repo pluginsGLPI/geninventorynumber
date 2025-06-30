@@ -29,6 +29,7 @@
  */
 
 use Glpi\Plugin\Hooks;
+use GlpiPlugin\Ansible\PluginGeninventorynumberMenu;
 
 define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta1');
 
@@ -41,7 +42,14 @@ function plugin_init_geninventorynumber()
 {
     /** @var array $GENINVENTORYNUMBER_TYPES */
     /** @var array $PLUGIN_HOOKS */
-    global $PLUGIN_HOOKS, $GENINVENTORYNUMBER_TYPES;
+    /** @var array $CFG_GLPI */
+    global $PLUGIN_HOOKS, $CFG_GLPI, $GENINVENTORYNUMBER_TYPES;
+
+    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['geninventorynumber'] = 'front/config.php';
+
+    $PLUGIN_HOOKS[Hooks::MENU_TOADD]['geninventorynumber'] = [
+        'tools' => 'PluginGeninventorynumberConfig',
+    ];
 
     $PLUGIN_HOOKS[Hooks::POST_INIT]['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
 
