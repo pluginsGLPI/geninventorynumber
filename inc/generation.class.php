@@ -28,8 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Toolbox\Sanitizer;
-
 class PluginGeninventorynumberGeneration
 {
     /**
@@ -42,7 +40,7 @@ class PluginGeninventorynumberGeneration
 
     public static function autoName($config, CommonDBTM $item)
     {
-        $template = Sanitizer::unsanitize($config['template']);
+        $template = $config['template'];
 
         $pattern = '/'
           . '^(?<prefix>.*)'    // capture every char located before the "autonum" part
@@ -105,7 +103,7 @@ class PluginGeninventorynumberGeneration
 
         $result = $prefix . $autonum . $suffix;
 
-        return Sanitizer::sanitize($result);
+        return $result;
     }
 
     /**
@@ -255,38 +253,43 @@ class PluginGeninventorynumberGeneration
                 //KK Not sure we could have multiple itemtimes
                 foreach ($ma->getItems() as $itemtype => $ids) {
                     foreach ($ids as $id) {
-                        $item = new $itemtype();
 
-                        if (!$item->getFromDB($id)) {
-                            $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
-                            continue;
-                        }
+                        if (class_exists($itemtype) && is_a($itemtype, CommonDBTM::class, true)) {
+                            $item = new $itemtype();
 
-                        if ($ma->getAction() == 'plugin_geninventorynumber_generate') {
-                            //Only generates inventory number for object without it !
-                            if (isset($item->fields['otherserial']) && ($item->fields['otherserial'] == '')) {
-                                if (!Session::haveRight('plugin_geninventorynumber', CREATE)) {
+                            if (!$item->getFromDB($id)) {
+                                $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
+                                continue;
+                            }
+
+                            if ($ma->getAction() == 'plugin_geninventorynumber_generate') {
+                                //Only generates inventory number for object without it !
+                                if (isset($item->fields['otherserial']) && ($item->fields['otherserial'] == '')) {
+                                    if (!Session::haveRight('plugin_geninventorynumber', CREATE)) {
+                                        $ma->itemDone($itemtype, $id, MassiveAction::ACTION_NORIGHT);
+                                    } elseif (self::doMassiveUpdate($item)) {
+                                        $ma->itemDone($itemtype, $id, MassiveAction::ACTION_OK);
+                                    } else {
+                                        $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
+                                    }
+                                } else {
+                                    $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
+                                }
+                            }
+
+                            //Or is overwrite action is selected
+                            if (($ma->getAction() == 'plugin_geninventorynumber_overwrite')) {
+                                if (!Session::haveRight('plugin_geninventorynumber', UPDATE)) {
                                     $ma->itemDone($itemtype, $id, MassiveAction::ACTION_NORIGHT);
                                 } elseif (self::doMassiveUpdate($item)) {
                                     $ma->itemDone($itemtype, $id, MassiveAction::ACTION_OK);
                                 } else {
                                     $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
                                 }
-                            } else {
-                                $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
                             }
                         }
 
-                        //Or is overwrite action is selected
-                        if (($ma->getAction() == 'plugin_geninventorynumber_overwrite')) {
-                            if (!Session::haveRight('plugin_geninventorynumber', UPDATE)) {
-                                $ma->itemDone($itemtype, $id, MassiveAction::ACTION_NORIGHT);
-                            } elseif (self::doMassiveUpdate($item)) {
-                                $ma->itemDone($itemtype, $id, MassiveAction::ACTION_OK);
-                            } else {
-                                $ma->itemDone($itemtype, $id, MassiveAction::ACTION_KO);
-                            }
-                        }
+
                     }
                 }
                 break;

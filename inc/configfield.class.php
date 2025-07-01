@@ -28,9 +28,35 @@
  * -------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
+use Glpi\DBAL\QueryExpression;
+
+/**
+ * -------------------------------------------------------------------------
+ * GenInventoryNumber plugin for GLPI
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of GenInventoryNumber.
+ *
+ * GenInventoryNumber is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * GenInventoryNumber is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
+ * -------------------------------------------------------------------------
+ * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/pluginsGLPI/geninventorynumber
+ * -------------------------------------------------------------------------
+ */
 
 class PluginGeninventorynumberConfigField extends CommonDBChild
 {
@@ -40,7 +66,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getTypeName($nb = 0)
     {
-        return __('GLPI\'s inventory items configuration', 'geninventorynumber');
+        return __('Specific configuration', 'geninventorynumber');
     }
 
     public static function getConfigFieldByItemType($itemtype)
@@ -82,6 +108,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             `date_last_generated` timestamp NULL DEFAULT NULL,
             `auto_reset_method` int unsigned NOT NULL default '0',
             PRIMARY KEY  (`id`)
+
             ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
             $DB->doQuery($query);
         } else {
@@ -89,7 +116,11 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $migration->changeField($table, 'config_id', 'plugin_geninventorynumber_configs_id', "int {$default_key_sign} NOT NULL default '0'");
             if ($migration->changeField($table, 'device_type', 'itemtype', 'string')) {
                 $migration->migrationOneTable($table);
-                Plugin::migrateItemType([], ['glpi_displaypreferences'], [$table]);
+
+                if (method_exists('Plugin', 'migrateItemType')) {
+                    /** @phpstan-ignore-next-line */
+                    Plugin::migrateItemType([], ['glpi_displaypreferences'], [$table]);
+                }
             }
             $migration->changeField($table, 'enabled', 'is_active', 'boolean');
             $migration->changeField($table, 'use_index', 'use_index', 'boolean');
@@ -372,5 +403,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $config = new self();
             $config->deleteByCriteria(['itemtype' => $itemtype]);
         }
+    }
+
+    public static function getIcon()
+    {
+        return 'ti ti-settings';
     }
 }
