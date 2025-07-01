@@ -180,7 +180,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             $item instanceof CommonDBTM
             && $item->fields['interface'] == 'central'
         ) {
-            return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
+            return self::createTabEntry(PluginGeninventorynumberConfig::getTypeName(0), 0, $item::getType(), PluginGeninventorynumberConfig::getIcon());   ;
         }
 
         return '';
