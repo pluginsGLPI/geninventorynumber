@@ -30,7 +30,7 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta1');
+define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta2');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '11.0.0');
