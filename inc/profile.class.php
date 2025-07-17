@@ -28,10 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 class PluginGeninventorynumberProfile extends CommonDBTM
 {
     public static $rightname = 'config';
@@ -184,7 +180,8 @@ class PluginGeninventorynumberProfile extends CommonDBTM
             $item instanceof CommonDBTM
             && $item->fields['interface'] == 'central'
         ) {
-            return self::createTabEntry(__('Inventory number generation', 'geninventorynumber'));
+            return self::createTabEntry(PluginGeninventorynumberConfig::getTypeName(0), 0, $item::getType(), PluginGeninventorynumberConfig::getIcon());
+            ;
         }
 
         return '';

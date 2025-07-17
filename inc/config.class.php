@@ -29,10 +29,7 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
+use Glpi\DBAL\QueryExpression;
 
 class PluginGeninventorynumberConfig extends CommonDBTM
 {
@@ -65,6 +62,18 @@ class PluginGeninventorynumberConfig extends CommonDBTM
         return __('Inventory number generation', 'geninventorynumber');
     }
 
+    public static function getMenuContent()
+    {
+        $menu = [
+            'title'   => self::getTypeName(),
+            'page'    => '/plugins/geninventorynumber/front/config.php',
+            'icon'    => self::getIcon(),
+            'options' => [],
+            'links'   => [],
+        ];
+        return $menu;
+    }
+
     public function defineTabs($options = [])
     {
         $ong = [];
@@ -79,8 +88,8 @@ class PluginGeninventorynumberConfig extends CommonDBTM
     {
         if (get_class($item) == __CLASS__) {
             $array_ret    = [];
-            $array_ret[0] = __('General setup');
-            $array_ret[1] = __('GLPI\'s inventory items configuration', 'geninventorynumber');
+            $array_ret[0] = self::createTabEntry(self::getTypeName(), 0, $item::getType(), self::getIcon());
+            $array_ret[1] = self::createTabEntry(PluginGeninventorynumberConfigField::getTypeName(), 0, $item::getType(), PluginGeninventorynumberConfigField::getIcon());
 
             return $array_ret;
         }
@@ -281,7 +290,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
              `auto_reset_method` int unsigned NOT NULL default '0',
              PRIMARY KEY  (`id`)
              ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
-            $DB->doQueryOrDie($sql, $DB->error());
+            $DB->doQuery($sql);
 
             $tmp['id']        = 1;
             $tmp['name']      = 'otherserial';
@@ -342,6 +351,6 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function getIcon()
     {
-        return 'fas fa-random';
+        return 'ti ti-arrows-shuffle';
     }
 }

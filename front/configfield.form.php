@@ -28,9 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
-Session::checkLoginUser();
-
+Session::checkRight('config', UPDATE);
 $configfield = new PluginGeninventorynumberConfigField();
 if (isset($_POST['update_fields']) && isset($_POST['ids'])) {
     foreach ($_POST['ids'] as $itemtype => $data) {
