@@ -118,6 +118,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
                 $migration->migrationOneTable($table);
 
                 if (method_exists('Plugin', 'migrateItemType')) {
+                    // The migrateItemType() function has been removed since GLPI version 11.
+                    // https://github.com/glpi-project/glpi/pull/13845
                     /** @phpstan-ignore-next-line */
                     Plugin::migrateItemType([], ['glpi_displaypreferences'], [$table]);
                 }

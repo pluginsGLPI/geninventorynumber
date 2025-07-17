@@ -28,15 +28,11 @@
  * -------------------------------------------------------------------------
  */
 
-
-include('../../../inc/includes.php');
-
-Session::checkRight("config", READ);
+Session::checkRight("config", UPDATE);
 
 $config = new PluginGeninventorynumberConfig();
 $config->getFromDB(1);
 if (Plugin::isPluginActive('geninventorynumber')) {
-
 
     Html::header(
         PluginGeninventorynumberConfig::getTypeName(),
@@ -44,7 +40,6 @@ if (Plugin::isPluginActive('geninventorynumber')) {
         'tools',
         'PluginGeninventorynumberConfig',
     );
-
 
     if (isset($_GET['glpi_tab'])) {
         $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
