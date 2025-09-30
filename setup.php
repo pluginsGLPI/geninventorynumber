@@ -32,7 +32,7 @@ use Glpi\Plugin\Hooks;
 
 use function Safe\define;
 
-define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta2');
+define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '11.0.0');
