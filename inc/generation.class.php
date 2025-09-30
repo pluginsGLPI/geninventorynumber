@@ -28,6 +28,8 @@
  * -------------------------------------------------------------------------
  */
 
+use function Safe\preg_match;
+
 class PluginGeninventorynumberGeneration
 {
     /**
@@ -116,7 +118,7 @@ class PluginGeninventorynumberGeneration
         if (in_array(get_class($item), PluginGeninventorynumberConfigField::getEnabledItemTypes())) {
             if ((!Session::haveRight('plugin_geninventorynumber', CREATE))) {
                 if (!isCommandLine()) {
-                    Session::addMessageAfterRedirect(__(
+                    Session::addMessageAfterRedirect(__s(
                         'You can\'t modify inventory number',
                         'geninventorynumber',
                     ), true, ERROR);
@@ -131,7 +133,7 @@ class PluginGeninventorynumberGeneration
             ) {
                 $item->input['otherserial'] = self::autoName($config, $item);
                 if (!isCommandLine()) {
-                    Session::addMessageAfterRedirect(sprintf(__('An inventory number have been generated (%1$s)', 'geninventorynumber'), $item->input['otherserial']), true);
+                    Session::addMessageAfterRedirect(sprintf(__s('An inventory number have been generated (%1$s)', 'geninventorynumber'), $item->input['otherserial']), true);
                 }
 
                 if ($config['use_index']) {
@@ -149,19 +151,15 @@ class PluginGeninventorynumberGeneration
     public static function preItemUpdate(CommonDBTM $item)
     {
         $active = PluginGeninventorynumberConfig::isGenerationActive() && PluginGeninventorynumberConfigField::isActiveForItemType(get_class($item));
-        if ($active && !self::$serial_update_allowed) {
-            if (
-                isset($item->fields['otherserial'], $item->input['otherserial']) && $item->fields['otherserial'] != $item->input['otherserial']
-            ) {
-                // Revert otherserial to previous value
-                $item->input['otherserial'] = $item->fields['otherserial'];
-                if (!isCommandLine()) {
-                    Session::addMessageAfterRedirect(
-                        __('You can\'t modify inventory number', 'geninventorynumber'),
-                        true,
-                        ERROR,
-                    );
-                }
+        if ($active && !self::$serial_update_allowed && (isset($item->fields['otherserial'], $item->input['otherserial']) && $item->fields['otherserial'] != $item->input['otherserial'])) {
+            // Revert otherserial to previous value
+            $item->input['otherserial'] = $item->fields['otherserial'];
+            if (!isCommandLine()) {
+                Session::addMessageAfterRedirect(
+                    __s('You can\'t modify inventory number', 'geninventorynumber'),
+                    true,
+                    ERROR,
+                );
             }
         }
     }

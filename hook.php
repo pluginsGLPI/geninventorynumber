@@ -55,12 +55,12 @@ function plugin_geninventorynumber_MassiveActions($type)
             if (Session::haveRight('plugin_geninventorynumber', CREATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                  MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_generate']
-                 = __('Generate inventory number', 'geninventorynumber');
+                 = __s('Generate inventory number', 'geninventorynumber');
             }
             if (Session::haveRight('plugin_geninventorynumber', UPDATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                 MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_overwrite']
-                = __('Regenerate inventory number (overwrite)', 'geninventorynumber');
+                = __s('Regenerate inventory number (overwrite)', 'geninventorynumber');
             }
         }
     }

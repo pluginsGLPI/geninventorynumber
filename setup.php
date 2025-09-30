@@ -30,6 +30,8 @@
 
 use Glpi\Plugin\Hooks;
 
+use function Safe\define;
+
 define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.9.0-beta2');
 
 // Minimal GLPI version, inclusive
@@ -79,7 +81,7 @@ function plugin_init_geninventorynumber()
 function plugin_version_geninventorynumber()
 {
     return [
-        'name'         => __('Inventory number generation', 'geninventorynumber'),
+        'name'         => __s('Inventory number generation', 'geninventorynumber'),
         'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
         'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
         'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',

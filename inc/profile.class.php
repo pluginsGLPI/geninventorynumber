@@ -92,10 +92,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
         $profile = new Profile();
         $profile->getFromDB($ID);
 
-        $rights = $this->getAllRights();
+        $rights = static::getAllRights();
         $profile->displayRightsChoiceMatrix($rights, ['canedit' => $canedit,
             'default_class'                                     => 'tab_bg_2',
-            'title'                                             => __('General'),
+            'title'                                             => __s('General'),
         ]);
 
         if ($canedit) {
@@ -114,10 +114,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
     {
         return [
             ['itemtype'  => 'PluginGeninventorynumber',
-                'label'  => __('Generate inventory number', 'geninventorynumber'),
+                'label'  => __s('Generate inventory number', 'geninventorynumber'),
                 'field'  => 'plugin_geninventorynumber',
-                'rights' => [CREATE => __('Create'),
-                    UPDATE          => __('Update'),
+                'rights' => [CREATE => __s('Create'),
+                    UPDATE          => __s('Update'),
                 ],
             ],
         ];
@@ -127,7 +127,7 @@ class PluginGeninventorynumberProfile extends CommonDBTM
     {
         /** @var DBmysql $DB */
         global $DB;
-        $table = getTableForItemType(__CLASS__);
+        $table = getTableForItemType(self::class);
 
         if (isset($_SESSION['glpiactiveprofile'])) {
             PluginGeninventorynumberProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
@@ -150,10 +150,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
                         $myright['name']        = $rights['field'];
                         $myright['profiles_id'] = $data['profiles_id'];
 
-                        if (!strcmp($data['plugin_geninventorynumber_generate'], 'w')) {
+                        if (strcmp($data['plugin_geninventorynumber_generate'], 'w') === 0) {
                             $myright['rights'] = CREATE;
                         }
-                        if (!strcmp($data['plugin_geninventorynumber_overwrite'], 'w')) {
+                        if (strcmp($data['plugin_geninventorynumber_overwrite'], 'w') === 0) {
                             $myright['rights'] += UPDATE;
                         }
                         $profileRight->add($myright);

@@ -31,6 +31,8 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryExpression;
 
+use function Safe\strtotime;
+
 class PluginGeninventorynumberConfig extends CommonDBTM
 {
     public static $rightname = 'config';
@@ -59,7 +61,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function getTypeName($nb = 0)
     {
-        return __('Inventory number generation', 'geninventorynumber');
+        return __s('Inventory number generation', 'geninventorynumber');
     }
 
     public static function getMenuContent()
@@ -77,7 +79,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
     public function defineTabs($options = [])
     {
         $ong = [];
-        $this->addStandardTab(__CLASS__, $ong, $options);
+        $this->addStandardTab(self::class, $ong, $options);
         $this->addStandardTab('PluginGeninventorynumberConfigField', $ong, $options);
         $this->addStandardTab('Log', $ong, $options);
 
@@ -86,7 +88,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (get_class($item) == __CLASS__) {
+        if (get_class($item) == self::class) {
             $array_ret    = [];
             $array_ret[0] = self::createTabEntry(self::getTypeName(), 0, $item::getType(), self::getIcon());
             $array_ret[1] = self::createTabEntry(PluginGeninventorynumberConfigField::getTypeName(), 0, $item::getType(), PluginGeninventorynumberConfigField::getIcon());
@@ -119,14 +121,14 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
         $sopt[] = [
             'id'   => 'common',
-            'name' => __('Inventory number generation', 'geninventorynumber'),
+            'name' => __s('Inventory number generation', 'geninventorynumber'),
         ];
 
         $sopt[] = [
             'id'       => '1',
             'table'    => $this->getTable(),
             'field'    => 'name',
-            'name'     => __('Field'),
+            'name'     => __s('Field'),
             'datatype' => 'itemlink',
         ];
 
@@ -134,7 +136,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
             'id'       => '2',
             'table'    => $this->getTable(),
             'field'    => 'is_active',
-            'name'     => __('Active', 'geninventorynumber'),
+            'name'     => __s('Active', 'geninventorynumber'),
             'datatype' => 'bool',
         ];
 
@@ -142,7 +144,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
             'id'    => '3',
             'table' => $this->getTable(),
             'field' => 'index',
-            'name'  => __('Global index position', 'geninventorynumber'),
+            'name'  => __s('Global index position', 'geninventorynumber'),
         ];
 
         return $sopt;
@@ -155,10 +157,10 @@ class PluginGeninventorynumberConfig extends CommonDBTM
     public static function getAutoResetOptions(): array
     {
         return [
-            self::AUTO_RESET_NONE    => __('Never', 'geninventorynumber'),
-            self::AUTO_RESET_DAILY   => __('Daily', 'geninventorynumber'),
-            self::AUTO_RESET_MONTHLY => __('Monthly', 'geninventorynumber'),
-            self::AUTO_RESET_YEARLY  => __('Yearly', 'geninventorynumber'),
+            self::AUTO_RESET_NONE    => __s('Never', 'geninventorynumber'),
+            self::AUTO_RESET_DAILY   => __s('Daily', 'geninventorynumber'),
+            self::AUTO_RESET_MONTHLY => __s('Monthly', 'geninventorynumber'),
+            self::AUTO_RESET_YEARLY  => __s('Yearly', 'geninventorynumber'),
         ];
     }
 
@@ -240,9 +242,9 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
         $it = $DB->request([
             'SELECT' => ['index'],
-            'FROM'   => getTableForItemType(__CLASS__),
+            'FROM'   => getTableForItemType(self::class),
         ]);
-        if (count($it)) {
+        if (count($it) > 0) {
             return $it->current()['index'] + 1;
         }
 
@@ -258,7 +260,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
         $default_collation = DBConnection::getDefaultCollation();
         $default_key_sign  = DBConnection::getDefaultPrimaryKeySignOption();
 
-        $table = getTableForItemType(__CLASS__);
+        $table = getTableForItemType(self::class);
         if ($DB->tableExists('glpi_plugin_generateinventorynumber_config')) {
             $fields = ['template_computer', 'template_monitor', 'template_printer',
                 'template_peripheral', 'template_phone' , 'template_networking',
@@ -325,7 +327,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function uninstall(Migration $migration)
     {
-        $migration->dropTable(getTableForItemType(__CLASS__));
+        $migration->dropTable(getTableForItemType(self::class));
     }
 
     public static function updateIndex()
@@ -333,7 +335,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->update(getTableForItemType(__CLASS__), [
+        $DB->update(getTableForItemType(self::class), [
             'index'               => new QueryExpression($DB::quoteName('index') . ' + 1'),
             'date_last_generated' => $_SESSION['glpi_currenttime'],
         ], [

@@ -30,6 +30,8 @@
 
 use Glpi\DBAL\QueryExpression;
 
+use function Safe\strtotime;
+
 /**
  * -------------------------------------------------------------------------
  * GenInventoryNumber plugin for GLPI
@@ -66,12 +68,12 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getTypeName($nb = 0)
     {
-        return __('Specific configuration', 'geninventorynumber');
+        return __s('Specific configuration', 'geninventorynumber');
     }
 
     public static function getConfigFieldByItemType($itemtype)
     {
-        $infos = getAllDataFromTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype]);
+        $infos = getAllDataFromTable(getTableForItemType(self::class), ['itemtype' => $itemtype]);
         if (!empty($infos)) {
             return array_pop($infos);
         } else {
@@ -89,7 +91,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         $default_collation = DBConnection::getDefaultCollation();
         $default_key_sign  = DBConnection::getDefaultPrimaryKeySignOption();
 
-        $table = getTableForItemType(__CLASS__);
+        $table = getTableForItemType(self::class);
 
         if ($DB->tableExists('glpi_plugin_geninventorynumber_fields')) {
             //Only migrate itemtypes when it's only necessary, otherwise it breaks upgrade procedure !
@@ -158,7 +160,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function uninstall(Migration $migration)
     {
-        $migration->dropTable(getTableForItemType(__CLASS__));
+        $migration->dropTable(getTableForItemType(self::class));
     }
 
     public static function showForConfig($id)
@@ -169,23 +171,23 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
         $config = new PluginGeninventorynumberConfig();
         $config->getFromDB($id);
-        $target = Toolbox::getItemTypeFormUrl(__CLASS__);
+        $target = Toolbox::getItemTypeFormUrl(self::class);
 
         echo "<form name='form_core_config' method='post' action=\"$target\">";
         echo "<div align='center'>";
         echo "<table class='tab_cadre_fixe'><thead>";
-        echo "<tr><th colspan='6'>" . __('GLPI\'s inventory items configuration', 'geninventorynumber') . '</th></tr>';
+        echo "<tr><th colspan='6'>" . __s('GLPI\'s inventory items configuration', 'geninventorynumber') . '</th></tr>';
 
         echo "<input type='hidden' name='id' value='$id'>";
 
-        echo "<tr><th colspan='2'>" . __('Generation templates', 'geninventorynumber');
-        echo '</th><th>' . __('Active') . '</th>';
-        echo '<th>' . __('Use global index', 'geninventorynumber') . '</th>';
-        echo '<th>' . __('Index position', 'geninventorynumber') . '</th>';
-        echo '<th>' . __('Index auto-reset method', 'geninventorynumber') . '</th></tr></thead>';
+        echo "<tr><th colspan='2'>" . __s('Generation templates', 'geninventorynumber');
+        echo '</th><th>' . __s('Active') . '</th>';
+        echo '<th>' . __s('Use global index', 'geninventorynumber') . '</th>';
+        echo '<th>' . __s('Index position', 'geninventorynumber') . '</th>';
+        echo '<th>' . __s('Index auto-reset method', 'geninventorynumber') . '</th></tr></thead>';
 
         echo '<tbody>';
-        $rows = getAllDataFromTable(getTableForItemType(__CLASS__));
+        $rows = getAllDataFromTable(getTableForItemType(self::class));
         foreach ($rows as $data) {
             $itemtype = $data['itemtype'];
             $typename = is_a($itemtype, CommonDBTM::class, true) ? $itemtype::getTypeName() : $itemtype;
@@ -255,7 +257,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         $it = $DB->request([
             'SELECT'   => ['itemtype'],
             'DISTINCT' => true,
-            'FROM'     => getTableForItemType(__CLASS__),
+            'FROM'     => getTableForItemType(self::class),
             'ORDER'    => ['itemtype'],
         ]);
         $types = [];
@@ -273,10 +275,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
         $it = $DB->request([
             'SELECT' => ['is_active'],
-            'FROM'   => getTableForItemType(__CLASS__),
+            'FROM'   => getTableForItemType(self::class),
             'WHERE'  => ['itemtype' => $itemtype],
         ]);
-        if (count($it)) {
+        if (count($it) > 0) {
             return $it->current()['is_active'];
         }
 
@@ -352,10 +354,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
         $it = $DB->request([
             'SELECT' => ['index'],
-            'FROM'   => getTableForItemType(__CLASS__),
+            'FROM'   => getTableForItemType(self::class),
             'WHERE'  => ['itemtype' => $itemtype],
         ]);
-        if (count($it)) {
+        if (count($it) > 0) {
             return $it->current()['index'] + 1;
         }
 
@@ -367,7 +369,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         /** @var DBmysql $DB */
         global $DB;
 
-        $DB->update(getTableForItemType(__CLASS__), [
+        $DB->update(getTableForItemType(self::class), [
             'index'               => new QueryExpression($DB::quoteName('index') . ' + 1'),
             'date_last_generated' => $_SESSION['glpi_currenttime'],
         ], [
@@ -381,7 +383,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             return;
         }
 
-        if (!countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
+        if (!countElementsInTable(getTableForItemType(self::class), ['itemtype' => $itemtype])) {
             $config                                        = new self();
             $input['plugin_geninventorynumber_configs_id'] = 1;
             $input['itemtype']                             = $itemtype;
@@ -394,7 +396,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function unregisterNewItemType($itemtype)
     {
-        if (countElementsInTable(getTableForItemType(__CLASS__), ['itemtype' => $itemtype])) {
+        if (countElementsInTable(getTableForItemType(self::class), ['itemtype' => $itemtype])) {
             $config = new self();
             $config->deleteByCriteria(['itemtype' => $itemtype]);
         }
