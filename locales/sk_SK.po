@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2025-10-01 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/sk_SK/)\n"
@@ -18,69 +18,71 @@ msgstr ""
 "Language: sk_SK\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
-#: inc/config.class.php:122
-msgid "Active"
-msgstr "Aktívne"
+#: templates/config.html.twig inc/config.class.php:147
+msgid "Global index position"
+msgstr "Globálna pozícia indexu"
+
+#: templates/config.html.twig inc/configfield.class.php:187
+msgid "Index auto-reset method"
+msgstr "Metóda automatickej obnovy indexu"
+
+#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+msgid "Inventory number generation"
+msgstr "Generovanie inventárneho čísla"
+
+#: inc/profile.class.php:117 hook.php:58
+msgid "Generate inventory number"
+msgstr "Generovať inventárne číslo"
 
 #: inc/generation.class.php:136
 #, php-format
 msgid "An inventory number have been generated (%1$s)"
 msgstr "Inventárne číslo bolo vygenerované (%1$s)"
 
-#: inc/config.class.php:144
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "Nemôžete upraviť inventárne číslo"
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Aktívne"
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Nikdy"
+
+#: inc/config.class.php:161
 msgid "Daily"
 msgstr "Denne"
 
-#: inc/config.class.php:82 inc/configfield.class.php:43
-#: inc/configfield.class.php:151
-msgid "GLPI's inventory items configuration"
-msgstr "Konfigurácia inventárnych položiek"
-
-#: inc/profile.class.php:118 hook.php:58
-msgid "Generate inventory number"
-msgstr "Generovať inventárne číslo"
-
-#: inc/configfield.class.php:155
-msgid "Generation templates"
-msgstr "Šablóny generovania"
-
-#: templates/config.html.twig inc/config.class.php:130
-msgid "Global index position"
-msgstr "Globálna pozícia indexu"
-
-#: templates/config.html.twig inc/configfield.class.php:159
-msgid "Index auto-reset method"
-msgstr "Metóda automatickej obnovy indexu"
-
-#: inc/configfield.class.php:158
-msgid "Index position"
-msgstr "Pozícia indexu"
-
-#: setup.php:75 front/config.php:37 inc/profile.class.php:181
-#: inc/config.class.php:65 inc/config.class.php:107
-msgid "Inventory number generation"
-msgstr "Generovanie inventárneho čísla"
-
-#: inc/config.class.php:145
+#: inc/config.class.php:162
 msgid "Monthly"
 msgstr "Mesačne"
 
-#: inc/config.class.php:143
-msgid "Never"
-msgstr "Nikdy"
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Ročne"
+
+#: inc/configfield.class.php:71
+msgid "Specific configuration"
+msgstr ""
+
+#: inc/configfield.class.php:179
+msgid "GLPI's inventory items configuration"
+msgstr "Konfigurácia inventárnych položiek"
+
+#: inc/configfield.class.php:183
+msgid "Generation templates"
+msgstr "Šablóny generovania"
+
+#: inc/configfield.class.php:185
+msgid "Use global index"
+msgstr "Použiť globálny index"
+
+#: inc/configfield.class.php:186
+msgid "Index position"
+msgstr "Pozícia indexu"
 
 #: hook.php:63
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Znova generovať inventárne číslo (prepísať)"
-
-#: inc/configfield.class.php:157
-msgid "Use global index"
-msgstr "Použiť globálny index"
-
-#: inc/config.class.php:146
-msgid "Yearly"
-msgstr "Ročne"
-
-#: inc/generation.class.php:123 inc/generation.class.php:164
-msgid "You can't modify inventory number"
-msgstr "Nemôžete upraviť inventárne číslo"
