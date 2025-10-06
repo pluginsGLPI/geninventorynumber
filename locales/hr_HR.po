@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 00:58+0000\n"
+"POT-Creation-Date: 2025-10-01 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>, 2020\n"
 "Language-Team: Croatian (Croatia) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/hr_HR/)\n"
@@ -18,69 +18,71 @@ msgstr ""
 "Language: hr_HR\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: inc/config.class.php:122
-msgid "Active"
-msgstr "Aktivni"
+#: templates/config.html.twig inc/config.class.php:147
+msgid "Global index position"
+msgstr "Globalna pozicija indeksa"
+
+#: templates/config.html.twig inc/configfield.class.php:187
+msgid "Index auto-reset method"
+msgstr "Metoda automatskog resetiranja indeksa"
+
+#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+msgid "Inventory number generation"
+msgstr "Generiranje inventarskog broja"
+
+#: inc/profile.class.php:117 hook.php:58
+msgid "Generate inventory number"
+msgstr "Generiraj inventarski broj"
 
 #: inc/generation.class.php:136
 #, php-format
 msgid "An inventory number have been generated (%1$s)"
 msgstr ""
 
-#: inc/config.class.php:144
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "Ne možeš promijeniti inventarski broj"
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Aktivni"
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Nikada"
+
+#: inc/config.class.php:161
 msgid "Daily"
 msgstr "Dnevno"
 
-#: inc/config.class.php:82 inc/configfield.class.php:43
-#: inc/configfield.class.php:151
-msgid "GLPI's inventory items configuration"
-msgstr "Konfiguracija elemenata GLPI inventara"
-
-#: inc/profile.class.php:118 hook.php:58
-msgid "Generate inventory number"
-msgstr "Generiraj inventarski broj"
-
-#: inc/configfield.class.php:155
-msgid "Generation templates"
-msgstr "Predlošci za generiranje"
-
-#: templates/config.html.twig inc/config.class.php:130
-msgid "Global index position"
-msgstr "Globalna pozicija indeksa"
-
-#: templates/config.html.twig inc/configfield.class.php:159
-msgid "Index auto-reset method"
-msgstr "Metoda automatskog resetiranja indeksa"
-
-#: inc/configfield.class.php:158
-msgid "Index position"
-msgstr "Pozicija indeksa"
-
-#: setup.php:75 front/config.php:37 inc/profile.class.php:181
-#: inc/config.class.php:65 inc/config.class.php:107
-msgid "Inventory number generation"
-msgstr "Generiranje inventarskog broja"
-
-#: inc/config.class.php:145
+#: inc/config.class.php:162
 msgid "Monthly"
 msgstr "Mjesečno"
 
-#: inc/config.class.php:143
-msgid "Never"
-msgstr "Nikada"
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Godišnje"
+
+#: inc/configfield.class.php:71
+msgid "Specific configuration"
+msgstr ""
+
+#: inc/configfield.class.php:179
+msgid "GLPI's inventory items configuration"
+msgstr "Konfiguracija elemenata GLPI inventara"
+
+#: inc/configfield.class.php:183
+msgid "Generation templates"
+msgstr "Predlošci za generiranje"
+
+#: inc/configfield.class.php:185
+msgid "Use global index"
+msgstr "Koristi globalni indeks"
+
+#: inc/configfield.class.php:186
+msgid "Index position"
+msgstr "Pozicija indeksa"
 
 #: hook.php:63
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Ponovo generiraj inventarski broj (prepisuje stari)"
-
-#: inc/configfield.class.php:157
-msgid "Use global index"
-msgstr "Koristi globalni indeks"
-
-#: inc/config.class.php:146
-msgid "Yearly"
-msgstr "Godišnje"
-
-#: inc/generation.class.php:123 inc/generation.class.php:164
-msgid "You can't modify inventory number"
-msgstr "Ne možeš promijeniti inventarski broj"
