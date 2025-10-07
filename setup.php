@@ -29,6 +29,8 @@
  */
 
 use Glpi\Plugin\Hooks;
+use Glpi\Asset\AssetDefinitionManager;
+use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
 
 use function Safe\define;
 
@@ -54,6 +56,7 @@ function plugin_init_geninventorynumber()
 
     $PLUGIN_HOOKS[Hooks::POST_INIT]['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
 
+    // Initialize with native asset types
     $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
         'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
         'Appliance', 'Certificate', 'ConsumableItem', 'Enclosure',
@@ -63,6 +66,11 @@ function plugin_init_geninventorynumber()
     $plugin = new Plugin();
     if ($plugin->isActivated('geninventorynumber')) {
         $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['geninventorynumber'] = 1;
+
+        // Register custom capacity for custom assets
+        AssetDefinitionManager::getInstance()->registerCapacity(
+            new HasInventoryNumberGenerationCapacity()
+        );
 
         Plugin::registerClass(
             'PluginGeninventorynumberProfile',
