@@ -33,9 +33,8 @@ namespace GlpiPlugin\Geninventorynumber\Capacity;
 use Glpi\Asset\Capacity\AbstractCapacity;
 use Glpi\Asset\CapacityConfig;
 use Override;
-use Plugin;
-use PluginGeninventorynumberConfig;
 use PluginGeninventorynumberConfigField;
+use Glpi\Plugin\Hooks;
 
 /**
  * Capacity to enable automatic inventory number generation for custom assets
@@ -86,11 +85,22 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
     /**
      * Called when the asset class is loaded/bootstrapped
      * This is where we register the asset type for inventory number generation
+     * This method is called on every page load for each asset that has this capacity enabled
      */
     public function onClassBootstrap(string $classname, CapacityConfig $config): void
     {
-        // Nothing to do here - the registration is already done in setup.php
-        // by checking which assets have this capacity enabled
+        global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
+
+        // Add this custom asset to the global types array if not already present
+        if (!in_array($classname, $GENINVENTORYNUMBER_TYPES, true)) {
+            $GENINVENTORYNUMBER_TYPES[] = $classname;
+        }
+
+        // Register hooks for this asset type
+        $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['geninventorynumber'][$classname]
+            = ['PluginGeninventorynumberGeneration', 'preItemAdd'];
+        $PLUGIN_HOOKS[Hooks::PRE_ITEM_UPDATE]['geninventorynumber'][$classname]
+            = ['PluginGeninventorynumberGeneration', 'preItemUpdate'];
     }
 
     /**
