@@ -69,7 +69,7 @@ function plugin_init_geninventorynumber()
 
         // Register custom capacity for custom assets
         AssetDefinitionManager::getInstance()->registerCapacity(
-            new HasInventoryNumberGenerationCapacity()
+            new HasInventoryNumberGenerationCapacity(),
         );
 
         Plugin::registerClass(

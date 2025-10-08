@@ -75,7 +75,7 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
         if (!empty($config)) {
             return sprintf(
                 __('Configured for %d assets', 'geninventorynumber'),
-                $total_assets
+                $total_assets,
             );
         }
 
@@ -89,6 +89,8 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
      */
     public function onClassBootstrap(string $classname, CapacityConfig $config): void
     {
+        /** @var array $GENINVENTORYNUMBER_TYPES */
+        /** @var array $PLUGIN_HOOKS */
         global $GENINVENTORYNUMBER_TYPES, $PLUGIN_HOOKS;
 
         // Add this custom asset to the global types array if not already present
@@ -125,7 +127,7 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
         // Delete configuration for this asset type
         $config_field = new PluginGeninventorynumberConfigField();
         $config_field->deleteByCriteria([
-            'itemtype' => $classname
+            'itemtype' => $classname,
         ], true);
     }
 
