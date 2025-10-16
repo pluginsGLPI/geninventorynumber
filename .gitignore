@@ -3,3 +3,7 @@ vendor/
 .gh_token
 *.min.*
 
+# PHPUnit
+.phpunit.cache/
+.phpunit.result.cache
+tests/files/_logs/*.log
