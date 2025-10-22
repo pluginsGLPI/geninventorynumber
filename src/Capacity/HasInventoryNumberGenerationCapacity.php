@@ -35,6 +35,7 @@ use Glpi\Asset\CapacityConfig;
 use Override;
 use PluginGeninventorynumberConfigField;
 use Glpi\Plugin\Hooks;
+use Glpi\Application\View\TemplateRenderer;
 
 /**
  * Capacity to enable automatic inventory number generation for custom assets
@@ -98,6 +99,11 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
             $GENINVENTORYNUMBER_TYPES[] = $classname;
         }
 
+        $table = PluginGeninventorynumberConfigField::getTable();
+        if (!countElementsInTable($table, ['itemtype' => $classname])) {
+            PluginGeninventorynumberConfigField::registerNewItemType($classname);
+        }
+
         // Register hooks for this asset type
         $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['geninventorynumber'][$classname]
             = ['PluginGeninventorynumberGeneration', 'preItemAdd'];
@@ -112,10 +118,13 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
     public function onCapacityEnabled(string $classname, CapacityConfig $config): void
     {
         // Create configuration entry for this asset type if it doesn't exist
-        $table = PluginGeninventorynumberConfigField::getTable();
-        if (!countElementsInTable($table, ['itemtype' => $classname])) {
-            PluginGeninventorynumberConfigField::registerNewItemType($classname);
-        }
+        $config_field = new PluginGeninventorynumberConfigField();
+        $asset_configfield = $config_field->getConfigFieldByItemType($classname);
+        $config_field->update([
+            'id' => $asset_configfield['id'],
+            'itemtype' => $asset_configfield['itemtype'],
+            'is_active' => 1,
+        ]);
     }
 
     /**
@@ -124,11 +133,13 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
      */
     public function onCapacityDisabled(string $classname, CapacityConfig $config): void
     {
-        // Delete configuration for this asset type
         $config_field = new PluginGeninventorynumberConfigField();
-        $config_field->deleteByCriteria([
-            'itemtype' => $classname,
-        ], true);
+        $asset_configfield = $config_field->getConfigFieldByItemType($classname);
+        $config_field->update([
+            'id' => $asset_configfield['id'],
+            'itemtype' => $asset_configfield['itemtype'],
+            'is_active' => 0,
+        ]);
     }
 
     /**

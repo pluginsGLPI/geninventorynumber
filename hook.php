@@ -1,5 +1,9 @@
 <?php
 
+use Glpi\Asset\Asset;
+use Glpi\Asset\AssetDefinition;
+use Glpi\Plugin\Hooks;
+
 /**
  * -------------------------------------------------------------------------
  * GenInventoryNumber plugin for GLPI
@@ -40,6 +44,13 @@ function plugin_geninventorynumber_postinit()
         $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
         = ['PluginGeninventorynumberGeneration', 'preItemUpdate'];
     }
+
+    $PLUGIN_HOOKS[Hooks::ITEM_ADD]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'registerAssetDefinitionConfigField'];
+    $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'registerAssetDefinitionConfigField'];
+    $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'unregisterAssetDefinitionConfigField'];
 }
 
 function plugin_geninventorynumber_MassiveActions($type)
@@ -91,10 +102,10 @@ function plugin_geninventorynumber_uninstall()
     include_once($php_dir . '/inc/config.class.php');
     include_once($php_dir . '/inc/profile.class.php');
     include_once($php_dir . '/inc/configfield.class.php');
+    PluginGeninventorynumberConfigField::uninstall($migration);
     PluginGeninventorynumberConfig::uninstall($migration);
     PluginGeninventorynumberProfile::removeRightsFromSession();
     PluginGeninventorynumberProfile::uninstallProfile();
-    PluginGeninventorynumberConfigField::uninstall($migration);
 
     return true;
 }

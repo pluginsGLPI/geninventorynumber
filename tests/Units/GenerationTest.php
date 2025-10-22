@@ -11,7 +11,7 @@
  *
  * GenInventoryNumber is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * GenInventoryNumber is distributed in the hope that it will be useful,
@@ -22,8 +22,8 @@
  * You should have received a copy of the GNU General Public License
  * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2024 by GenInventoryNumber plugin team.
- * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
  */
@@ -48,7 +48,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
     public static function autoNameProvider(): iterable
     {
         // Note: getNextIndex() returns current index + 1, so we need to set index to expected - 1
-        
+
         // Test simple template with # mask
         yield 'Simple mask with 7 digits' => [
             'config' => [
@@ -368,7 +368,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         $this->assertEquals(
             $expected,
             $result,
-            "AutoName generation failed for template: {$config['template']}"
+            "AutoName generation failed for template: {$config['template']}",
         );
     }
 
@@ -502,7 +502,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         ]);
 
         // === PART 1: TEST CREATION - Should NOT generate otherserial ===
-        
+
         $item = $this->createItem(Computer::class, [
             'name' => 'Test Computer',
             'entities_id' => 0,
@@ -511,7 +511,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         // Should NOT generate otherserial
         $this->assertEmpty(
             $item->fields['otherserial'] ?? '',
-            "[ADD] Otherserial should not be generated when ConfigField is inactive"
+            "[ADD] Otherserial should not be generated when ConfigField is inactive",
         );
 
         // Verify index was NOT incremented
@@ -519,7 +519,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         $this->assertEquals(0, $config->fields['index'], "[ADD] Index should not be incremented");
 
         // === PART 2: TEST UPDATE - Should NOT generate otherserial ===
-        
+
         $item = $this->updateItem(Computer::class, $item->getID(), [
             'name' => 'Updated Name',
         ]);
@@ -527,7 +527,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         // Should still not have otherserial
         $this->assertEmpty(
             $item->fields['otherserial'] ?? '',
-            "[UPDATE] Otherserial should not be generated on update when ConfigField is inactive"
+            "[UPDATE] Otherserial should not be generated on update when ConfigField is inactive",
         );
 
         // Verify index still not incremented
@@ -548,7 +548,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         string $update_otherserial
     ): void {
         // === PART 1: TEST ITEM CREATION (preItemAdd) ===
-        
+
         // Initialize global config with plugin active
         $this->initConfig([
             'is_active' => 1,
@@ -575,7 +575,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         $this->assertMatchesRegularExpression(
             $expected_pattern,
             $item->fields['otherserial'],
-            "[ADD] Generated otherserial should match expected pattern"
+            "[ADD] Generated otherserial should match expected pattern",
         );
 
         // Verify index was incremented
@@ -584,14 +584,14 @@ final class GenerationTest extends GenInventoryNumberTestCase
             $this->assertEquals(
                 $initial_global_index + 1,
                 $config->fields['index'],
-                "[ADD] Global index should be incremented"
+                "[ADD] Global index should be incremented",
             );
         } else {
             $config_field->getFromDB($config_field->getID());
             $this->assertEquals(
                 $initial_field_index + 1,
                 $config_field->fields['index'],
-                "[ADD] Field index should be incremented"
+                "[ADD] Field index should be incremented",
             );
         }
 
@@ -609,12 +609,12 @@ final class GenerationTest extends GenInventoryNumberTestCase
         ];
 
         $item = $this->updateItem($itemtype, $item->getID(), $update_data, ['otherserial']);
-        
+
         // Verify otherserial was NOT modified (protection worked)
         $this->assertEquals(
             $generated_otherserial,
             $item->fields['otherserial'],
-            "[UPDATE] Otherserial should not be modified when plugin is active"
+            "[UPDATE] Otherserial should not be modified when plugin is active",
         );
     }
 }

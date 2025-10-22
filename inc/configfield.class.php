@@ -28,37 +28,12 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\DBAL\QueryExpression;
 
 use function Safe\strtotime;
-
-/**
- * -------------------------------------------------------------------------
- * GenInventoryNumber plugin for GLPI
- * -------------------------------------------------------------------------
- *
- * LICENSE
- *
- * This file is part of GenInventoryNumber.
- *
- * GenInventoryNumber is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * GenInventoryNumber is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
- * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
- * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/pluginsGLPI/geninventorynumber
- * -------------------------------------------------------------------------
- */
+use function Safe\preg_replace;
+use function Safe\json_decode;
 
 class PluginGeninventorynumberConfigField extends CommonDBChild
 {
@@ -158,8 +133,26 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
     }
 
-    public static function uninstall(Migration $migration)
+    public static function registerAssetDefinitionConfigField(AssetDefinition $item): void
     {
+        if ($item->fields['is_active'] === "0") {
+            self::unregisterNewItemType($item->getAssetClassName());
+        } else {
+            self::registerNewItemType($item->getAssetClassName());
+        }
+    }
+
+    public static function unregisterAssetDefinitionConfigField(AssetDefinition $item): void
+    {
+        self::unregisterNewItemType($item->getAssetClassName());
+    }
+
+    public static function uninstall(Migration $migration): void
+    {
+        $definitions = \Glpi\Asset\AssetDefinitionManager::getInstance()->getDefinitions();
+        foreach ($definitions as $definition) {
+            self::disableCapacityForAsset($definition);
+        }
         $migration->dropTable(getTableForItemType(self::class));
     }
 
@@ -247,6 +240,112 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
 
         return $input;
+    }
+
+    public function post_updateItem($history = true)
+    {
+        parent::post_updateItem($history);
+
+        // Check if itemtype is a custom asset and if is_active changed
+        if (isset($this->fields['itemtype']) && in_array('is_active', $this->updates)) {
+            $itemtype = $this->fields['itemtype'];
+
+            // Check if it's a custom asset by verifying if it's in the Glpi\CustomAsset\Asset namespace
+            if (str_starts_with($itemtype, 'Glpi\\CustomAsset\\')) {
+                // Get the asset definition manager
+                $asset_manager = \Glpi\Asset\AssetDefinitionManager::getInstance();
+                $parts = explode('\\', $itemtype);
+                $system_name = end($parts);
+                // Retirer 'asset' à la fin si présent
+                $system_name = preg_replace('/Asset$/', '', $system_name);
+
+                // Get the asset definition
+                $definition = $asset_manager->getDefinition($system_name);
+
+                if ($definition !== null) {
+                    $this->updateCapacity($definition);
+                }
+            }
+        }
+    }
+
+    public function updateCapacity(\Glpi\Asset\AssetDefinition $definition): bool
+    {
+        if ($this->fields['is_active']) {
+            return $this->enableCapacityForAsset($definition);
+        } else {
+            return $this->disableCapacityForAsset($definition);
+        }
+    }
+
+    /**
+     * Enable a capacity for a custom asset definition
+     *
+     * @param \Glpi\Asset\AssetDefinition $definition
+     * @return bool
+     */
+    private function enableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    {
+        $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
+
+        // Get current capacities (decoded from JSON)
+        $current_capacities = json_decode($definition->fields['capacities'], true);
+        if (!is_array($current_capacities)) {
+            $current_capacities = [];
+        }
+
+        // Check if capacity is already enabled
+        if (in_array($capacity_classname, array_column($current_capacities, 'name'), true)) {
+            return true;
+        }
+
+        // Add the capacity (GLPI expects an array with 'name' and 'config' keys)
+        $current_capacities[] = [
+            'name' => $capacity_classname,
+            'config' => [],
+        ];
+
+        // Update the definition
+        return $definition->update([
+            'id' => $definition->getID(),
+            'capacities' => $current_capacities,
+        ]);
+    }
+
+    /**
+     * Disable a capacity for a custom asset definition
+     *
+     * @param \Glpi\Asset\AssetDefinition $definition
+     * @return bool
+     */
+    private static function disableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    {
+        $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
+
+        // Get current capacities (decoded from JSON)
+        $current_capacities = json_decode($definition->fields['capacities'], true);
+        if (!is_array($current_capacities)) {
+            $current_capacities = [];
+        }
+
+        // Check if capacity is not enabled
+        if (!in_array($capacity_classname, array_column($current_capacities, 'name'), true)) {
+            return true;
+        }
+
+        // Remove the capacity
+        $current_capacities = array_filter(
+            $current_capacities,
+            function ($capacity) use ($capacity_classname) {
+                return !(isset($capacity['name']) && $capacity['name'] === $capacity_classname);
+            },
+        );
+
+        // Update the definition
+        return $definition->update([
+            'id' => $definition->getID(),
+            'capacities' => $current_capacities,
+        ]);
     }
 
     public static function getEnabledItemTypes()
@@ -379,6 +478,9 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function registerNewItemType($itemtype)
     {
+        /** @var array $GENINVENTORYNUMBER_TYPES */
+        global $GENINVENTORYNUMBER_TYPES;
+
         if (!class_exists($itemtype)) {
             return;
         }
@@ -390,15 +492,25 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $input['template']                             = '&lt;#######&gt;';
             $input['is_active']                            = 0;
             $input['index']                                = 0;
-            $config->add($input);
+            if ($config->add($input)) {
+                if (!in_array($itemtype, $GENINVENTORYNUMBER_TYPES, true)) {
+                    $GENINVENTORYNUMBER_TYPES[] = $itemtype;
+                }
+            }
         }
     }
 
     public static function unregisterNewItemType($itemtype)
     {
+        /** @var array $GENINVENTORYNUMBER_TYPES */
+        global $GENINVENTORYNUMBER_TYPES;
+
         if (countElementsInTable(getTableForItemType(self::class), ['itemtype' => $itemtype])) {
             $config = new self();
-            $config->deleteByCriteria(['itemtype' => $itemtype]);
+            $is_delete = $config->deleteByCriteria(['itemtype' => $itemtype]);
+            if ($is_delete) {
+                unset($GENINVENTORYNUMBER_TYPES[$itemtype]);
+            }
         }
     }
 

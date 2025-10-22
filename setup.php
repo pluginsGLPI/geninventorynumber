@@ -63,6 +63,15 @@ function plugin_init_geninventorynumber()
         'PassiveDCEquipment', 'PDU', 'Rack',
     ];
 
+    // Add active custom assets
+    $asset_manager = AssetDefinitionManager::getInstance();
+    foreach ($asset_manager->getDefinitions(true) as $definition) {
+        $custom_asset_class = $definition->getAssetClassName();
+        if (!in_array($custom_asset_class, $GENINVENTORYNUMBER_TYPES)) {
+            $GENINVENTORYNUMBER_TYPES[] = $custom_asset_class;
+        }
+    }
+
     $plugin = new Plugin();
     if ($plugin->isActivated('geninventorynumber')) {
         $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['geninventorynumber'] = 1;
