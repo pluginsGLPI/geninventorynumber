@@ -33,8 +33,6 @@ namespace GlpiPlugin\Geninventorynumber\Tests\Units;
 use Computer;
 use GlpiPlugin\Geninventorynumber\Tests\GenInventoryNumberTestCase;
 use PluginGeninventorynumberGeneration;
-use PluginGeninventorynumberConfig;
-use PluginGeninventorynumberConfigField;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -54,7 +52,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<#######>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 0,  // getNextIndex will return 1
             'field_index' => 0,
@@ -67,7 +64,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'PC-<#####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 41,  // getNextIndex will return 42
             'field_index' => 0,
@@ -80,7 +76,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<####>-END',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 122,  // getNextIndex will return 123
             'field_index' => 0,
@@ -93,7 +88,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'INV-<######>-2025',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 998,  // getNextIndex will return 999
             'field_index' => 0,
@@ -106,7 +100,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\Y-####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 4,  // getNextIndex will return 5
             'field_index' => 0,
@@ -119,7 +112,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\y-####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 9,  // getNextIndex will return 10
             'field_index' => 0,
@@ -132,7 +124,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\Y\m-####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 6,  // getNextIndex will return 7
             'field_index' => 0,
@@ -145,7 +136,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\Y-\m-\d_####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 0,  // getNextIndex will return 1
             'field_index' => 0,
@@ -158,7 +148,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\s-###>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 0,  // getNextIndex will return 1
             'field_index' => 0,
@@ -171,7 +160,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\n-###>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 4,  // getNextIndex will return 5
             'field_index' => 0,
@@ -184,7 +172,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<\Y\m\d-\s-####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 98,  // getNextIndex will return 99
             'field_index' => 0,
@@ -197,7 +184,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'MON-<####>',
                 'use_index' => false,
-                'itemtype' => 'Monitor',
             ],
             'global_index' => 100,
             'field_index' => 25,  // getNextIndex will return 26
@@ -210,7 +196,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<###>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 7,  // getNextIndex will return 8
             'field_index' => 0,
@@ -222,7 +207,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<##########>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 12344,  // getNextIndex will return 12345
             'field_index' => 0,
@@ -235,7 +219,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<#>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 8,  // getNextIndex will return 9
             'field_index' => 0,
@@ -248,7 +231,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'GLPI-<\Y-\m-######>-PROD',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 4566,  // getNextIndex will return 4567
             'field_index' => 0,
@@ -261,7 +243,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'INVALID-####',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 0,
             'field_index' => 0,
@@ -274,7 +255,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<####>-SUFFIX',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 76,  // getNextIndex will return 77
             'field_index' => 0,
@@ -287,7 +267,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => 'PREFIX-<####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 87,  // getNextIndex will return 88
             'field_index' => 0,
@@ -300,7 +279,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<####>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 0,  // getNextIndex will return 1 (not 0!)
             'field_index' => 0,
@@ -313,7 +291,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<######>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 999998,  // getNextIndex will return 999999
             'field_index' => 0,
@@ -326,7 +303,6 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'config' => [
                 'template' => '<###>',
                 'use_index' => true,
-                'itemtype' => 'Computer',
             ],
             'global_index' => 12344,  // getNextIndex will return 12345
             'field_index' => 0,
@@ -351,7 +327,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
 
         // Initialize field config if not using global index
         if (!$config['use_index']) {
-            $this->setConfigField($config['itemtype'], [
+            $this->setConfigField(Computer::class, [
                 'index' => $field_index,
                 'template' => $config['template'],
             ]);
@@ -361,6 +337,8 @@ final class GenerationTest extends GenInventoryNumberTestCase
         $item = new Computer();
         $item->fields = [];
         $item->input = $item_data;
+
+        $config['itemtype'] = Computer::class;
 
         // Call autoName and verify the result
         $result = PluginGeninventorynumberGeneration::autoName($config, $item);
@@ -480,59 +458,23 @@ final class GenerationTest extends GenInventoryNumberTestCase
             'expected_pattern' => '/^GLPI-\d{4}-\d{6}-PROD$/',
             'update_otherserial' => 'CUSTOM-999999',
         ];
-    }
 
-    /**
-     * Test item lifecycle when ConfigField is INACTIVE
-     * Tests that:
-     * - On ADD: otherserial is NOT generated automatically
-     * - On UPDATE: otherserial is NOT generated automatically
-     */
-    public function testItemLifecycleWithConfigFieldInactive(): void
-    {
-        // Initialize plugin as active
-        $this->initConfig(['is_active' => 1]);
-
-        // Initialize field config as INACTIVE
-        $this->setConfigField(Computer::class, [
-            'is_active' => 0,
-            'use_index' => 1,
-            'template' => 'INACTIVE-<####>',
-            'index' => 0,
-        ]);
-
-        // === PART 1: TEST CREATION - Should NOT generate otherserial ===
-
-        $item = $this->createItem(Computer::class, [
-            'name' => 'Test Computer',
-            'entities_id' => 0,
-        ]);
-
-        // Should NOT generate otherserial
-        $this->assertEmpty(
-            $item->fields['otherserial'] ?? '',
-            "[ADD] Otherserial should not be generated when ConfigField is inactive",
-        );
-
-        // Verify index was NOT incremented
-        $config = $this->getConfig();
-        $this->assertEquals(0, $config->fields['index'], "[ADD] Index should not be incremented");
-
-        // === PART 2: TEST UPDATE - Should NOT generate otherserial ===
-
-        $item = $this->updateItem(Computer::class, $item->getID(), [
-            'name' => 'Updated Name',
-        ]);
-
-        // Should still not have otherserial
-        $this->assertEmpty(
-            $item->fields['otherserial'] ?? '',
-            "[UPDATE] Otherserial should not be generated on update when ConfigField is inactive",
-        );
-
-        // Verify index still not incremented
-        $config = $this->getConfig();
-        $this->assertEquals(0, $config->fields['index'], "[UPDATE] Index should still not be incremented");
+        // Test 7: Test with CustomAsset
+        yield 'Test with CustomAsset' => [
+            'field_config' => [
+                'itemtype' => 'Glpi\\CustomAsset\\Test01Asset',
+                'is_active' => 1,
+                'use_index' => 1,
+                'template' => 'GLPI-<\Y-######>-PROD',
+            ],
+            'global_index' => 0,
+            'item_data' => [
+                'name' => 'Production Server',
+                'entities_id' => 0,
+            ],
+            'expected_pattern' => '/^GLPI-\d{4}-\d{6}-PROD$/',
+            'update_otherserial' => 'CUSTOM-999999',
+        ];
     }
 
     /**
@@ -616,5 +558,58 @@ final class GenerationTest extends GenInventoryNumberTestCase
             $item->fields['otherserial'],
             "[UPDATE] Otherserial should not be modified when plugin is active",
         );
+    }
+
+    /**
+     * Test item lifecycle when ConfigField is INACTIVE
+     * Tests that:
+     * - On ADD: otherserial is NOT generated automatically
+     * - On UPDATE: otherserial is NOT generated automatically
+     */
+    public function testItemLifecycleWithConfigFieldInactive(): void
+    {
+        // Initialize plugin as active
+        $this->initConfig(['is_active' => 1]);
+
+        // Initialize field config as INACTIVE
+        $this->setConfigField(Computer::class, [
+            'is_active' => 0,
+            'use_index' => 1,
+            'template' => 'INACTIVE-<####>',
+            'index' => 0,
+        ]);
+
+        // === PART 1: TEST CREATION - Should NOT generate otherserial ===
+
+        $item = $this->createItem(Computer::class, [
+            'name' => 'Test Computer',
+            'entities_id' => 0,
+        ]);
+
+        // Should NOT generate otherserial
+        $this->assertEmpty(
+            $item->fields['otherserial'] ?? '',
+            "[ADD] Otherserial should not be generated when ConfigField is inactive",
+        );
+
+        // Verify index was NOT incremented
+        $config = $this->getConfig();
+        $this->assertEquals(0, $config->fields['index'], "[ADD] Index should not be incremented");
+
+        // === PART 2: TEST UPDATE - Should NOT generate otherserial ===
+
+        $item = $this->updateItem(Computer::class, $item->getID(), [
+            'name' => 'Updated Name',
+        ]);
+
+        // Should still not have otherserial
+        $this->assertEmpty(
+            $item->fields['otherserial'] ?? '',
+            "[UPDATE] Otherserial should not be generated on update when ConfigField is inactive",
+        );
+
+        // Verify index still not incremented
+        $config = $this->getConfig();
+        $this->assertEquals(0, $config->fields['index'], "[UPDATE] Index should still not be incremented");
     }
 }

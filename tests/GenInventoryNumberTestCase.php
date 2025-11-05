@@ -62,6 +62,10 @@ abstract class GenInventoryNumberTestCase extends DbTestCase
 
         // Update plugin config
         $this->updateConfig($config);
+
+        \Glpi\Asset\AssetDefinitionManager::getInstance()->registerCapacity(
+            new \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity()
+        );
     }
 
     public function updateConfig(array $config = []): void

@@ -35,7 +35,6 @@ use Glpi\Asset\CapacityConfig;
 use Override;
 use PluginGeninventorynumberConfigField;
 use Glpi\Plugin\Hooks;
-use Glpi\Application\View\TemplateRenderer;
 
 /**
  * Capacity to enable automatic inventory number generation for custom assets

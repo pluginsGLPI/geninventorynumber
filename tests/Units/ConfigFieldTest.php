@@ -30,6 +30,10 @@
 
 namespace GlpiPlugin\Geninventorynumber\Tests\Units;
 
+use Glpi\Asset\Capacity;
+use Glpi\Asset\Capacity\HasDomainsCapacity;
+use Glpi\Asset\Capacity\HasVolumesCapacity;
+use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
 use GlpiPlugin\Geninventorynumber\Tests\GenInventoryNumberTestCase;
 use PluginGeninventorynumberConfigField;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -339,11 +343,30 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
         $this->assertFalse(
             $computer_field->getFromDB($computer_field->getID()),
         );
+
+        // Initialize custom asset
+        $definition = $this->initAssetDefinition();
+        $custom_asset_class = $definition->getAssetClassName();
+        $custom_asset_field = $this->setConfigField($custom_asset_class);
+
+        $this->assertTrue(
+            $custom_asset_field->getFromDB($custom_asset_field->getID()),
+        );
+
+        // Unregister custom asset itemtype
+        PluginGeninventorynumberConfigField::unregisterNewItemType($custom_asset_class);
+
+        // Ensure the config field was deleted
+        $this->assertFalse(
+            $custom_asset_field->getFromDB($custom_asset_field->getID()),
+        );
     }
 
     public function testIsActiveForItemType(): void
     {
         $this->initConfig();
+
+        /* Test 1: Verify is_active behavior for native GLPI asset */
 
         $this->setConfigField(\Computer::class, ['is_active' => 1]);
 
@@ -367,5 +390,142 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
             0,
             PluginGeninventorynumberConfigField::isActiveForItemType(\Computer::class),
         );
+
+        /* Test 2: Verify is_active behavior for custom asset */
+
+        // Initialize custom asset
+        $definition = $this->initAssetDefinition();
+        $custom_asset_class = $definition->getAssetClassName();
+
+        // Ensure capacity is initially inactive
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Set is_active to 1
+        $this->setConfigField($custom_asset_class, ['is_active' => 1]);
+
+        // Verify configfield for custom asset and capacity is active
+        $this->assertEquals(
+            1,
+            PluginGeninventorynumberConfigField::isActiveForItemType($custom_asset_class),
+        );
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Set is_active to 0
+        $this->setConfigField($custom_asset_class, ['is_active' => 0]);
+
+        // Verify configfield for custom asset and capacity is inactive
+        $this->assertEquals(
+            0,
+            PluginGeninventorynumberConfigField::isActiveForItemType($custom_asset_class),
+        );
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Unregister custom asset itemtype
+        PluginGeninventorynumberConfigField::unregisterNewItemType($custom_asset_class);
+
+        // Ensure it is no longer active
+        $this->assertEquals(
+            0,
+            PluginGeninventorynumberConfigField::isActiveForItemType($custom_asset_class),
+        );
+    }
+
+    public function testEnableCapacityForAsset(): void
+    {
+        $this->initConfig();
+
+        /* Test 1: Verify HasInventoryNumberGenerationCapacity capacity is enabled when it is initially disabled */
+
+        $config_field = new PluginGeninventorynumberConfigField();
+
+        $definition = $this->initAssetDefinition(capacities: []);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Enable the capacity
+        $config_field->enableCapacityForAsset($definition);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        /* Test 2: Verify that enabling capacity has no effect when it is already enabled */
+
+        $definition = $this->initAssetDefinition(capacities: [
+            new Capacity(HasInventoryNumberGenerationCapacity::class),
+        ]);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Enable the capacity
+        $config_field->enableCapacityForAsset($definition);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        /* Test 3: Verify only HasInventoryNumberGenerationCapacity capacity is enabled when other capacities are present */
+
+        $definition = $this->initAssetDefinition(capacities: [
+            new Capacity(name: HasDomainsCapacity::class),
+            new Capacity(name: HasVolumesCapacity::class),
+        ]);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasDomainsCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasVolumesCapacity()));
+
+        // Enable the capacity
+        $config_field->enableCapacityForAsset($definition);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasDomainsCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasVolumesCapacity()));
+    }
+
+    public function testDisableCapacityForAsset(): void
+    {
+        $this->initConfig();
+
+        /* Test 1: Verify that enabling capacity has no effect when it is already disabled */
+
+        $config_field = new PluginGeninventorynumberConfigField();
+
+        $definition = $this->initAssetDefinition(capacities: []);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Enable the capacity
+        $config_field->disableCapacityForAsset($definition);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        /* Test 2: Verify HasInventoryNumberGenerationCapacity capacity is disabled when it is initially enabled */
+
+        $definition = $this->initAssetDefinition(capacities: [
+            new Capacity(name: HasInventoryNumberGenerationCapacity::class),
+        ]);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        // Enable the capacity
+        $config_field->disableCapacityForAsset($definition);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+
+        /* Test 3: Verify only HasInventoryNumberGenerationCapacity capacity is disabled when other capacities are present */
+
+        $definition = $this->initAssetDefinition(capacities: [
+            new Capacity(name: HasInventoryNumberGenerationCapacity::class),
+            new Capacity(name: HasDomainsCapacity::class),
+            new Capacity(name: HasVolumesCapacity::class),
+        ]);
+
+        $this->assertTrue($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasDomainsCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasVolumesCapacity()));
+
+        // Enable the capacity
+        $config_field->disableCapacityForAsset($definition);
+
+        $this->assertFalse($definition->hasCapacityEnabled(new HasInventoryNumberGenerationCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasDomainsCapacity()));
+        $this->assertTrue($definition->hasCapacityEnabled(new HasVolumesCapacity()));
     }
 }

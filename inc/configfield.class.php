@@ -158,10 +158,6 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function showForConfig($id)
     {
-        /** @var array $CFG_GLPI */
-        /** @var DBmysql $DB */
-        global $CFG_GLPI, $DB;
-
         $config = new PluginGeninventorynumberConfig();
         $config->getFromDB($id);
         $target = Toolbox::getItemTypeFormUrl(self::class);
@@ -284,12 +280,12 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
      * @param \Glpi\Asset\AssetDefinition $definition
      * @return bool
      */
-    private function enableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    public function enableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
     {
         $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
 
         // Get current capacities (decoded from JSON)
-        $current_capacities = json_decode($definition->fields['capacities'], true);
+        $current_capacities = json_decode($definition->fields['capacities'] ?? '[]', true);
         if (!is_array($current_capacities)) {
             $current_capacities = [];
         }
@@ -318,7 +314,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
      * @param \Glpi\Asset\AssetDefinition $definition
      * @return bool
      */
-    private static function disableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    public static function disableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
     {
         $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
 
