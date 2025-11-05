@@ -22,12 +22,14 @@
  * You should have received a copy of the GNU General Public License
  * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @copyright Copyright (C) 2008-2025 by GenInventoryNumber plugin team.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Asset\AssetDefinitionManager;
+use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
 use Glpi\Asset\AssetDefinition;
 use Glpi\DBAL\QueryExpression;
 
@@ -149,7 +151,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function uninstall(Migration $migration): void
     {
-        $definitions = \Glpi\Asset\AssetDefinitionManager::getInstance()->getDefinitions();
+        $definitions = AssetDefinitionManager::getInstance()->getDefinitions();
         foreach ($definitions as $definition) {
             self::disableCapacityForAsset($definition);
         }
@@ -249,7 +251,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             // Check if it's a custom asset by verifying if it's in the Glpi\CustomAsset\Asset namespace
             if (str_starts_with($itemtype, 'Glpi\\CustomAsset\\')) {
                 // Get the asset definition manager
-                $asset_manager = \Glpi\Asset\AssetDefinitionManager::getInstance();
+                $asset_manager = AssetDefinitionManager::getInstance();
                 $parts = explode('\\', $itemtype);
                 $system_name = end($parts);
                 // Retirer 'asset' à la fin si présent
@@ -265,24 +267,24 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
     }
 
-    public function updateCapacity(\Glpi\Asset\AssetDefinition $definition): bool
+    public function updateCapacity(AssetDefinition $definition): bool
     {
         if ($this->fields['is_active']) {
             return $this->enableCapacityForAsset($definition);
         } else {
-            return $this->disableCapacityForAsset($definition);
+            return static::disableCapacityForAsset($definition);
         }
     }
 
     /**
      * Enable a capacity for a custom asset definition
      *
-     * @param \Glpi\Asset\AssetDefinition $definition
+     * @param AssetDefinition $definition
      * @return bool
      */
-    public function enableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    public function enableCapacityForAsset(AssetDefinition $definition): bool
     {
-        $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
+        $capacity_classname = HasInventoryNumberGenerationCapacity::class;
 
         // Get current capacities (decoded from JSON)
         $current_capacities = json_decode($definition->fields['capacities'] ?? '[]', true);
@@ -311,12 +313,12 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     /**
      * Disable a capacity for a custom asset definition
      *
-     * @param \Glpi\Asset\AssetDefinition $definition
+     * @param AssetDefinition $definition
      * @return bool
      */
-    public static function disableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
+    public static function disableCapacityForAsset(AssetDefinition $definition): bool
     {
-        $capacity_classname = \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity::class;
+        $capacity_classname = HasInventoryNumberGenerationCapacity::class;
 
         // Get current capacities (decoded from JSON)
         $current_capacities = json_decode($definition->fields['capacities'], true);
@@ -332,9 +334,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         // Remove the capacity
         $current_capacities = array_filter(
             $current_capacities,
-            function ($capacity) use ($capacity_classname) {
-                return !(isset($capacity['name']) && $capacity['name'] === $capacity_classname);
-            },
+            fn($capacity) => !(isset($capacity['name']) && $capacity['name'] === $capacity_classname),
         );
 
         // Update the definition
@@ -488,10 +488,8 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $input['template']                             = '&lt;#######&gt;';
             $input['is_active']                            = 0;
             $input['index']                                = 0;
-            if ($config->add($input)) {
-                if (!in_array($itemtype, $GENINVENTORYNUMBER_TYPES, true)) {
-                    $GENINVENTORYNUMBER_TYPES[] = $itemtype;
-                }
+            if ($config->add($input) && !in_array($itemtype, $GENINVENTORYNUMBER_TYPES, true)) {
+                $GENINVENTORYNUMBER_TYPES[] = $itemtype;
             }
         }
     }
