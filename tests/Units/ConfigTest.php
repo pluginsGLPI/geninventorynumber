@@ -34,6 +34,9 @@ use GlpiPlugin\Geninventorynumber\Tests\GenInventoryNumberTestCase;
 use PluginGeninventorynumberConfig;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function Safe\strtotime;
+use function Safe\json_encode;
+
 /**
  * Test class for plugin configuration
  */

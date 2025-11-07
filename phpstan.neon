@@ -14,6 +14,7 @@ parameters:
         - setup.php
     scanDirectories:
         - ../../src
+        - ../../tests
     bootstrapFiles:
         - ../../stubs/glpi_constants.php
         - ../../vendor/autoload.php

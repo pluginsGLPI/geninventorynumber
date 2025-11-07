@@ -30,6 +30,7 @@
 
 namespace GlpiPlugin\Geninventorynumber\Tests\Units;
 
+use Monitor;
 use Computer;
 use GlpiPlugin\Geninventorynumber\Tests\GenInventoryNumberTestCase;
 use PluginGeninventorynumberGeneration;
@@ -428,7 +429,7 @@ final class GenerationTest extends GenInventoryNumberTestCase
         // Test 5: Field index instead of global
         yield 'Using field index' => [
             'field_config' => [
-                'itemtype' => \Monitor::class,
+                'itemtype' => Monitor::class,
                 'is_active' => 1,
                 'use_index' => 0,  // Use field index
                 'template' => 'MON-<####>',

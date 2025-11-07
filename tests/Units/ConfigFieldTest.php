@@ -30,6 +30,9 @@
 
 namespace GlpiPlugin\Geninventorynumber\Tests\Units;
 
+use Computer;
+use Monitor;
+use PluginGeninventorynumberConfig;
 use Glpi\Asset\Capacity;
 use Glpi\Asset\Capacity\HasDomainsCapacity;
 use Glpi\Asset\Capacity\HasVolumesCapacity;
@@ -38,18 +41,24 @@ use GlpiPlugin\Geninventorynumber\Tests\GenInventoryNumberTestCase;
 use PluginGeninventorynumberConfigField;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function Safe\strtotime;
+use function Safe\json_encode;
+
+/**
+ * Test class for ConfigField
+ */
 class ConfigFieldTest extends GenInventoryNumberTestCase
 {
     public function testResetIndex(): void
     {
         $this->initConfig();
-        $computer_field = $this->setConfigField(\Computer::class, [
+        $computer_field = $this->setConfigField(Computer::class, [
             'index' => 10,
         ]);
-        $monitor_field = $this->setConfigField(\Monitor::class, [
+        $monitor_field = $this->setConfigField(Monitor::class, [
             'index' => 10,
         ]);
-        PluginGeninventorynumberConfigField::resetIndex(\Computer::class);
+        PluginGeninventorynumberConfigField::resetIndex(Computer::class);
         $this->assertTrue($computer_field->getFromDB($computer_field->getID()));
         $this->assertEquals(0, $computer_field->fields['index']);
         $this->assertTrue($monitor_field->getFromDB($monitor_field->getID()));
@@ -62,7 +71,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_NONE,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_NONE,
                 'date_last_generated' => null,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date)),
@@ -71,7 +80,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_NONE,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_NONE,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date)),
@@ -80,7 +89,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date)),
@@ -89,7 +98,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 day')),
@@ -98,7 +107,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date)),
@@ -107,7 +116,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 day')),
@@ -116,7 +125,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 month')),
@@ -125,7 +134,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date)),
@@ -134,7 +143,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 day')),
@@ -143,7 +152,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 month')),
@@ -152,7 +161,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
             ],
             'date' => date('Y-m-d H:i:s', strtotime($date . ' +1 year')),
@@ -167,11 +176,11 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         $_SESSION['glpi_currenttime'] = $date;
 
-        $this->setConfigField(\Computer::class, $config);
+        $this->setConfigField(Computer::class, $config);
 
         $this->assertEquals(
             $need_reset,
-            PluginGeninventorynumberConfigField::needIndexReset(\Computer::class),
+            PluginGeninventorynumberConfigField::needIndexReset(Computer::class),
             'Config: ' . json_encode($config) . ' Date: ' . $date,
         );
     }
@@ -182,7 +191,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_NONE,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_NONE,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -192,7 +201,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -202,7 +211,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_DAILY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -212,7 +221,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -222,7 +231,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -232,7 +241,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_MONTHLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -242,7 +251,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -252,7 +261,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -262,7 +271,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -272,7 +281,7 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         yield [
             'config' => [
-                'auto_reset_method' => \PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
+                'auto_reset_method' => PluginGeninventorynumberConfig::AUTO_RESET_YEARLY,
                 'date_last_generated' => $date,
                 'index' => 0,
             ],
@@ -286,13 +295,13 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
     {
         $this->initConfig();
 
-        $computer_field = $this->setConfigField(\Computer::class, $config);
+        $computer_field = $this->setConfigField(Computer::class, $config);
 
         $base_time = $config['date_last_generated'];
         $_SESSION['glpi_currenttime'] = date('Y-m-d H:i:s', strtotime($base_time . $date));
 
         foreach ($index as $expected) {
-            $this->assertEquals($expected, PluginGeninventorynumberConfigField::getNextIndex(\Computer::class), "Config: " . json_encode($config) . " Date: $date");
+            $this->assertEquals($expected, PluginGeninventorynumberConfigField::getNextIndex(Computer::class), "Config: " . json_encode($config) . " Date: $date");
             $_SESSION['glpi_currenttime'] = date('Y-m-d H:i:s', strtotime($_SESSION['glpi_currenttime'] . $date));
             $this->updateItem(PluginGeninventorynumberConfigField::class, $computer_field->getID(), [
                 'index' => $expected,
@@ -307,13 +316,13 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
         $date = '2025-01-01 10:00:00';
         $_SESSION['glpi_currenttime'] = $date;
 
-        $computer_field = $this->setConfigField(\Computer::class, [
+        $computer_field = $this->setConfigField(Computer::class, [
             'index' => 5,
             'date_last_generated' => '2024-12-31 10:00:00',
         ]);
 
         // Update the index
-        PluginGeninventorynumberConfigField::updateIndex(\Computer::class);
+        PluginGeninventorynumberConfigField::updateIndex(Computer::class);
 
         // Reload the config field
         $this->assertTrue($computer_field->getFromDB($computer_field->getID()));
@@ -330,14 +339,14 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
         $this->initConfig();
 
         // Create config field for Computer
-        $computer_field = $this->setConfigField(\Computer::class);
+        $computer_field = $this->setConfigField(Computer::class);
 
         $this->assertTrue(
             $computer_field->getFromDB($computer_field->getID()),
         );
 
         // Unregister Computer itemtype
-        PluginGeninventorynumberConfigField::unregisterNewItemType(\Computer::class);
+        PluginGeninventorynumberConfigField::unregisterNewItemType(Computer::class);
 
         // Ensure the config field was deleted
         $this->assertFalse(
@@ -368,27 +377,27 @@ class ConfigFieldTest extends GenInventoryNumberTestCase
 
         /* Test 1: Verify is_active behavior for native GLPI asset */
 
-        $this->setConfigField(\Computer::class, ['is_active' => 1]);
+        $this->setConfigField(Computer::class, ['is_active' => 1]);
 
         $this->assertEquals(
             1,
-            PluginGeninventorynumberConfigField::isActiveForItemType(\Computer::class),
+            PluginGeninventorynumberConfigField::isActiveForItemType(Computer::class),
         );
 
-        $this->setConfigField(\Computer::class, ['is_active' => 0]);
+        $this->setConfigField(Computer::class, ['is_active' => 0]);
 
         $this->assertEquals(
             0,
-            PluginGeninventorynumberConfigField::isActiveForItemType(\Computer::class),
+            PluginGeninventorynumberConfigField::isActiveForItemType(Computer::class),
         );
 
         // Unregister Computer itemtype
-        PluginGeninventorynumberConfigField::unregisterNewItemType(\Computer::class);
+        PluginGeninventorynumberConfigField::unregisterNewItemType(Computer::class);
 
         // Ensure it is no longer active
         $this->assertEquals(
             0,
-            PluginGeninventorynumberConfigField::isActiveForItemType(\Computer::class),
+            PluginGeninventorynumberConfigField::isActiveForItemType(Computer::class),
         );
 
         /* Test 2: Verify is_active behavior for custom asset */

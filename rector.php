@@ -40,6 +40,8 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/front',
         __DIR__ . '/inc',
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
     ])
     ->withPhpVersion(PhpVersion::PHP_82)
     ->withCache(

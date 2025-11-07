@@ -254,7 +254,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
                 $asset_manager = AssetDefinitionManager::getInstance();
                 $parts = explode('\\', $itemtype);
                 $system_name = end($parts);
-                // Retirer 'asset' à la fin si présent
+                // Remove 'Asset' at the end if present
                 $system_name = preg_replace('/Asset$/', '', $system_name);
 
                 // Get the asset definition

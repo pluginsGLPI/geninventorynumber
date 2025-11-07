@@ -31,6 +31,10 @@
 namespace GlpiPlugin\Geninventorynumber\Tests;
 
 use DbTestCase;
+use Glpi\Asset\AssetDefinitionManager;
+use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
+use PluginGeninventorynumberConfig;
+use PluginGeninventorynumberConfigField;
 
 /**
  * Base test case class for GenInventoryNumber plugin tests
@@ -63,19 +67,19 @@ abstract class GenInventoryNumberTestCase extends DbTestCase
         // Update plugin config
         $this->updateConfig($config);
 
-        \Glpi\Asset\AssetDefinitionManager::getInstance()->registerCapacity(
-            new \GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity(),
+        AssetDefinitionManager::getInstance()->registerCapacity(
+            new HasInventoryNumberGenerationCapacity(),
         );
     }
 
     public function updateConfig(array $config = []): void
     {
-        $this->updateItem(\PluginGeninventorynumberConfig::class, 1, $config);
+        $this->updateItem(PluginGeninventorynumberConfig::class, 1, $config);
     }
 
-    public function getConfig(): \PluginGeninventorynumberConfig
+    public function getConfig(): PluginGeninventorynumberConfig
     {
-        $config = new \PluginGeninventorynumberConfig();
+        $config = new PluginGeninventorynumberConfig();
         $this->assertTrue($config->getFromDB(1));
         return $config;
     }
@@ -85,18 +89,18 @@ abstract class GenInventoryNumberTestCase extends DbTestCase
      *
      * @param string $itemtype Itemtype to configure
      * @param array $config Configuration parameters
-     * @return \PluginGeninventorynumberConfigField
+     * @return PluginGeninventorynumberConfigField
      */
-    public function setConfigField(string $itemtype, array $config = []): \PluginGeninventorynumberConfigField
+    public function setConfigField(string $itemtype, array $config = []): PluginGeninventorynumberConfigField
     {
-        $config_field = new \PluginGeninventorynumberConfigField();
+        $config_field = new PluginGeninventorynumberConfigField();
 
         if ($config_field->getFromDBByCrit(['itemtype' => $itemtype])) {
-            return $this->updateItem(\PluginGeninventorynumberConfigField::class, $config_field->getID(), $config);
+            return $this->updateItem(PluginGeninventorynumberConfigField::class, $config_field->getID(), $config);
         }
 
         // Ensure the itemtype is registered
-        \PluginGeninventorynumberConfigField::registerNewItemType($itemtype);
+        PluginGeninventorynumberConfigField::registerNewItemType($itemtype);
 
         // Only one active config per itemtype
         $this->assertTrue(
@@ -104,6 +108,6 @@ abstract class GenInventoryNumberTestCase extends DbTestCase
         );
 
         // Set configuration values if is provided
-        return $this->updateItem(\PluginGeninventorynumberConfigField::class, $config_field->getID(), $config);
+        return $this->updateItem(PluginGeninventorynumberConfigField::class, $config_field->getID(), $config);
     }
 }
