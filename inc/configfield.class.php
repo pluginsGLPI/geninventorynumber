@@ -318,10 +318,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         $capacity_classname = HasInventoryNumberGenerationCapacity::class;
 
         // Get current capacities (decoded from JSON)
-        $current_capacities = json_decode($definition->fields['capacities'], true);
-        if (!is_array($current_capacities)) {
-            $current_capacities = [];
-        }
+        $current_capacities = json_decode($definition->fields['capacities'] ?? '[]', true) ?: [];
 
         // Check if capacity is not enabled
         if (!in_array($capacity_classname, array_column($current_capacities, 'name'), true)) {
