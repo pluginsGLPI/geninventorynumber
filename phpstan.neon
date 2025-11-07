@@ -9,6 +9,7 @@ parameters:
         - front
         - inc
         - src
+        - tests
         - hook.php
         - setup.php
     scanDirectories:
