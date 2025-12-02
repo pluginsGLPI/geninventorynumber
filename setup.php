@@ -22,13 +22,15 @@
  * You should have received a copy of the GNU General Public License
  * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @copyright Copyright (C) 2008-2025 by GenInventoryNumber plugin team.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
  */
 
 use Glpi\Plugin\Hooks;
+use Glpi\Asset\AssetDefinitionManager;
+use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
 
 use function Safe\define;
 
@@ -54,15 +56,30 @@ function plugin_init_geninventorynumber()
 
     $PLUGIN_HOOKS[Hooks::POST_INIT]['geninventorynumber']      = 'plugin_geninventorynumber_postinit';
 
+    // Initialize with native asset types
     $GENINVENTORYNUMBER_TYPES = ['Computer', 'Monitor', 'Printer', 'NetworkEquipment',
         'Peripheral', 'Phone', 'SoftwareLicense', 'Cable',
         'Appliance', 'Certificate', 'ConsumableItem', 'Enclosure',
         'PassiveDCEquipment', 'PDU', 'Rack',
     ];
 
+    // Add active custom assets
+    $asset_manager = AssetDefinitionManager::getInstance();
+    foreach ($asset_manager->getDefinitions(true) as $definition) {
+        $custom_asset_class = $definition->getAssetClassName();
+        if (!in_array($custom_asset_class, $GENINVENTORYNUMBER_TYPES)) {
+            $GENINVENTORYNUMBER_TYPES[] = $custom_asset_class;
+        }
+    }
+
     $plugin = new Plugin();
     if ($plugin->isActivated('geninventorynumber')) {
         $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['geninventorynumber'] = 1;
+
+        // Register custom capacity for custom assets
+        AssetDefinitionManager::getInstance()->registerCapacity(
+            new HasInventoryNumberGenerationCapacity(),
+        );
 
         Plugin::registerClass(
             'PluginGeninventorynumberProfile',

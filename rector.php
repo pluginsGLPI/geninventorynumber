@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @copyright Copyright (C) 2008-2025 by GenInventoryNumber plugin team.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
@@ -40,6 +40,8 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/front',
         __DIR__ . '/inc',
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
     ])
     ->withPhpVersion(PhpVersion::PHP_82)
     ->withCache(
