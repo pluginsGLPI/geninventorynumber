@@ -30,7 +30,6 @@
 
 use Glpi\Asset\AssetDefinitionManager;
 use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
-use Glpi\Asset\AssetDefinition;
 use Glpi\DBAL\QueryExpression;
 
 use function Safe\strtotime;
@@ -135,7 +134,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
     }
 
-    public static function registerAssetDefinitionConfigField(AssetDefinition $item): void
+    public static function registerAssetDefinitionConfigField(\Glpi\Asset\AssetDefinition $item): void
     {
         if ($item->fields['is_active'] === "0") {
             self::unregisterNewItemType($item->getAssetClassName());
@@ -144,7 +143,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
     }
 
-    public static function unregisterAssetDefinitionConfigField(AssetDefinition $item): void
+    public static function unregisterAssetDefinitionConfigField(\Glpi\Asset\AssetDefinition $item): void
     {
         self::unregisterNewItemType($item->getAssetClassName());
     }
@@ -267,7 +266,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         }
     }
 
-    public function updateCapacity(AssetDefinition $definition): bool
+    public function updateCapacity(\Glpi\Asset\AssetDefinition $definition): bool
     {
         if ($this->fields['is_active']) {
             return $this->enableCapacityForAsset($definition);
@@ -279,10 +278,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     /**
      * Enable a capacity for a custom asset definition
      *
-     * @param AssetDefinition $definition
+     * @param \Glpi\Asset\AssetDefinition $definition
      * @return bool
      */
-    public function enableCapacityForAsset(AssetDefinition $definition): bool
+    public function enableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
     {
         $capacity_classname = HasInventoryNumberGenerationCapacity::class;
 
@@ -310,10 +309,10 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     /**
      * Disable a capacity for a custom asset definition
      *
-     * @param AssetDefinition $definition
+     * @param \Glpi\Asset\AssetDefinition $definition
      * @return bool
      */
-    public static function disableCapacityForAsset(AssetDefinition $definition): bool
+    public static function disableCapacityForAsset(\Glpi\Asset\AssetDefinition $definition): bool
     {
         $capacity_classname = HasInventoryNumberGenerationCapacity::class;
 

@@ -30,7 +30,7 @@
 
 namespace GlpiPlugin\Geninventorynumber\Tests;
 
-use DbTestCase;
+use Glpi\Tests\DbTestCase;
 use Glpi\Asset\AssetDefinitionManager;
 use GlpiPlugin\Geninventorynumber\Capacity\HasInventoryNumberGenerationCapacity;
 use PluginGeninventorynumberConfig;
