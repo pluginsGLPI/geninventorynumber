@@ -5,11 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unrealese] - XXXX-XX-XX
+## [2.10.0] - 2025-12-24
 
 ### Added
 
-- CustomAsset compatibility
+- Implement `CustomAsset` capacity for automatic inventory number generation.
 
 ## [2.9.0] - 2025-09-30
 
