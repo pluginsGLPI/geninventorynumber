@@ -28,23 +28,9 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkRight("config", UPDATE);
+require dirname(__DIR__, 3) . '/tests/bootstrap.php';
+require_once __DIR__ . '/GenInventoryNumberTestCase.php';
 
-$config = new PluginGeninventorynumberConfig();
-$config->getFromDB(1);
-if (Plugin::isPluginActive('geninventorynumber')) {
-
-    Html::header(
-        PluginGeninventorynumberConfig::getTypeName(),
-        $_SERVER['PHP_SELF'],
-        'tools',
-        'PluginGeninventorynumberConfig',
-    );
-
-    if (isset($_GET['glpi_tab'])) {
-        $_SESSION['glpi_tabs']['plugingeninventorynumberconfig'] = $_GET['glpi_tab'];
-        Html::redirect(Toolbox::getItemTypeFormURL($config->getType()));
-    }
-    $config->showTabsContent();
-    Html::footer();
+if (!Plugin::isPluginActive("geninventorynumber")) {
+    throw new RuntimeException("Plugin geninventorynumber is not active in the test database");
 }

@@ -22,11 +22,14 @@
  * You should have received a copy of the GNU General Public License
  * along with GenInventoryNumber. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2008-2022 by GenInventoryNumber plugin team.
+ * @copyright Copyright (C) 2008-2025 by GenInventoryNumber plugin team.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/pluginsGLPI/geninventorynumber
  * -------------------------------------------------------------------------
  */
+
+use Glpi\Asset\AssetDefinition;
+use Glpi\Plugin\Hooks;
 
 function plugin_geninventorynumber_postinit()
 {
@@ -40,6 +43,13 @@ function plugin_geninventorynumber_postinit()
         $PLUGIN_HOOKS['pre_item_update']['geninventorynumber'][$type]
         = ['PluginGeninventorynumberGeneration', 'preItemUpdate'];
     }
+
+    $PLUGIN_HOOKS[Hooks::ITEM_ADD]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'registerAssetDefinitionConfigField'];
+    $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'registerAssetDefinitionConfigField'];
+    $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['geninventorynumber'][AssetDefinition::class]
+        = ['PluginGeninventorynumberConfigField', 'unregisterAssetDefinitionConfigField'];
 }
 
 function plugin_geninventorynumber_MassiveActions($type)
@@ -91,10 +101,10 @@ function plugin_geninventorynumber_uninstall()
     include_once($php_dir . '/inc/config.class.php');
     include_once($php_dir . '/inc/profile.class.php');
     include_once($php_dir . '/inc/configfield.class.php');
+    PluginGeninventorynumberConfigField::uninstall($migration);
     PluginGeninventorynumberConfig::uninstall($migration);
     PluginGeninventorynumberProfile::removeRightsFromSession();
     PluginGeninventorynumberProfile::uninstallProfile();
-    PluginGeninventorynumberConfigField::uninstall($migration);
 
     return true;
 }
