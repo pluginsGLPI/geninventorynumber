@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-10 01:12+0000\n"
+"POT-Creation-Date: 2025-12-29 01:19+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018,2022-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/tr_TR/)\n"
@@ -22,15 +22,16 @@ msgstr ""
 msgid "Global index position"
 msgstr "Genel dizin konumu"
 
-#: templates/config.html.twig inc/configfield.class.php:187
+#: templates/config.html.twig inc/configfield.class.php:177
 msgid "Index auto-reset method"
 msgstr "Dizin otomatik sıfırlama yöntemi"
 
-#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
 msgid "Inventory number generation"
 msgstr "Envanter numarası üretme"
 
-#: inc/profile.class.php:117 hook.php:58
+#: inc/profile.class.php:117 hook.php:68
 msgid "Generate inventory number"
 msgstr "Envanter numarası üret"
 
@@ -63,26 +64,39 @@ msgstr "Aylık"
 msgid "Yearly"
 msgstr "Yıllık"
 
-#: inc/configfield.class.php:71
+#: inc/configfield.class.php:47
 msgid "Specific configuration"
 msgstr "Özel yapılandırma"
 
-#: inc/configfield.class.php:179
+#: inc/configfield.class.php:169
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI envanter ögeleri yapılandırması"
 
-#: inc/configfield.class.php:183
+#: inc/configfield.class.php:173
 msgid "Generation templates"
 msgstr "Üretme kalıpları"
 
-#: inc/configfield.class.php:185
+#: inc/configfield.class.php:175
 msgid "Use global index"
 msgstr "Genel dizin kullanılsın"
 
-#: inc/configfield.class.php:186
+#: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Dizin konumu"
 
-#: hook.php:63
+#: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Envanter numarasını yeniden üret (üzerine yaz)"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr "Bu varlıklar için otomatik envanter numarası oluşturmayı aç"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr "%d varlık için yapılandırılmış"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr "Henüz yapılandırılmamış"
