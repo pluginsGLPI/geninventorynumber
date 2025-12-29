@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-25 01:09+0000\n"
-"PO-Revision-Date: 2025-11-25 01:09+0000\n"
+"POT-Creation-Date: 2025-12-29 01:19+0000\n"
+"PO-Revision-Date: 2025-12-29 01:19+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -21,15 +21,16 @@ msgstr ""
 msgid "Global index position"
 msgstr "Global index position"
 
-#: templates/config.html.twig inc/configfield.class.php:187
+#: templates/config.html.twig inc/configfield.class.php:177
 msgid "Index auto-reset method"
 msgstr "Index auto-reset method"
 
-#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
 msgid "Inventory number generation"
 msgstr "Inventory number generation"
 
-#: inc/profile.class.php:117 hook.php:58
+#: inc/profile.class.php:117 hook.php:68
 msgid "Generate inventory number"
 msgstr "Generate inventory number"
 
@@ -62,26 +63,39 @@ msgstr "Monthly"
 msgid "Yearly"
 msgstr "Yearly"
 
-#: inc/configfield.class.php:71
+#: inc/configfield.class.php:47
 msgid "Specific configuration"
 msgstr "Specific configuration"
 
-#: inc/configfield.class.php:179
+#: inc/configfield.class.php:169
 msgid "GLPI's inventory items configuration"
 msgstr "GLPI's inventory items configuration"
 
-#: inc/configfield.class.php:183
+#: inc/configfield.class.php:173
 msgid "Generation templates"
 msgstr "Generation templates"
 
-#: inc/configfield.class.php:185
+#: inc/configfield.class.php:175
 msgid "Use global index"
 msgstr "Use global index"
 
-#: inc/configfield.class.php:186
+#: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Index position"
 
-#: hook.php:63
+#: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerate inventory number (overwrite)"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr "Enable automatic inventory number generation for these assets"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr "Configured for %d assets"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr "Not configured yet"

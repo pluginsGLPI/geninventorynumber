@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-25 01:09+0000\n"
+"POT-Creation-Date: 2025-12-25 01:14+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>, 2015\n"
 "Language-Team: French (France) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/fr_FR/)\n"
@@ -24,15 +24,16 @@ msgstr ""
 msgid "Global index position"
 msgstr "Position de l'index global"
 
-#: templates/config.html.twig inc/configfield.class.php:187
+#: templates/config.html.twig inc/configfield.class.php:177
 msgid "Index auto-reset method"
 msgstr "Mode de réinitialisation de l'index"
 
-#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
 msgid "Inventory number generation"
 msgstr "Génération de numéros d'inventaire"
 
-#: inc/profile.class.php:117 hook.php:58
+#: inc/profile.class.php:117 hook.php:68
 msgid "Generate inventory number"
 msgstr "Générer un numéro d'inventaire"
 
@@ -65,26 +66,39 @@ msgstr "Mensuel"
 msgid "Yearly"
 msgstr "Annuel"
 
-#: inc/configfield.class.php:71
+#: inc/configfield.class.php:47
 msgid "Specific configuration"
 msgstr "Configuration spécifique"
 
-#: inc/configfield.class.php:179
+#: inc/configfield.class.php:169
 msgid "GLPI's inventory items configuration"
 msgstr "Configuration spécifique à un type d'objet d'inventaire"
 
-#: inc/configfield.class.php:183
+#: inc/configfield.class.php:173
 msgid "Generation templates"
 msgstr "Modèle de génération : "
 
-#: inc/configfield.class.php:185
+#: inc/configfield.class.php:175
 msgid "Use global index"
 msgstr "Utiliser l'index global"
 
-#: inc/configfield.class.php:186
+#: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Position de l'index"
 
-#: hook.php:63
+#: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regénérer un numéro d'inventaire (à écraser)"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr ""
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr ""
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr ""
