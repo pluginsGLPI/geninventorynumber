@@ -19,7 +19,7 @@
    <homepage>https://github.com/pluginsGLPI/geninventorynumber</homepage>
    <download>https://github.com/pluginsGLPI/geninventorynumber/releases</download>
    <issues>https://github.com/pluginsGLPI/geninventorynumber/issues</issues>
-   <readme>https://raw.githubusercontent.com/pluginsGLPI/geninventorynumber/main/README.md</readme>
+   <readme>https://help.glpi-project.org/doc-plugins/fr/inventory-number-generation</readme>
    <authors>
       <author>Walid Nouh</author>
    </authors>
