@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-19 01:20+0000\n"
+"POT-Creation-Date: 2026-02-26 01:29+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2015,2018,2022-2025\n"
 "Language-Team: Turkish (Turkey) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/tr_TR/)\n"
@@ -26,23 +26,18 @@ msgstr "Genel dizin konumu"
 msgid "Index auto-reset method"
 msgstr "Dizin otomatik sıfırlama yöntemi"
 
-#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
-msgid "Inventory number generation"
-msgstr "Envanter numarası üretme"
-
-#: inc/profile.class.php:117 hook.php:68
+#: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Envanter numarası üret"
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr "Bir envanter numarası üretildi (%1$s)"
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Envanter numarasını yeniden üret (üzerine yaz)"
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "Envanter numarasını değiştiremezsiniz"
+#: inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+msgid "Inventory number generation"
+msgstr "Envanter numarası üretme"
 
 #: inc/config.class.php:139
 msgid "Active"
@@ -84,9 +79,14 @@ msgstr "Genel dizin kullanılsın"
 msgid "Index position"
 msgstr "Dizin konumu"
 
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Envanter numarasını yeniden üret (üzerine yaz)"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "Bir envanter numarası üretildi (%1$s)"
+
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "Envanter numarasını değiştiremezsiniz"
 
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"

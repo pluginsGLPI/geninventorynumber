@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 01:18+0000\n"
+"POT-Creation-Date: 2026-02-26 01:29+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Edwin Elias Alvarez <elias986@yahoo.com>, 2026\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/es_MX/)\n"
@@ -27,23 +27,18 @@ msgstr "Posición global del índice"
 msgid "Index auto-reset method"
 msgstr "Método de auto reinicio del  índice"
 
-#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
-msgid "Inventory number generation"
-msgstr "Generación de número de inventario"
-
-#: inc/profile.class.php:117 hook.php:68
+#: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Generar número de inventario"
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr "Se ha generado un número de inventario (%1$s)"
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Regenerar número de inventario (sobrescribir)"
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "No se puede modificar el número de inventario"
+#: inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+msgid "Inventory number generation"
+msgstr "Generación de número de inventario"
 
 #: inc/config.class.php:139
 msgid "Active"
@@ -85,9 +80,14 @@ msgstr "Usar índice global"
 msgid "Index position"
 msgstr "Posición del índice"
 
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Regenerar número de inventario (sobrescribir)"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "Se ha generado un número de inventario (%1$s)"
+
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "No se puede modificar el número de inventario"
 
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"
