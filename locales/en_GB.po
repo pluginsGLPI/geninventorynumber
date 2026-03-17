@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 01:18+0000\n"
-"PO-Revision-Date: 2026-01-28 01:18+0000\n"
+"POT-Creation-Date: 2026-03-17 01:43+0000\n"
+"PO-Revision-Date: 2026-03-17 01:43+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -25,23 +25,18 @@ msgstr "Global index position"
 msgid "Index auto-reset method"
 msgstr "Index auto-reset method"
 
-#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
-msgid "Inventory number generation"
-msgstr "Inventory number generation"
-
-#: inc/profile.class.php:117 hook.php:68
+#: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Generate inventory number"
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr "An inventory number have been generated (%1$s)"
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Regenerate inventory number (overwrite)"
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "You can't modify inventory number"
+#: inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+msgid "Inventory number generation"
+msgstr "Inventory number generation"
 
 #: inc/config.class.php:139
 msgid "Active"
@@ -83,9 +78,14 @@ msgstr "Use global index"
 msgid "Index position"
 msgstr "Index position"
 
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Regenerate inventory number (overwrite)"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "An inventory number have been generated (%1$s)"
+
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "You can't modify inventory number"
 
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"
