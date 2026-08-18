@@ -35,8 +35,8 @@ use function Safe\strtotime;
 
 class PluginGeninventorynumberConfig extends CommonDBTM
 {
-    public static $rightname = 'config';
-    public $dohistory        = true;
+    public static string $rightname = 'config';
+    public bool $dohistory   = true;
 
     /**
      * Never reset the index
