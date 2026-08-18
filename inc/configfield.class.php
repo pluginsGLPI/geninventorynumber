@@ -107,7 +107,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             if (class_exists($type) && !countElementsInTable($table, ['itemtype' => $type])) {
                 $input['plugin_geninventorynumber_configs_id'] = 1;
                 $input['itemtype']                             = $type;
-                $input['template']                             = '&lt;#######&gt;';
+                $input['template']                             = '<#######>';
                 $input['is_active']                            = 0;
                 $input['index']                                = 0;
                 $field->add($input);
@@ -478,7 +478,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
             $config                                        = new self();
             $input['plugin_geninventorynumber_configs_id'] = 1;
             $input['itemtype']                             = $itemtype;
-            $input['template']                             = '&lt;#######&gt;';
+            $input['template']                             = '<#######>';
             $input['is_active']                            = 0;
             $input['index']                                = 0;
             if ($config->add($input) && !in_array($itemtype, $GENINVENTORYNUMBER_TYPES, true)) {
