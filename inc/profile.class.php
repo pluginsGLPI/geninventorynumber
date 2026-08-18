@@ -30,7 +30,7 @@
 
 class PluginGeninventorynumberProfile extends CommonDBTM
 {
-    public static $rightname = 'config';
+    public static string $rightname = 'config';
 
     /**
      * @param $ID  integer
@@ -52,10 +52,10 @@ class PluginGeninventorynumberProfile extends CommonDBTM
         $profileRight = new ProfileRight();
         foreach ($rights as $right => $value) {
             if (
-                !countElementsInTable(
+                countElementsInTable(
                     'glpi_profilerights',
                     ['profiles_id' => $profiles_id, 'name' => $right],
-                )
+                ) === 0
             ) {
                 $myright['profiles_id'] = $profiles_id;
                 $myright['name']        = $right;
@@ -138,12 +138,12 @@ class PluginGeninventorynumberProfile extends CommonDBTM
                 $profile = new self();
                 foreach ($profile->getAllRights() as $right => $rights) {
                     if (
-                        !countElementsInTable(
+                        countElementsInTable(
                             'glpi_profilerights',
                             ['profiles_id' => $data['profiles_id'],
                                 'name'     => $rights['field'],
                             ],
-                        )
+                        ) === 0
                     ) {
                         $profileRight           = new ProfileRight();
                         $myright                = [];
