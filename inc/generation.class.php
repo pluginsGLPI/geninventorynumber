@@ -44,6 +44,11 @@ class PluginGeninventorynumberGeneration
     {
         $template = $config['template'];
 
+        // priori GLPI 11 delimiters are escaped, so we need to unescape them to be able to parse the template (if needed)
+        $template = str_replace("&lt;", "<", $template);
+        $template = str_replace("&gt;", ">", $template);
+
+
         $pattern = '/'
           . '^(?<prefix>.*)'    // capture every char located before the "autonum" part
           . '<'                 // "<" char that indicates beginning of the "autonum" part
@@ -57,7 +62,7 @@ class PluginGeninventorynumberGeneration
           . '/';
         $matches = [];
         if (preg_match($pattern, $template, $matches) !== 1) {
-            return $config['template']; // Return verbatim value
+            return $template; // Return verbatim value
         }
 
         $prefix  = $matches['prefix'];
