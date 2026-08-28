@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:43+0000\n"
+"POT-Creation-Date: 2026-08-28 10:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,29 +33,31 @@ msgstr ""
 msgid "Regenerate inventory number (overwrite)"
 msgstr ""
 
-#: inc/config.class.php:64 inc/config.class.php:124
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+#: inc/config.class.php:64 inc/config.class.php:124
 msgid "Inventory number generation"
 msgstr ""
 
-#: inc/config.class.php:139
-msgid "Active"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
 msgstr ""
 
-#: inc/config.class.php:160
-msgid "Never"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
 msgstr ""
 
-#: inc/config.class.php:161
-msgid "Daily"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
 msgstr ""
 
-#: inc/config.class.php:162
-msgid "Monthly"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
 msgstr ""
 
-#: inc/config.class.php:163
-msgid "Yearly"
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
 msgstr ""
 
 #: inc/configfield.class.php:47
@@ -78,24 +80,22 @@ msgstr ""
 msgid "Index position"
 msgstr ""
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
+#: inc/config.class.php:139
+msgid "Active"
 msgstr ""
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
+#: inc/config.class.php:160
+msgid "Never"
 msgstr ""
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
-msgid "Enable automatic inventory number generation for these assets"
+#: inc/config.class.php:161
+msgid "Daily"
 msgstr ""
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
-#, php-format
-msgid "Configured for %d assets"
+#: inc/config.class.php:162
+msgid "Monthly"
 msgstr ""
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
-msgid "Not configured yet"
+#: inc/config.class.php:163
+msgid "Yearly"
 msgstr ""
