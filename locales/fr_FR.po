@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 01:29+0000\n"
+"POT-Creation-Date: 2026-08-19 01:40+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Jérémy MOREAU <jmoreau.dev@gmail.com>, 2015\n"
 "Language-Team: French (France) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/fr_FR/)\n"
@@ -36,30 +36,32 @@ msgstr "Générer un numéro d'inventaire"
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regénérer un numéro d'inventaire (à écraser)"
 
-#: inc/config.class.php:64 inc/config.class.php:124
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+#: inc/config.class.php:64 inc/config.class.php:124
 msgid "Inventory number generation"
 msgstr "Génération de numéros d'inventaire"
 
-#: inc/config.class.php:139
-msgid "Active"
-msgstr "Génération activée"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr ""
 
-#: inc/config.class.php:160
-msgid "Never"
-msgstr "Jamais"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr ""
 
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr "Quotidien"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr ""
 
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr "Mensuel"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "Un numéro d'inventaire a été généré (%1$s)"
 
-#: inc/config.class.php:163
-msgid "Yearly"
-msgstr "Annuel"
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -81,24 +83,22 @@ msgstr "Utiliser l'index global"
 msgid "Index position"
 msgstr "Position de l'index"
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr "Un numéro d'inventaire a été généré (%1$s)"
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Génération activée"
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "Vous ne pouvez pas modifier le numéro d'inventaire"
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Jamais"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
-msgid "Enable automatic inventory number generation for these assets"
-msgstr ""
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr "Quotidien"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
-#, php-format
-msgid "Configured for %d assets"
-msgstr ""
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr "Mensuel"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
-msgid "Not configured yet"
-msgstr ""
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Annuel"
