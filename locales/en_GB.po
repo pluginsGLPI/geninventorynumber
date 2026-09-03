@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:43+0000\n"
-"PO-Revision-Date: 2026-03-17 01:43+0000\n"
+"POT-Creation-Date: 2026-09-03 03:59+0000\n"
+"PO-Revision-Date: 2026-09-03 03:59+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -33,30 +33,32 @@ msgstr "Generate inventory number"
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerate inventory number (overwrite)"
 
-#: inc/config.class.php:64 inc/config.class.php:124
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
+#: inc/config.class.php:64 inc/config.class.php:124
 msgid "Inventory number generation"
 msgstr "Inventory number generation"
 
-#: inc/config.class.php:139
-msgid "Active"
-msgstr "Active"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr "Enable automatic inventory number generation for these assets"
 
-#: inc/config.class.php:160
-msgid "Never"
-msgstr "Never"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr "Configured for %d assets"
 
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr "Daily"
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr "Not configured yet"
 
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr "Monthly"
+#: inc/generation.class.php:136
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "An inventory number have been generated (%1$s)"
 
-#: inc/config.class.php:163
-msgid "Yearly"
-msgstr "Yearly"
+#: inc/generation.class.php:159
+msgid "You can't modify inventory number"
+msgstr "You can't modify inventory number"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -78,24 +80,22 @@ msgstr "Use global index"
 msgid "Index position"
 msgstr "Index position"
 
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr "An inventory number have been generated (%1$s)"
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Active"
 
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "You can't modify inventory number"
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Never"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
-msgid "Enable automatic inventory number generation for these assets"
-msgstr "Enable automatic inventory number generation for these assets"
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr "Daily"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
-#, php-format
-msgid "Configured for %d assets"
-msgstr "Configured for %d assets"
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr "Monthly"
 
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
-msgid "Not configured yet"
-msgstr "Not configured yet"
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Yearly"
