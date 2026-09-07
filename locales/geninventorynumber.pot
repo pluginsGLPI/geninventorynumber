@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:43+0000\n"
+"POT-Creation-Date: 2026-09-07 04:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,37 +25,17 @@ msgstr ""
 msgid "Index auto-reset method"
 msgstr ""
 
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
+msgid "Inventory number generation"
+msgstr ""
+
 #: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr ""
 
 #: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
-msgstr ""
-
-#: inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
-msgid "Inventory number generation"
-msgstr ""
-
-#: inc/config.class.php:139
-msgid "Active"
-msgstr ""
-
-#: inc/config.class.php:160
-msgid "Never"
-msgstr ""
-
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr ""
-
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr ""
-
-#: inc/config.class.php:163
-msgid "Yearly"
 msgstr ""
 
 #: inc/configfield.class.php:47
@@ -76,6 +56,26 @@ msgstr ""
 
 #: inc/configfield.class.php:176
 msgid "Index position"
+msgstr ""
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr ""
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr ""
+
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr ""
+
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr ""
+
+#: inc/config.class.php:163
+msgid "Yearly"
 msgstr ""
 
 #: inc/generation.class.php:136

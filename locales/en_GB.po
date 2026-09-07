@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:43+0000\n"
-"PO-Revision-Date: 2026-03-17 01:43+0000\n"
+"POT-Creation-Date: 2026-09-07 04:03+0000\n"
+"PO-Revision-Date: 2026-09-07 04:03+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -25,6 +25,11 @@ msgstr "Global index position"
 msgid "Index auto-reset method"
 msgstr "Index auto-reset method"
 
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
+msgid "Inventory number generation"
+msgstr "Inventory number generation"
+
 #: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Generate inventory number"
@@ -32,31 +37,6 @@ msgstr "Generate inventory number"
 #: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerate inventory number (overwrite)"
-
-#: inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
-msgid "Inventory number generation"
-msgstr "Inventory number generation"
-
-#: inc/config.class.php:139
-msgid "Active"
-msgstr "Active"
-
-#: inc/config.class.php:160
-msgid "Never"
-msgstr "Never"
-
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr "Daily"
-
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr "Monthly"
-
-#: inc/config.class.php:163
-msgid "Yearly"
-msgstr "Yearly"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -77,6 +57,26 @@ msgstr "Use global index"
 #: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Index position"
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Active"
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Never"
+
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr "Daily"
+
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr "Monthly"
+
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Yearly"
 
 #: inc/generation.class.php:136
 #, php-format
