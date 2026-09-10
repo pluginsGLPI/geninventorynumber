@@ -62,12 +62,12 @@ function plugin_geninventorynumber_MassiveActions($type)
         $fields = PluginGeninventorynumberConfigField::getConfigFieldByItemType($type);
 
         if (PluginGeninventorynumberConfigField::isActiveForItemType($type)) {
-            if (Session::haveRight('plugin_geninventorynumber', CREATE)) {
+            if (Session::haveRight(PluginGeninventorynumberGeneration::$rightname, CREATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                  MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_generate']
                  = __s('Generate inventory number', 'geninventorynumber');
             }
-            if (Session::haveRight('plugin_geninventorynumber', UPDATE)) {
+            if (Session::haveRight(PluginGeninventorynumberGeneration::$rightname, UPDATE)) {
                 $actions['PluginGeninventorynumberGeneration' .
                 MassiveAction::CLASS_ACTION_SEPARATOR . 'plugin_geninventorynumber_overwrite']
                 = __s('Regenerate inventory number (overwrite)', 'geninventorynumber');
