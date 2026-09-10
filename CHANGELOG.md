@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased ##
+
+### Fixed
+
+- A special character wrongly displayed in french, on Inventory number generation's tab
+
 ## [2.10.0] - 2025-12-24
 
 ### Added
