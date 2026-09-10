@@ -61,7 +61,7 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function getTypeName($nb = 0)
     {
-        return __s('Inventory number generation', 'geninventorynumber');
+        return __('Inventory number generation', 'geninventorynumber');
     }
 
     public static function getMenuContent()
