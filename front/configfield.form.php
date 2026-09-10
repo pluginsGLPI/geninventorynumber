@@ -28,7 +28,7 @@
  * -------------------------------------------------------------------------
  */
 
-Session::checkRight('config', UPDATE);
+Session::checkRight(Config::$rightname, UPDATE);
 $configfield = new PluginGeninventorynumberConfigField();
 if (isset($_POST['update_fields']) && isset($_POST['ids'])) {
     foreach ($_POST['ids'] as $itemtype => $data) {

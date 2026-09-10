@@ -88,7 +88,7 @@ function plugin_init_geninventorynumber()
         Plugin::registerClass('PluginGeninventorynumberConfig');
         Plugin::registerClass('PluginGeninventorynumberConfigField');
 
-        if (Session::haveRight('config', UPDATE)) {
+        if (Session::haveRight(Config::$rightname, UPDATE)) {
             $PLUGIN_HOOKS[hooks::MENU_TOADD]['geninventorynumber']
               = ['tools' => 'PluginGeninventorynumberConfig'];
         }
