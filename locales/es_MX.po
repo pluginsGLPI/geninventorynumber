@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 01:29+0000\n"
+"POT-Creation-Date: 2026-09-04 04:01+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Edwin Elias Alvarez <elias986@yahoo.com>, 2026\n"
 "Language-Team: Spanish (Mexico) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/es_MX/)\n"
@@ -27,6 +27,11 @@ msgstr "Posición global del índice"
 msgid "Index auto-reset method"
 msgstr "Método de auto reinicio del  índice"
 
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
+msgid "Inventory number generation"
+msgstr "Generación de número de inventario"
+
 #: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Generar número de inventario"
@@ -34,31 +39,6 @@ msgstr "Generar número de inventario"
 #: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regenerar número de inventario (sobrescribir)"
-
-#: inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
-msgid "Inventory number generation"
-msgstr "Generación de número de inventario"
-
-#: inc/config.class.php:139
-msgid "Active"
-msgstr "Activado"
-
-#: inc/config.class.php:160
-msgid "Never"
-msgstr "Nunca"
-
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr "Diariamente"
-
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr "Mensual"
-
-#: inc/config.class.php:163
-msgid "Yearly"
-msgstr "Anual"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -79,6 +59,26 @@ msgstr "Usar índice global"
 #: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Posición del índice"
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Activado"
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Nunca"
+
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr "Diariamente"
+
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr "Mensual"
+
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Anual"
 
 #: inc/generation.class.php:136
 #, php-format
