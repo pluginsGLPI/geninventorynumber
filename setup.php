@@ -37,9 +37,9 @@ use function Safe\define;
 define('PLUGIN_GENINVENTORYNUMBER_VERSION', '2.10.0');
 
 // Minimal GLPI version, inclusive
-define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '11.0.0');
+define('PLUGIN_GENINVENTORYNUMBER_MIN_GLPI', '12.0.0');
 // Maximum GLPI version, exclusive
-define('PLUGIN_GENINVENTORYNUMBER_MAX_GLPI', '11.0.99');
+define('PLUGIN_GENINVENTORYNUMBER_MAX_GLPI', '12.0.99');
 
 function plugin_init_geninventorynumber()
 {
@@ -88,7 +88,7 @@ function plugin_init_geninventorynumber()
         Plugin::registerClass('PluginGeninventorynumberConfig');
         Plugin::registerClass('PluginGeninventorynumberConfigField');
 
-        if (Session::haveRight('config', UPDATE)) {
+        if (Session::haveRight(Config::$rightname, UPDATE)) {
             $PLUGIN_HOOKS[hooks::MENU_TOADD]['geninventorynumber']
               = ['tools' => 'PluginGeninventorynumberConfig'];
         }
