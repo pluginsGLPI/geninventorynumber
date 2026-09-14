@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 01:43+0000\n"
+"POT-Creation-Date: 2026-09-04 04:01+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024,2026\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/sk_SK/)\n"
@@ -26,6 +26,11 @@ msgstr "Globálna pozícia indexu"
 msgid "Index auto-reset method"
 msgstr "Metóda automatickej obnovy indexu"
 
+#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
+msgid "Inventory number generation"
+msgstr "Generovanie inventárneho čísla"
+
 #: hook.php:68 inc/profile.class.php:117
 msgid "Generate inventory number"
 msgstr "Generovať inventárne číslo"
@@ -33,31 +38,6 @@ msgstr "Generovať inventárne číslo"
 #: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Znova generovať inventárne číslo (prepísať)"
-
-#: inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46 setup.php:101
-msgid "Inventory number generation"
-msgstr "Generovanie inventárneho čísla"
-
-#: inc/config.class.php:139
-msgid "Active"
-msgstr "Aktívne"
-
-#: inc/config.class.php:160
-msgid "Never"
-msgstr "Nikdy"
-
-#: inc/config.class.php:161
-msgid "Daily"
-msgstr "Denne"
-
-#: inc/config.class.php:162
-msgid "Monthly"
-msgstr "Mesačne"
-
-#: inc/config.class.php:163
-msgid "Yearly"
-msgstr "Ročne"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -78,6 +58,26 @@ msgstr "Použiť globálny index"
 #: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Pozícia indexu"
+
+#: inc/config.class.php:139
+msgid "Active"
+msgstr "Aktívne"
+
+#: inc/config.class.php:160
+msgid "Never"
+msgstr "Nikdy"
+
+#: inc/config.class.php:161
+msgid "Daily"
+msgstr "Denne"
+
+#: inc/config.class.php:162
+msgid "Monthly"
+msgstr "Mesačne"
+
+#: inc/config.class.php:163
+msgid "Yearly"
+msgstr "Ročne"
 
 #: inc/generation.class.php:136
 #, php-format
