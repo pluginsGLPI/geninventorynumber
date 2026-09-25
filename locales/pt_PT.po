@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 04:22+0000\n"
+"POT-Creation-Date: 2026-09-25 04:28+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: Gonçalo Dumas, 2024\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/pt_PT/)\n"
@@ -28,19 +28,6 @@ msgstr "Posição do índice global"
 #: templates/config.html.twig inc/configfield.class.php:177
 msgid "Index auto-reset method"
 msgstr "Método de auto-reset do índice"
-
-#: setup.php:101 inc/config.class.php:64 inc/config.class.php:124
-#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
-msgid "Inventory number generation"
-msgstr "Geração de número de inventário"
-
-#: hook.php:68 inc/profile.class.php:117
-msgid "Generate inventory number"
-msgstr "Gerar número de inventário"
-
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Regenerar número de inventário (sobrescrever)"
 
 #: inc/configfield.class.php:47
 msgid "Specific configuration"
@@ -61,6 +48,11 @@ msgstr "Usar índice global"
 #: inc/configfield.class.php:176
 msgid "Index position"
 msgstr "Posição do índice"
+
+#: inc/config.class.php:64 inc/config.class.php:124 setup.php:101
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
+msgid "Inventory number generation"
+msgstr "Geração de número de inventário"
 
 #: inc/config.class.php:139
 msgid "Active"
@@ -91,6 +83,10 @@ msgstr "Um número de inventário foi gerado (%1$s)"
 msgid "You can't modify inventory number"
 msgstr "Não pode modificar o número de inventário"
 
+#: inc/profile.class.php:117 hook.php:68
+msgid "Generate inventory number"
+msgstr "Gerar número de inventário"
+
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"
 msgstr "Ativar geração automática de números de inventário para estes ativos"
@@ -103,3 +99,7 @@ msgstr "Configurado para %d ativos"
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
 msgid "Not configured yet"
 msgstr "Ainda não configurado"
+
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Regenerar número de inventário (sobrescrever)"
