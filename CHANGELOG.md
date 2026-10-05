@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - A special character wrongly displayed in french, on Inventory number generation's tab
+- CI: fix Psalm cache directory, drop the stray `glpi-project/tools` composer dependency, declare a unique composer autoloader suffix
 
 ## [2.10.0] - 2025-12-24
 
