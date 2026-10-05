@@ -99,7 +99,7 @@ class HasInventoryNumberGenerationCapacity extends AbstractCapacity
         }
 
         $table = PluginGeninventorynumberConfigField::getTable();
-        if (!countElementsInTable($table, ['itemtype' => $classname])) {
+        if (countElementsInTable($table, ['itemtype' => $classname]) === 0) {
             PluginGeninventorynumberConfigField::registerNewItemType($classname);
         }
 
