@@ -13,3 +13,7 @@ This plugin enables inventory numbers automatic generation. The configuration al
 * The types for which automatic generation is enabled
 * Inventory number templates
 * If counters are globals or type specific
+
+## Additional resources
+
+* [Translations on Transifex](https://explore.transifex.com/teclib/glpi-plugin-geninventorynumber/)
