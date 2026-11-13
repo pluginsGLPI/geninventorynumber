@@ -42,6 +42,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     public static $itemtype = 'PluginGeninventorynumberConfig';
     public static $items_id = 'plugin_geninventorynumber_configs_id';
 
+    /**
+     * Configuration rows by itemtype, read once per request (null: not read yet).
+     * Their `index` and `date_last_generated` columns go stale as numbers are generated:
+     * the index helpers always read them from the database.
+     *
+     * @var array<string, array<string, mixed>>|null
+     */
+    private static ?array $rows_by_itemtype = null;
+
     public static function getTypeName($nb = 0)
     {
         return __s('Specific configuration', 'geninventorynumber');
@@ -49,12 +58,42 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getConfigFieldByItemType($itemtype)
     {
-        $infos = getAllDataFromTable(getTableForItemType(self::class), ['itemtype' => $itemtype]);
-        if (!empty($infos)) {
-            return array_pop($infos);
-        } else {
-            return $infos;
+        return self::getRowsByItemtype()[$itemtype] ?? [];
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    private static function getRowsByItemtype(): array
+    {
+        if (self::$rows_by_itemtype === null) {
+            self::$rows_by_itemtype = [];
+            foreach (getAllDataFromTable(self::getTable(), ['ORDER' => 'id']) as $row) {
+                self::$rows_by_itemtype[$row['itemtype']] = $row;
+            }
         }
+
+        return self::$rows_by_itemtype;
+    }
+
+    /**
+     * Forget the rows read during the request, so the next read sees the saved values.
+     */
+    public static function clearCache(): void
+    {
+        self::$rows_by_itemtype = null;
+    }
+
+    public function post_addItem()
+    {
+        parent::post_addItem();
+        self::clearCache();
+    }
+
+    public function post_purgeItem()
+    {
+        parent::post_purgeItem();
+        self::clearCache();
     }
 
     public static function install(Migration $migration)
@@ -242,6 +281,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
     public function post_updateItem($history = true)
     {
         parent::post_updateItem($history);
+        self::clearCache();
 
         // Check if itemtype is a custom asset and if is_active changed
         if (isset($this->fields['itemtype']) && in_array('is_active', $this->updates)) {
@@ -339,38 +379,15 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
 
     public static function getEnabledItemTypes()
     {
-        /** @var DBmysql $DB */
-        global $DB;
-
-        $it = $DB->request([
-            'SELECT'   => ['itemtype'],
-            'DISTINCT' => true,
-            'FROM'     => getTableForItemType(self::class),
-            'ORDER'    => ['itemtype'],
-        ]);
-        $types = [];
-        foreach ($it as $data) {
-            $types[] = $data['itemtype'];
-        }
+        $types = array_keys(self::getRowsByItemtype());
+        sort($types, SORT_STRING | SORT_FLAG_CASE);
 
         return $types;
     }
 
     public static function isActiveForItemType($itemtype)
     {
-        /** @var DBmysql $DB */
-        global $DB;
-
-        $it = $DB->request([
-            'SELECT' => ['is_active'],
-            'FROM'   => getTableForItemType(self::class),
-            'WHERE'  => ['itemtype' => $itemtype],
-        ]);
-        if (count($it) > 0) {
-            return $it->current()['is_active'];
-        }
-
-        return false;
+        return self::getRowsByItemtype()[$itemtype]['is_active'] ?? false;
     }
 
     /**
@@ -495,6 +512,7 @@ class PluginGeninventorynumberConfigField extends CommonDBChild
         if (countElementsInTable(getTableForItemType(self::class), ['itemtype' => $itemtype])) {
             $config = new self();
             $is_delete = $config->deleteByCriteria(['itemtype' => $itemtype]);
+            self::clearCache();
             if ($is_delete) {
                 unset($GENINVENTORYNUMBER_TYPES[$itemtype]);
             }
