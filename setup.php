@@ -98,12 +98,13 @@ function plugin_init_geninventorynumber()
 function plugin_version_geninventorynumber()
 {
     return [
-        'name'         => __s('Inventory number generation', 'geninventorynumber'),
-        'version'      => PLUGIN_GENINVENTORYNUMBER_VERSION,
-        'author'       => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
-        'homepage'     => 'https://github.com/pluginsGLPI/geninventorynumber',
-        'license'      => 'GPLv3+',
-        'requirements' => [
+        'name'          => __s('Inventory number generation', 'geninventorynumber'),
+        'version'       => PLUGIN_GENINVENTORYNUMBER_VERSION,
+        'author'        => "<a href='http://www.teclib.com'>TECLIB'</a> + KK",
+        'homepage'      => 'https://github.com/pluginsGLPI/geninventorynumber',
+        'license'       => 'GPLv3+',
+        'csp_compliant' => true,
+        'requirements'  => [
             'glpi' => [
                 'min' => PLUGIN_GENINVENTORYNUMBER_MIN_GLPI,
                 'max' => PLUGIN_GENINVENTORYNUMBER_MAX_GLPI,
