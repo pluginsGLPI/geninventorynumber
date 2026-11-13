@@ -41,6 +41,14 @@ use PluginGeninventorynumberConfigField;
  */
 abstract class GenInventoryNumberTestCase extends DbTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // The configuration is cached for the request, and each test rolls the database back
+        PluginGeninventorynumberConfig::clearCache();
+    }
+
     /**
      * Initialize plugin configuration
      *

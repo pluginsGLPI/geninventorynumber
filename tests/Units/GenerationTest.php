@@ -613,4 +613,35 @@ final class GenerationTest extends GenInventoryNumberTestCase
         $config = $this->getConfig();
         $this->assertEquals(0, $config->fields['index'], "[UPDATE] Index should still not be incremented");
     }
+
+    /**
+     * The configuration is cached for the request: a saved change must be seen by the next
+     * generation, and the counter must keep increasing between generations.
+     */
+    public function testConfigurationChangeIsSeenInTheSameRequest(): void
+    {
+        $this->initConfig(['is_active' => 1]);
+        $this->setConfigField(Computer::class, [
+            'is_active' => 1,
+            'use_index' => 0,
+            'template'  => 'A-<####>',
+            'index'     => 0,
+        ]);
+
+        // Two generations in a row: consecutive numbers
+        $first  = $this->createItem(Computer::class, ['name' => 'cache 1', 'entities_id' => 0], ['otherserial']);
+        $second = $this->createItem(Computer::class, ['name' => 'cache 2', 'entities_id' => 0], ['otherserial']);
+        $this->assertSame('A-0001', $first->fields['otherserial']);
+        $this->assertSame('A-0002', $second->fields['otherserial']);
+
+        // New template: used by the next generation
+        $this->setConfigField(Computer::class, ['template' => 'B-<####>']);
+        $third = $this->createItem(Computer::class, ['name' => 'cache 3', 'entities_id' => 0], ['otherserial']);
+        $this->assertSame('B-0003', $third->fields['otherserial']);
+
+        // Generation switched off: no number anymore
+        $this->updateConfig(['is_active' => 0]);
+        $fourth = $this->createItem(Computer::class, ['name' => 'cache 4', 'entities_id' => 0]);
+        $this->assertEmpty($fourth->fields['otherserial'] ?? '');
+    }
 }

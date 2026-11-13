@@ -39,6 +39,13 @@ class PluginGeninventorynumberConfig extends CommonDBTM
     public $dohistory        = true;
 
     /**
+     * Generation switch, read once per request (null: not read yet).
+     *
+     * @var mixed
+     */
+    private static $generation_active = null;
+
+    /**
      * Never reset the index
      * @var int
      */
@@ -345,10 +352,28 @@ class PluginGeninventorynumberConfig extends CommonDBTM
 
     public static function isGenerationActive()
     {
-        $config = new self();
-        $config->getFromDB(1);
+        if (self::$generation_active === null) {
+            $config = new self();
+            $config->getFromDB(1);
+            self::$generation_active = $config->fields['is_active'];
+        }
 
-        return $config->fields['is_active'];
+        return self::$generation_active;
+    }
+
+    /**
+     * Forget the configuration read during the request, so the next read sees the saved values.
+     */
+    public static function clearCache(): void
+    {
+        self::$generation_active = null;
+        PluginGeninventorynumberConfigField::clearCache();
+    }
+
+    public function post_updateItem($history = true)
+    {
+        parent::post_updateItem($history);
+        self::clearCache();
     }
 
     public static function getIcon()
