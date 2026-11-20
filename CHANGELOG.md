@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ### Added
 
 - Add Transifex translations link to README
@@ -16,6 +17,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - GLPI 12 compatibility
+=======
+### Changed
+
+- Make the plugin compatible with the Content Security Policy
+
+## [2.10.1] - 2026-10-05
+>>>>>>> 9458e46 (feat: make plugin CSP compliant (#181))
 
 ### Fixed
 
