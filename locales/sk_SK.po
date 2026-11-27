@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 04:28+0000\n"
+"POT-Creation-Date: 2026-11-26 07:50+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
 "Last-Translator: feonsu <feonsu@gmail.com>, 2023-2024,2026\n"
 "Language-Team: Slovak (Slovakia) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/sk_SK/)\n"
@@ -71,18 +71,22 @@ msgstr "Mesačne"
 msgid "Yearly"
 msgstr "Ročne"
 
-#: inc/generation.class.php:136
+#: inc/generation.class.php:143
 #, php-format
 msgid "An inventory number have been generated (%1$s)"
 msgstr "Inventárne číslo bolo vygenerované (%1$s)"
 
-#: inc/generation.class.php:159
+#: inc/generation.class.php:166
 msgid "You can't modify inventory number"
 msgstr "Nemôžete upraviť inventárne číslo"
 
 #: inc/profile.class.php:117 hook.php:68
 msgid "Generate inventory number"
 msgstr "Generovať inventárne číslo"
+
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Znova generovať inventárne číslo (prepísať)"
 
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"
@@ -96,7 +100,3 @@ msgstr "Nakonfigurované pre %d položky"
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
 msgid "Not configured yet"
 msgstr "Ešte nie je nakonfigurované"
-
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Znova generovať inventárne číslo (prepísať)"

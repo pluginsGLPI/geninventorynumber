@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
+# Diego Nobre <diego@koruma.com.br>, 2026
 # grazziano <grazziano.do+transifex@gmail.com>, 2018
 # Matheus Rafael, 2023
 # Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
@@ -11,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - GenInventoryNumber\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-10 01:12+0000\n"
+"POT-Creation-Date: 2026-11-27 07:50+0000\n"
 "PO-Revision-Date: 2015-09-18 13:03+0000\n"
-"Last-Translator: Matheus Rafael, 2023\n"
+"Last-Translator: Diego Nobre <diego@koruma.com.br>, 2026\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/teclib/glpi-plugin-geninventorynumber/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,26 +26,34 @@ msgstr ""
 msgid "Global index position"
 msgstr "Posição do índice global"
 
-#: templates/config.html.twig inc/configfield.class.php:187
+#: templates/config.html.twig inc/configfield.class.php:177
 msgid "Index auto-reset method"
-msgstr "Método de reinicialização automática do índice"
+msgstr "Método de redefinição automática de índice"
 
-#: setup.php:84 inc/config.class.php:64 inc/config.class.php:124
+#: inc/configfield.class.php:47
+msgid "Specific configuration"
+msgstr "Configuração específica"
+
+#: inc/configfield.class.php:169
+msgid "GLPI's inventory items configuration"
+msgstr "Configuração de itens de inventário do GLPI"
+
+#: inc/configfield.class.php:173
+msgid "Generation templates"
+msgstr "Modelos de geração"
+
+#: inc/configfield.class.php:175
+msgid "Use global index"
+msgstr "Usar índice global"
+
+#: inc/configfield.class.php:176
+msgid "Index position"
+msgstr "Posição do índice"
+
+#: inc/config.class.php:64 inc/config.class.php:124 setup.php:101
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:46
 msgid "Inventory number generation"
 msgstr "Geração de número de inventário"
-
-#: inc/profile.class.php:117 hook.php:58
-msgid "Generate inventory number"
-msgstr "Gerar número de inventário"
-
-#: inc/generation.class.php:136
-#, php-format
-msgid "An inventory number have been generated (%1$s)"
-msgstr ""
-
-#: inc/generation.class.php:159
-msgid "You can't modify inventory number"
-msgstr "Você não pode modificar o número de inventário"
 
 #: inc/config.class.php:139
 msgid "Active"
@@ -60,32 +69,38 @@ msgstr "Diário"
 
 #: inc/config.class.php:162
 msgid "Monthly"
-msgstr "Por mês"
+msgstr "Mensal"
 
 #: inc/config.class.php:163
 msgid "Yearly"
 msgstr "Anual"
 
-#: inc/configfield.class.php:71
-msgid "Specific configuration"
-msgstr ""
+#: inc/generation.class.php:143
+#, php-format
+msgid "An inventory number have been generated (%1$s)"
+msgstr "Um número de inventário foi gerado (%1$s)"
 
-#: inc/configfield.class.php:179
-msgid "GLPI's inventory items configuration"
-msgstr "Configuração de itens de inventário do GLPI"
+#: inc/generation.class.php:166
+msgid "You can't modify inventory number"
+msgstr "Você não pode modificar o número de inventário"
 
-#: inc/configfield.class.php:183
-msgid "Generation templates"
-msgstr "Modelos de geração"
+#: inc/profile.class.php:117 hook.php:68
+msgid "Generate inventory number"
+msgstr "Gerar número de inventário"
 
-#: inc/configfield.class.php:185
-msgid "Use global index"
-msgstr "Usar índice global"
-
-#: inc/configfield.class.php:186
-msgid "Index position"
-msgstr "Posição do índice"
-
-#: hook.php:63
+#: hook.php:73
 msgid "Regenerate inventory number (overwrite)"
 msgstr "Regerar número de inventário (sobrescrever)"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
+msgid "Enable automatic inventory number generation for these assets"
+msgstr "Habilitar a geração automática de números de inventário para estes ativos"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:77
+#, php-format
+msgid "Configured for %d assets"
+msgstr "Configurado para %d ativos"
+
+#: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
+msgid "Not configured yet"
+msgstr "Não configurado ainda"
