@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 04:53+0000\n"
-"PO-Revision-Date: 2026-09-28 04:53+0000\n"
+"POT-Creation-Date: 2026-11-27 07:50+0000\n"
+"PO-Revision-Date: 2026-11-27 07:50+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -70,18 +70,22 @@ msgstr "Monthly"
 msgid "Yearly"
 msgstr "Yearly"
 
-#: inc/generation.class.php:136
+#: inc/generation.class.php:143
 #, php-format
 msgid "An inventory number have been generated (%1$s)"
 msgstr "An inventory number have been generated (%1$s)"
 
-#: inc/generation.class.php:159
+#: inc/generation.class.php:166
 msgid "You can't modify inventory number"
 msgstr "You can't modify inventory number"
 
 #: inc/profile.class.php:117 hook.php:68
 msgid "Generate inventory number"
 msgstr "Generate inventory number"
+
+#: hook.php:73
+msgid "Regenerate inventory number (overwrite)"
+msgstr "Regenerate inventory number (overwrite)"
 
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:57
 msgid "Enable automatic inventory number generation for these assets"
@@ -95,7 +99,3 @@ msgstr "Configured for %d assets"
 #: src/Capacity/HasInventoryNumberGenerationCapacity.php:82
 msgid "Not configured yet"
 msgstr "Not configured yet"
-
-#: hook.php:73
-msgid "Regenerate inventory number (overwrite)"
-msgstr "Regenerate inventory number (overwrite)"
